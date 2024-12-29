@@ -6,49 +6,58 @@ import {
 } from 'react-native-health-connect';
 import SleepOverview from "../components/SleepOverview";
 
+const getBeginningOfLast14Days = () => {
+  const date = new Date();
+  date.setDate(date.getDate() - 14);
+  date.setHours(0, 0, 0, 0);
+  return date;
+};
+
+const now = () => {
+  return new Date();
+};
+
 const readSampleData = async () => {
   // initialize the client
   const isInitialized = await initialize();
 
   // request permissions
-  const grantedPermissions = await requestPermission([
-    { accessType: 'read', recordType: 'ActiveCaloriesBurned' },
-  ]);
+  const requestSamplePermissions = () => {
+    requestPermission([
+      {
+        accessType: 'read',
+        recordType: 'SleepSession',
+      },
+    ]).then((permissions) => {
+      console.log('Granted permissions on request ', { permissions });
+    });
+  };
 
   // check if granted
+  requestSamplePermissions();
 
-  const result = await readRecords('ActiveCaloriesBurned', {
-    timeRangeFilter: {
-      operator: 'between',
-      startTime: '2023-01-09T12:00:00.405Z',
-      endTime: '2023-01-09T23:53:15.405Z',
-    },
-  });
-  // {
-  //   result: [
-  //     {
-  //       startTime: '2023-01-09T12:00:00.405Z',
-  //       endTime: '2023-01-09T23:53:15.405Z',
-  //       energy: {
-  //         inCalories: 15000000,
-  //         inJoules: 62760000.00989097,
-  //         inKilojoules: 62760.00000989097,
-  //         inKilocalories: 15000,
-  //       },
-  //       metadata: {
-  //         id: '239a8cfd-990d-42fc-bffc-c494b829e8e1',
-  //         lastModifiedTime: '2023-01-17T21:06:23.335Z',
-  //         clientRecordId: null,
-  //         dataOrigin: 'com.healthconnectexample',
-  //         clientRecordVersion: 0,
-  //         device: 0,
-  //       },
-  //     },
-  //   ],
-  // }
+  const read = () => {
+    readRecords('SleepSession', {
+      timeRangeFilter: {
+        operator: 'between',
+        startTime: getBeginningOfLast14Days().toISOString(),
+        endTime: now().toISOString(),
+      },
+    })
+      .then((result) => {
+        console.log('Retrieved records: ', JSON.stringify({ result }, null, 2));
+      })
+      .catch((err) => {
+        console.error('Error reading records ', { err });
+      });
+  };
+
+  read();
 };
 
 export default function Index() {
+  const data = readSampleData();
+  // console.log(data);
   return (
     <View style={styles.container}>
       <Text style={styles.text}>Home screen</Text>

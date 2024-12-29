@@ -1,5 +1,10 @@
 import React from 'react';
 import { Text, type TextProps, StyleSheet } from 'react-native';
+import {
+    initialize,
+    requestPermission,
+    readRecords,
+  } from 'react-native-health-connect';
 
 type Props = {
     sleepData?: String, 
