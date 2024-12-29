@@ -1,63 +1,17 @@
 import { Text, View, StyleSheet } from "react-native";
-import {
-  initialize,
-  requestPermission,
-  readRecords,
-} from 'react-native-health-connect';
-import SleepOverview from "../components/SleepOverview";
 
-const getBeginningOfLast14Days = () => {
-  const date = new Date();
-  date.setDate(date.getDate() - 14);
-  date.setHours(0, 0, 0, 0);
-  return date;
-};
+import SleepOverview from "@/components/SleepOverview";
+import initializeHealthConnect from "@/health-connect/initialize";
+import { getSleepData } from "@/health-connect/sleep-data";
 
-const now = () => {
-  return new Date();
-};
-
-const readSampleData = async () => {
-  // initialize the client
-  const isInitialized = await initialize();
-
-  // request permissions
-  const requestSamplePermissions = () => {
-    requestPermission([
-      {
-        accessType: 'read',
-        recordType: 'SleepSession',
-      },
-    ]).then((permissions) => {
-      console.log('Granted permissions on request ', { permissions });
-    });
-  };
-
-  // check if granted
-  requestSamplePermissions();
-
-  const read = () => {
-    readRecords('SleepSession', {
-      timeRangeFilter: {
-        operator: 'between',
-        startTime: getBeginningOfLast14Days().toISOString(),
-        endTime: now().toISOString(),
-      },
-    })
-      .then((result) => {
-        console.log('Retrieved records: ', JSON.stringify({ result }, null, 2));
-      })
-      .catch((err) => {
-        console.error('Error reading records ', { err });
-      });
-  };
-
-  read();
-};
+const logSleepData = async () => {
+  await initializeHealthConnect();
+  const data = await getSleepData();
+  console.log('Retrieved records: ', JSON.stringify(data, null, 2));
+}
 
 export default function Index() {
-  const data = readSampleData();
-  // console.log(data);
+  logSleepData();
   return (
     <View style={styles.container}>
       <Text style={styles.text}>Home screen</Text>
