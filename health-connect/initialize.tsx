@@ -23,4 +23,5 @@ const requestSamplePermissions = async () => {
 export default async function initializeHealthConnect() {
     await initHealthConnect();
     await requestSamplePermissions();
+    return;
 }

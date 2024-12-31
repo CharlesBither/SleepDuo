@@ -15,6 +15,7 @@ const now = () => {
 
 export async function getSleepData() {
     return await readRecords('SleepSession', {
+        ascendingOrder: false,
         timeRangeFilter: {
           operator: 'between',
           startTime: getBeginningOfLast14Days().toISOString(),
