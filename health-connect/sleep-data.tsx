@@ -1,5 +1,4 @@
 import {
-    getGrantedPermissions,
     readRecords,
   } from 'react-native-health-connect';
 
@@ -23,20 +22,3 @@ export async function getSleepData() {
         },
     });
 }
-
-// export function read() {
-//     readRecords('SleepSession', {
-//       timeRangeFilter: {
-//         operator: 'between',
-//         startTime: getBeginningOfLast14Days().toISOString(),
-//         endTime: now().toISOString(),
-//       },
-//     })
-//       .then((result) => {
-//         console.log('Retrieved records: ', JSON.stringify({ result }, null, 2));
-//         return result;
-//       })
-//       .catch((err) => {
-//         console.error('Error reading records ', { err });
-//       });
-//   };
