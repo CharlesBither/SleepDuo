@@ -11,7 +11,7 @@ type Props = {
 export default function SleepOverview({ sleepRecordInfo }: Props) {
 
     const records = sleepRecordInfo.map((record) => {
-        const sleepDescription: String = record.totalSleepTime + "ms asleep"
+        const sleepDescription: String = record.getHours() + "h " + record.getMinutes() + "m asleep"
         return (
             <View key={record._record.endTime}>
                 <List.Section>

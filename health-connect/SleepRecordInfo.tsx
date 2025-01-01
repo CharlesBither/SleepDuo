@@ -5,6 +5,8 @@ import {
 export class SleepRecordInfo {
     _record: RecordResult<"SleepSession">;
     private _totalSleepTime: number = 0;
+    private _hoursAsleep: number = 0;
+    private _minutesAsleep: number = 0;
     private _timeInBed: number = 0;
     private _sleepEfficiency: String = "0";
     private _timeStage1: number = 0;
@@ -52,5 +54,13 @@ export class SleepRecordInfo {
 
     get sleepEfficiency(): String {
         return this._sleepEfficiency;
+    }
+
+    getMinutes(): number {
+        return Math.floor(this._totalSleepTime / 1000 / 60) % 60;
+    }
+
+    getHours(): number {
+        return Math.floor(this._totalSleepTime / 1000 / 60 / 60);
     }
 }
