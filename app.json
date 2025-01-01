@@ -40,7 +40,9 @@
           "backgroundColor": "#ffffff"
         }
       ],
-      ["expo-health-connect"],
+      [
+        "expo-health-connect"
+      ],
       [
         "expo-build-properties",
         {
@@ -50,7 +52,9 @@
             "minSdkVersion": 26
           }
         }
-      ]
+      ],
+      ["expo-sqlite"],
+      ["expo-localization"]
     ],
     "experiments": {
       "typedRoutes": true

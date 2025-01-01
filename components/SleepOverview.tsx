@@ -1,5 +1,5 @@
 import React from 'react';
-import { Text, View, type TextProps, StyleSheet } from 'react-native';
+import { Text, View, type TextProps, StyleSheet, ScrollView } from 'react-native';
 import { Divider, List, MD3Colors } from 'react-native-paper';
 
 import { SleepRecordInfo } from "@/health-connect/SleepRecordInfo";
@@ -33,9 +33,9 @@ export default function SleepOverview({ sleepRecordInfo }: Props) {
     });
 
     return (
-        <>
+        <ScrollView>
             {records}
-        </>
+        </ScrollView>
     );
 }
 
