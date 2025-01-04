@@ -1,7 +1,7 @@
 import { RecordResult } from 'react-native-health-connect';
 import { getLocales, getCalendars } from 'expo-localization';
 
-import { Activity } from './activity';
+import { Activity } from '@/activities/Activity';
 
 export class SleepActivity extends Activity {
     private _record: RecordResult<"SleepSession">;

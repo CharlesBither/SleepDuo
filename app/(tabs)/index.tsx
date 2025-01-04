@@ -6,7 +6,7 @@ import { getLocales, getCalendars } from 'expo-localization';
 import SleepOverview from "@/components/SleepOverview";
 import initializeHealthConnect from "@/health-connect/initialize";
 import { getSleepData } from "@/health-connect/sleep-data";
-import { SleepActivity } from "@/app/activities/SleepActivity";
+import { SleepActivity } from "@/activities/SleepActivity";
 
 
 
