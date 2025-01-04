@@ -1,31 +1,32 @@
 import { Text, View, StyleSheet } from "react-native";
 import { useState } from "react";
 import { PaperProvider } from 'react-native-paper';
+import { getLocales, getCalendars } from 'expo-localization';
 
 import SleepOverview from "@/components/SleepOverview";
 import initializeHealthConnect from "@/health-connect/initialize";
 import { getSleepData } from "@/health-connect/sleep-data";
-import { SleepRecordInfo } from "@/health-connect/SleepRecordInfo";
+import { SleepActivity } from "@/app/activities/SleepActivity";
 
 
 
 export default function Index() {
-  const [sleepRecordInfoArray, setSleepRecordInfoArray] = useState<SleepRecordInfo[]>([]);
+  const [SleepActivityArray, setSleepActivityArray] = useState<SleepActivity[]>([]);
 
   //init health-connect SDK
   initializeHealthConnect()
     .then(() => {
       // get sleep records from previous 14 days
       getSleepData().then((data) => {
-        let arr: SleepRecordInfo[] = [];
+        let arr: SleepActivity[] = [];
         const records = data.records;
         for (let i = 0; i < records.length; i++) {
-          const currSleepRecordInfo = new SleepRecordInfo(records[i]);
-          arr.push(currSleepRecordInfo);
+          const currSleepActivity = new SleepActivity(records[i]);
+          arr.push(currSleepActivity);
         }
 
-        if (arr.length != sleepRecordInfoArray.length) {
-          setSleepRecordInfoArray(arr);
+        if (arr.length != SleepActivityArray.length) {
+          setSleepActivityArray(arr);
         }
         
 
@@ -36,11 +37,11 @@ export default function Index() {
     console.log("could not initialize hc");
   })
 
-  if (sleepRecordInfoArray) {
+  if (SleepActivityArray) {
     return (
       <PaperProvider>
         <View style={styles.container}>
-          <SleepOverview sleepRecordInfo={sleepRecordInfoArray}/>
+          <SleepOverview SleepActivity={SleepActivityArray}/>
         </View>
       </PaperProvider>
     );

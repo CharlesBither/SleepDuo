@@ -1,27 +1,22 @@
-import {
-    RecordResult,
-  } from 'react-native-health-connect';
+import { RecordResult } from 'react-native-health-connect';
+import { getLocales, getCalendars } from 'expo-localization';
 
-export class SleepRecordInfo {
-    _record: RecordResult<"SleepSession">;
+import { Activity } from './activity';
+
+export class SleepActivity extends Activity {
+    private _record: RecordResult<"SleepSession">;
     private _totalSleepTime: number = 0;
-    private _hoursAsleep: number = 0;
-    private _minutesAsleep: number = 0;
-    private _timeInBed: number = 0;
     private _sleepEfficiency: String = "0";
-    private _timeStage1: number = 0;
-    private _timeStage2: number = 0;
+    private _timeStage1: number = 0; // time awake
+    private _timeStage2: number = 0; // time asleep general
     private _timeStage4: number = 0;
     private _timeStage5: number = 0;
     private _timeStage6: number = 0;
-
+    
     constructor(record: RecordResult<"SleepSession">) {
-        this._record = record;
+        super(new Date(record.startTime), new Date(record.endTime));
 
-        // initialize timeInBed
-        const startInBed = new Date(record.startTime);
-        const endInBed = new Date(record.endTime);
-        this._timeInBed = endInBed.getTime() - startInBed.getTime();
+        this._record = record;
 
         // init TST
         const stages = record.stages;
@@ -41,7 +36,7 @@ export class SleepRecordInfo {
         }
 
         //init sleepEfficiency
-        this._sleepEfficiency = ((this._totalSleepTime / this._timeInBed) * 100).toPrecision(2);
+        this._sleepEfficiency = ((this._totalSleepTime / this.activityDuration) * 100).toPrecision(2);
     }
 
     get totalSleepTime(): number {
@@ -49,18 +44,19 @@ export class SleepRecordInfo {
     }
 
     get timeInBed(): number {
-        return this._timeInBed;
+        return this.activityDuration;
     }
 
     get sleepEfficiency(): String {
         return this._sleepEfficiency;
     }
 
-    getMinutes(): number {
+    getMinutesAsleep(): number {
         return Math.floor(this._totalSleepTime / 1000 / 60) % 60;
     }
 
-    getHours(): number {
+    getHoursAsleep(): number {
         return Math.floor(this._totalSleepTime / 1000 / 60 / 60);
     }
+
 }
