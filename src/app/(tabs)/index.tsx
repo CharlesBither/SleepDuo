@@ -10,11 +10,8 @@ import { Activity } from "@/src/activities/Activity";
 import ThemedView from '@/src/components/ThemedView';
 
 export default function Index() {
-  const theme = useTheme();
   const [sleepArray, setSleepArray] = useState<Activity[]>([]);
-  const [averageTST, setAverageTST] = useState<number>(0);
-  const averageTSTDescription = SleepActivity.getAverageHours(averageTST) + "h " + SleepActivity.getAverageHours(averageTST) + "m";
-
+  
   //init health-connect SDK
   initializeHealthConnect()
     .then(() => {
@@ -27,16 +24,10 @@ export default function Index() {
           arr.push(currSleepActivity);
         }
 
-        if (arr.length != sleepArray.length) {
+        if (arr.length != sleepArray.length && arr.length !== 0) {
+          console.log("calling setSleepArray. Arr length = " + arr.length);
           setSleepArray(arr);
         }
-
-        const currAverageTST = SleepActivity.getAverageTST(sleepArray);
-        if (currAverageTST != averageTST) {
-          setAverageTST(currAverageTST);
-        }
-        
-
       }).catch(() => {
         console.log("could not get sleep data");
     });
@@ -44,6 +35,9 @@ export default function Index() {
     console.log("could not initialize hc");
   })
 
+  const currAverageTST = SleepActivity.getAverageTST(sleepArray);
+  const averageTSTDescription = SleepActivity.getAverageHours(currAverageTST) + "h " + SleepActivity.getAverageHours(currAverageTST) + "m";
+  console.log("SA length = " + sleepArray.length + " and avg TST = " + SleepActivity.getAverageTST(sleepArray));
   return (
       <ThemedView>
         <Text variant="displayMedium" style={styles.Text}>Overview</Text>

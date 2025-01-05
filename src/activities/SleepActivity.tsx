@@ -14,7 +14,7 @@ export class SleepActivity extends Activity {
     private _timeStage6: number = 0;
     
     constructor(record: RecordResult<"SleepSession">) {
-        super(new Date(record.startTime), new Date(record.endTime));
+        super(new Date(record.startTime), new Date(record.endTime), "sleep");
 
         this._record = record;
 
@@ -60,11 +60,12 @@ export class SleepActivity extends Activity {
     }
 
     static getAverageTST(activites: Activity[]): number {
+        //TODO: add dates to set. return res / set.length 
         let res = 0, count = 0;
         for (let i = 0; i < activites.length; i++) {
             const activity = activites[i];
-            if (activity instanceof SleepActivity) {
-                res += activity.totalSleepTime;
+            if (activity.activityType === "sleep") { 
+                res += (activity as SleepActivity).totalSleepTime; 
                 count++;
             }
         }
@@ -79,5 +80,4 @@ export class SleepActivity extends Activity {
     static getAverageHours(milliseconds: number): number {
         return Math.floor(milliseconds / 1000 / 60 / 60);
     }
-
 }
