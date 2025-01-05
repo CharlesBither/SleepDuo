@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Text, View, StyleSheet } from 'react-native';
+import { Text } from 'react-native-paper';
 
 import { Activity } from '@/activities/Activity';
 import initializeHealthConnect from '@/health-connect/initialize';
@@ -7,6 +7,7 @@ import { getSleepData } from '@/health-connect/sleep-data';
 import { SleepActivity } from '@/activities/SleepActivity';
 import Journal from '@/components/Journal';
 import { useTheme } from 'react-native-paper';
+import ThemedView from '@/components/ThemedView';
 
 export default function JournalScreen() {
     const [ActivityArray, setActivityArray] = useState<Activity[]>([]);
@@ -38,21 +39,15 @@ export default function JournalScreen() {
   
     if (ActivityArray) {
       return (
-            <View style={{ backgroundColor: theme.colors.background }}>
+            <ThemedView>
                 <Journal Activity={ActivityArray}/>
-            </View>
+            </ThemedView>
       );
     }
   
     return (
-      <View style={styles.container}>
+      <ThemedView>
         <Text>empty arr</Text>
-      </View>
+      </ThemedView>
     );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    backgroundColor: '#25292e',
-  },
-});

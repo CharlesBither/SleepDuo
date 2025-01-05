@@ -1,6 +1,6 @@
 import React from 'react';
-import { Text, View, type TextProps, StyleSheet, ScrollView } from 'react-native';
-import { Divider, List, MD3Colors } from 'react-native-paper';
+import { View, ScrollView } from 'react-native';
+import { Divider, List } from 'react-native-paper';
 
 import { SleepActivity } from "@/activities/SleepActivity";
 import { Activity } from '@/activities/Activity';

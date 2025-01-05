@@ -1,19 +1,16 @@
-import { Text, View, StyleSheet } from "react-native";
 import { useState } from "react";
-import { PaperProvider } from 'react-native-paper';
 import { getLocales, getCalendars } from 'expo-localization';
-import { useTheme } from "react-native-paper";
+import { useTheme, Text } from "react-native-paper";
 
-import Journal from "@/components/Journal";
 import initializeHealthConnect from "@/health-connect/initialize";
 import { getSleepData } from "@/health-connect/sleep-data";
 import { SleepActivity } from "@/activities/SleepActivity";
 import { Activity } from "@/activities/Activity";
-import Button from "@/components/Button";
+import ThemedView from '@/components/ThemedView';
 
 export default function Index() {
   const theme = useTheme();
-  // const [ActivityArray, setActivityArray] = useState<Activity[]>([]);
+  const [activityArray, setActivityArray] = useState<Activity[]>([]);
 
   //init health-connect SDK
   initializeHealthConnect()
@@ -27,6 +24,10 @@ export default function Index() {
           arr.push(currSleepActivity);
         }
 
+        if (arr.length != activityArray.length) {
+          setActivityArray(arr);
+        }
+
       }).catch(() => {
         console.log("could not get sleep data");
     });
@@ -35,11 +36,8 @@ export default function Index() {
   })
 
   return (
-      <View style={{ 
-        backgroundColor: theme.colors.background,
-        flex: 1
-         }}>
-        <Button label="Log an activity"></Button>
-      </View>
+      <ThemedView>
+        <Text>Test</Text>
+      </ThemedView>
   );
 }

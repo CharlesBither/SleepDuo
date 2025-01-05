@@ -1,26 +1,12 @@
-import { Text, View, StyleSheet } from 'react-native';
-import { useTheme } from 'react-native-paper';
+import { useTheme, Text } from 'react-native-paper';
+
+import ThemedView from '@/components/ThemedView';
 
 export default function AboutScreen() {
   const theme = useTheme();
   return (
-    <View style={{ 
-      backgroundColor: theme.colors.background, 
-      flex: 1 
-      }}>
-      <Text style={styles.text}>About screen</Text>
-    </View>
+    <ThemedView>
+      <Text>About screen</Text>
+    </ThemedView>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#25292e',
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  text: {
-    color: '#fff',
-  },
-});
