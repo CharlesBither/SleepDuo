@@ -1,13 +1,13 @@
 import { useState } from 'react';
 import { Text } from 'react-native-paper';
 
-import { Activity } from '@/activities/Activity';
-import initializeHealthConnect from '@/health-connect/initialize';
-import { getSleepData } from '@/health-connect/sleep-data';
-import { SleepActivity } from '@/activities/SleepActivity';
-import Journal from '@/components/Journal';
+import { Activity } from '@/src/activities/Activity';
+import initializeHealthConnect from '@/src/health-connect/initialize';
+import { getSleepData } from '@/src/health-connect/sleep-data';
+import { SleepActivity } from '@/src/activities/SleepActivity';
+import Journal from '@/src/components/Journal';
 import { useTheme } from 'react-native-paper';
-import ThemedView from '@/components/ThemedView';
+import ThemedView from '@/src/components/ThemedView';
 
 export default function JournalScreen() {
     const [ActivityArray, setActivityArray] = useState<Activity[]>([]);

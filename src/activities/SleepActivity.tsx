@@ -1,7 +1,7 @@
 import { RecordResult } from 'react-native-health-connect';
 import { getLocales, getCalendars } from 'expo-localization';
 
-import { Activity } from '@/activities/Activity';
+import { Activity } from '@/src/activities/Activity';
 
 export class SleepActivity extends Activity {
     private _record: RecordResult<"SleepSession">;
@@ -65,13 +65,10 @@ export class SleepActivity extends Activity {
             const activity = activites[i];
             if (activity instanceof SleepActivity) {
                 res += activity.totalSleepTime;
-                console.log(res);
                 count++;
             }
         }
         if (count === 0) return 0;
-        console.log("count = " + count);
-        console.log(res / count);
         return res / count;
     }
 

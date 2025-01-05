@@ -2,8 +2,8 @@ import React from 'react';
 import { View, ScrollView } from 'react-native';
 import { Divider, List } from 'react-native-paper';
 
-import { SleepActivity } from "@/activities/SleepActivity";
-import { Activity } from '@/activities/Activity';
+import { SleepActivity } from "@/src/activities/SleepActivity";
+import { Activity } from '@/src/activities/Activity';
 
 type Props = {
     Activity: Activity[], 

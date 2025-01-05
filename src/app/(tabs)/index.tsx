@@ -3,11 +3,11 @@ import { getLocales, getCalendars } from 'expo-localization';
 import { StyleSheet } from "react-native";
 import { useTheme, Text, List } from "react-native-paper";
 
-import initializeHealthConnect from "@/health-connect/initialize";
-import { getSleepData } from "@/health-connect/sleep-data";
-import { SleepActivity } from "@/activities/SleepActivity";
-import { Activity } from "@/activities/Activity";
-import ThemedView from '@/components/ThemedView';
+import initializeHealthConnect from "@/src/health-connect/initialize";
+import { getSleepData } from "@/src/health-connect/sleep-data";
+import { SleepActivity } from "@/src/activities/SleepActivity";
+import { Activity } from "@/src/activities/Activity";
+import ThemedView from '@/src/components/ThemedView';
 
 export default function Index() {
   const theme = useTheme();
