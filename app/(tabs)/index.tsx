@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { getLocales, getCalendars } from 'expo-localization';
-import { useTheme, Text } from "react-native-paper";
+import { StyleSheet } from "react-native";
+import { useTheme, Text, List } from "react-native-paper";
 
 import initializeHealthConnect from "@/health-connect/initialize";
 import { getSleepData } from "@/health-connect/sleep-data";
@@ -10,7 +11,9 @@ import ThemedView from '@/components/ThemedView';
 
 export default function Index() {
   const theme = useTheme();
-  const [activityArray, setActivityArray] = useState<Activity[]>([]);
+  const [sleepArray, setSleepArray] = useState<Activity[]>([]);
+  const [averageTST, setAverageTST] = useState<number>(0);
+  const averageTSTDescription = SleepActivity.getAverageHours(averageTST) + "h " + SleepActivity.getAverageHours(averageTST) + "m";
 
   //init health-connect SDK
   initializeHealthConnect()
@@ -24,9 +27,15 @@ export default function Index() {
           arr.push(currSleepActivity);
         }
 
-        if (arr.length != activityArray.length) {
-          setActivityArray(arr);
+        if (arr.length != sleepArray.length) {
+          setSleepArray(arr);
         }
+
+        const currAverageTST = SleepActivity.getAverageTST(sleepArray);
+        if (currAverageTST != averageTST) {
+          setAverageTST(currAverageTST);
+        }
+        
 
       }).catch(() => {
         console.log("could not get sleep data");
@@ -37,7 +46,19 @@ export default function Index() {
 
   return (
       <ThemedView>
-        <Text>Test</Text>
+        <Text variant="displayMedium" style={styles.Text}>Overview</Text>
+        <List.Section>
+          <List.Subheader>Last 14 days</List.Subheader>
+          <List.Item 
+            title="Total Sleep Time"
+            description={averageTSTDescription} />
+        </List.Section>
       </ThemedView>
   );
 }
+
+const styles = StyleSheet.create({
+  Text: {
+    textAlign: 'center'
+  }
+})

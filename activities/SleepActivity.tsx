@@ -59,4 +59,28 @@ export class SleepActivity extends Activity {
         return Math.floor(this._totalSleepTime / 1000 / 60 / 60);
     }
 
+    static getAverageTST(activites: Activity[]): number {
+        let res = 0, count = 0;
+        for (let i = 0; i < activites.length; i++) {
+            const activity = activites[i];
+            if (activity instanceof SleepActivity) {
+                res += activity.totalSleepTime;
+                console.log(res);
+                count++;
+            }
+        }
+        if (count === 0) return 0;
+        console.log("count = " + count);
+        console.log(res / count);
+        return res / count;
+    }
+
+    static getAverageMinutes(milliseconds: number): number {
+        return Math.floor(milliseconds / 1000 / 60) % 60;
+    }
+
+    static getAverageHours(milliseconds: number): number {
+        return Math.floor(milliseconds / 1000 / 60 / 60);
+    }
+
 }
