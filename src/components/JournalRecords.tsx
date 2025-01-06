@@ -4,20 +4,22 @@ import { Divider, List } from 'react-native-paper';
 
 import { SleepActivity } from "@/src/activities/SleepActivity";
 import { Activity } from '@/src/activities/Activity';
+import { DateFormatter } from '../utils/DateFormatter';
 
 type Props = {
-    Activity: Activity[], 
+    activityArray: Activity[], 
 };
 
-export default function Journal({ Activity }: Props) {
+export default function Journal({ activityArray }: Props) {
 
-    const activity = Activity.map((activity) => {
-        if (activity instanceof SleepActivity) {
-            const sleepDescription: String = activity.getHoursAsleep() + "h " + activity.getMinutesAsleep() + "m asleep";
+    const activities = activityArray.map((currActivity) => {
+        if (currActivity instanceof SleepActivity) {
+            const sleepTime = currActivity.totalSleepTime;
+            const sleepDescription: String = DateFormatter.getHours(sleepTime) + "h " + DateFormatter.getMinutes(sleepTime) + "m asleep";
             return (
-                <View key={activity.endTime.toJSON()}>
+                <View key={currActivity.endTime.toJSON()}>
                     <List.Section>
-                        <List.Subheader>{activity.date.toDateString()}</List.Subheader>
+                        <List.Subheader>{currActivity.date.toDateString()}</List.Subheader>
                         <List.Item
                             right={(props) => <List.Icon {...props} icon="sleep" />}
                             title="Sleep"
@@ -32,7 +34,7 @@ export default function Journal({ Activity }: Props) {
 
     return (
         <ScrollView>
-            {activity}
+            {activities}
         </ScrollView>
     );
 }

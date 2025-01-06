@@ -7,6 +7,7 @@ import initializeHealthConnect from "@/src/health-connect/initialize";
 import { getSleepData } from "@/src/health-connect/sleep-data";
 import { SleepActivity } from "@/src/activities/SleepActivity";
 import { Activity } from "@/src/activities/Activity";
+import { DateFormatter } from "@/src/utils/DateFormatter";
 import ThemedView from '@/src/components/ThemedView';
 
 export default function Index() {
@@ -36,7 +37,7 @@ export default function Index() {
   })
 
   const currAverageTST = SleepActivity.getAverageTST(sleepArray);
-  const averageTSTDescription = SleepActivity.getAverageHours(currAverageTST) + "h " + SleepActivity.getAverageHours(currAverageTST) + "m";
+  const averageTSTDescription = DateFormatter.getHours(currAverageTST) + "h " + DateFormatter.getMinutes(currAverageTST) + "m";
   console.log("SA length = " + sleepArray.length + " and avg TST = " + SleepActivity.getAverageTST(sleepArray));
   return (
       <ThemedView>

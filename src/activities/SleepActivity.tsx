@@ -51,14 +51,6 @@ export class SleepActivity extends Activity {
         return this._sleepEfficiency;
     }
 
-    getMinutesAsleep(): number {
-        return Math.floor(this._totalSleepTime / 1000 / 60) % 60;
-    }
-
-    getHoursAsleep(): number {
-        return Math.floor(this._totalSleepTime / 1000 / 60 / 60);
-    }
-
     static getAverageTST(activites: Activity[]): number {
         //TODO: add dates to set. return res / set.length 
         let res = 0, count = 0;
@@ -71,13 +63,5 @@ export class SleepActivity extends Activity {
         }
         if (count === 0) return 0;
         return res / count;
-    }
-
-    static getAverageMinutes(milliseconds: number): number {
-        return Math.floor(milliseconds / 1000 / 60) % 60;
-    }
-
-    static getAverageHours(milliseconds: number): number {
-        return Math.floor(milliseconds / 1000 / 60 / 60);
     }
 }

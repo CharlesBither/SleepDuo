@@ -5,12 +5,12 @@ import { Activity } from '@/src/activities/Activity';
 import initializeHealthConnect from '@/src/health-connect/initialize';
 import { getSleepData } from '@/src/health-connect/sleep-data';
 import { SleepActivity } from '@/src/activities/SleepActivity';
-import Journal from '@/src/components/Journal';
+import Journal from '@/src/components/JournalRecords';
 import { useTheme } from 'react-native-paper';
 import ThemedView from '@/src/components/ThemedView';
 
 export default function JournalScreen() {
-    const [ActivityArray, setActivityArray] = useState<Activity[]>([]);
+    const [activityArray, setActivityArray] = useState<Activity[]>([]);
     const theme = useTheme();
     
     //init health-connect SDK
@@ -25,7 +25,7 @@ export default function JournalScreen() {
             arr.push(currSleepActivity);
           }
   
-          if (arr.length != ActivityArray.length) {
+          if (arr.length != activityArray.length) {
             setActivityArray(arr);
           }
           
@@ -37,10 +37,10 @@ export default function JournalScreen() {
       console.log("could not initialize hc");
     })
   
-    if (ActivityArray) {
+    if (activityArray) {
       return (
             <ThemedView>
-                <Journal Activity={ActivityArray}/>
+                <Journal activityArray={activityArray}/>
             </ThemedView>
       );
     }
