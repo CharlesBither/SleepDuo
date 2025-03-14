@@ -10,7 +10,7 @@ import { Activity } from "@/src/activities/Activity";
 import { DateFormatter } from "@/src/utils/DateFormatter";
 import ThemedView from '@/src/components/ThemedView';
 
-export default function Index() {
+export default function Home() {
   const [sleepArray, setSleepArray] = useState<Activity[]>([]);
   
   //init health-connect SDK

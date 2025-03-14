@@ -64,4 +64,10 @@ export class SleepActivity extends Activity {
         if (count === 0) return 0;
         return res / count;
     }
+
+    //schedule
+
+    // SE: %
+
+    //
 }
