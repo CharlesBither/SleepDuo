@@ -29,7 +29,6 @@ export default function JournalScreen() {
             setActivityArray(arr);
           }
           
-  
         }).catch(() => {
           console.log("could not get sleep data");
       });

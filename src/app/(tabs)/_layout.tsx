@@ -3,7 +3,6 @@ import { useTheme } from 'react-native-paper';
 
 import Ionicons from '@expo/vector-icons/Ionicons';
 
-
 export default function TabLayout() {
   const theme = useTheme();
   return (

@@ -1,7 +1,6 @@
 import { useState } from "react";
-import { getLocales, getCalendars } from 'expo-localization';
 import { StyleSheet } from "react-native";
-import { useTheme, Text, List } from "react-native-paper";
+import { Text, List } from "react-native-paper";
 
 import initializeHealthConnect from "@/src/health-connect/initialize";
 import { getSleepData } from "@/src/health-connect/sleep-data";

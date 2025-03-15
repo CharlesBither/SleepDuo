@@ -1,8 +1,6 @@
 import { StyleSheet, View, Pressable, Text } from 'react-native';
-import { Link, useRouter } from 'expo-router';
+import { useRouter } from 'expo-router';
 import { useTheme, Button } from 'react-native-paper';
-
-
 
 type Props = {
   label: string;
