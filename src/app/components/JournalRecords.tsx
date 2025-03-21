@@ -7,7 +7,7 @@ import { Activity } from '@/src/activities/Activity';
 import { DateFormatter } from '../../utils/DateFormatter';
 
 type Props = {
-    activityArray: Activity[], 
+    activityArray: Activity[],
 };
 
 export default function Journal({ activityArray }: Props) {
@@ -23,12 +23,12 @@ export default function Journal({ activityArray }: Props) {
                         <List.Item
                             right={(props) => <List.Icon {...props} icon="sleep" />}
                             title="Sleep"
-                            description={ sleepDescription }
+                            description={sleepDescription}
                         />
                     </List.Section>
                     <Divider />
                 </View>
-            )  
+            )
         }
     });
 

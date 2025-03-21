@@ -9,7 +9,7 @@ export class Activity {
         this._startTime = startTime;
         this._endTime = endTime;
         this._date = new Date(endTime);
-        this._date.setHours(0,0,0,0);
+        this._date.setHours(0, 0, 0, 0);
         this._activityDuration = this._startTime.getTime() - this._endTime.getTime();
         this._activityType = activityType;
     }

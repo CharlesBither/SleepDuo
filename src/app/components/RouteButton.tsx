@@ -1,5 +1,5 @@
-import { StyleSheet, View, Pressable, Text } from 'react-native';
-import { Href, Link, RelativePathString, useRouter } from 'expo-router';
+import { StyleSheet, View } from 'react-native';
+import { Href, useRouter } from 'expo-router';
 import { useTheme, Button } from 'react-native-paper';
 
 type Props = {
@@ -11,18 +11,14 @@ export default function RouteButton({ label, path }: Props) {
   const router = useRouter()
   const theme = useTheme()
   return (
-      <View style={styles.buttonContainer}>
-        {/* <Link href={path as Href}> */}
-          <Button 
-            mode="contained-tonal"
-            onPress={() => router.push(path as Href)}
-            >
-            {label}
-          </Button>
-        {/* </Link> */}
-        
-      </View>
-    
+    <View style={styles.buttonContainer}>
+      <Button
+        mode="contained-tonal"
+        onPress={() => router.push(path as Href)}
+      >
+        {label}
+      </Button>
+    </View>
   );
 }
 

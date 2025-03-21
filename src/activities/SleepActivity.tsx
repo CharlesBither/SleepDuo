@@ -1,5 +1,4 @@
 import { RecordResult } from 'react-native-health-connect';
-import { getLocales, getCalendars } from 'expo-localization';
 
 import { Activity } from '@/src/activities/Activity';
 
@@ -12,7 +11,7 @@ export class SleepActivity extends Activity {
     private _timeStage4: number = 0;
     private _timeStage5: number = 0;
     private _timeStage6: number = 0;
-    
+
     constructor(record: RecordResult<"SleepSession">) {
         super(new Date(record.startTime), new Date(record.endTime), "sleep");
 
@@ -56,18 +55,12 @@ export class SleepActivity extends Activity {
         let res = 0, count = 0;
         for (let i = 0; i < activites.length; i++) {
             const activity = activites[i];
-            if (activity.activityType === "sleep") { 
-                res += (activity as SleepActivity).totalSleepTime; 
+            if (activity.activityType === "sleep") {
+                res += (activity as SleepActivity).totalSleepTime;
                 count++;
             }
         }
         if (count === 0) return 0;
         return res / count;
     }
-
-    //schedule
-
-    // SE: %
-
-    //
 }

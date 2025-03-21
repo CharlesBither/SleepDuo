@@ -33,7 +33,7 @@ export default function Index() {
 
   return (
     <ThemedView>
-        <LoadingIndicator />
+      <LoadingIndicator />
     </ThemedView>
-);
+  );
 }

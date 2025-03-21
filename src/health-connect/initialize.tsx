@@ -1,7 +1,7 @@
 import {
     initialize,
     requestPermission,
-  } from 'react-native-health-connect';
+} from 'react-native-health-connect';
 
 // initialize the client
 const initHealthConnect = async () => {
@@ -12,11 +12,11 @@ const initHealthConnect = async () => {
 // request permissions
 const requestSamplePermissions = async () => {
     const permissions = await requestPermission([
-    {
-    accessType: 'read',
-    recordType: 'SleepSession',
-    },
-])
+        {
+            accessType: 'read',
+            recordType: 'SleepSession',
+        },
+    ])
     console.log('Granted permissions on request ', { permissions });
 };
 

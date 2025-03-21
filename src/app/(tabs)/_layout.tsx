@@ -7,18 +7,18 @@ export default function TabLayout() {
   const theme = useTheme();
   return (
     <Tabs
-        screenOptions={{
-            tabBarActiveTintColor: '#ffd33d',
-            headerStyle: {
-            backgroundColor: theme.colors.background,
-            },
-            headerShadowVisible: false,
-            headerTintColor: '#fff',
-            tabBarStyle: {
-            backgroundColor: theme.colors.background,
-            },
-        }}
-        >
+      screenOptions={{
+        tabBarActiveTintColor: '#ffd33d',
+        headerStyle: {
+          backgroundColor: theme.colors.background,
+        },
+        headerShadowVisible: false,
+        headerTintColor: '#fff',
+        tabBarStyle: {
+          backgroundColor: theme.colors.background,
+        },
+      }}
+    >
 
       <Tabs.Screen
         name="home"
@@ -34,7 +34,7 @@ export default function TabLayout() {
         options={{
           title: 'About',
           tabBarIcon: ({ color, focused }) => (
-            <Ionicons name={focused ? 'information-circle' : 'information-circle-outline'} color={color} size={24}/>
+            <Ionicons name={focused ? 'information-circle' : 'information-circle-outline'} color={color} size={24} />
           ),
         }}
       />

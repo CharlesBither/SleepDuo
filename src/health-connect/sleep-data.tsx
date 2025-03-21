@@ -1,6 +1,6 @@
 import {
     readRecords,
-  } from 'react-native-health-connect';
+} from 'react-native-health-connect';
 
 const getBeginningOfLast14Days = () => {
     const date = new Date();
@@ -17,9 +17,9 @@ export async function getSleepData() {
     return await readRecords('SleepSession', {
         ascendingOrder: false,
         timeRangeFilter: {
-          operator: 'between',
-          startTime: getBeginningOfLast14Days().toISOString(),
-          endTime: now().toISOString(),
+            operator: 'between',
+            startTime: getBeginningOfLast14Days().toISOString(),
+            endTime: now().toISOString(),
         },
     });
 }

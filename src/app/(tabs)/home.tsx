@@ -12,7 +12,7 @@ import RouteButton from "@/src/app/components/RouteButton";
 
 export default function Home() {
   const [sleepArray, setSleepArray] = useState<Activity[]>([]);
-  
+
   //init health-connect SDK
   initializeHealthConnect()
     .then(() => {
@@ -31,25 +31,25 @@ export default function Home() {
         }
       }).catch(() => {
         console.log("could not get sleep data");
-    });
-  }).catch(() => {
-    console.log("could not initialize hc");
-  })
+      });
+    }).catch(() => {
+      console.log("could not initialize hc");
+    })
 
   const currAverageTST = SleepActivity.getAverageTST(sleepArray);
   const averageTSTDescription = DateFormatter.getHours(currAverageTST) + "h " + DateFormatter.getMinutes(currAverageTST) + "m";
   console.log("SA length = " + sleepArray.length + " and avg TST = " + SleepActivity.getAverageTST(sleepArray));
   return (
-      <ThemedView>
-        <Text variant="displayMedium" style={styles.Text}>Overview</Text>
-        <List.Section>
-          <List.Subheader>Last 14 days</List.Subheader>
-          <List.Item 
-            title="Total Sleep Time"
-            description={averageTSTDescription} />
-        </List.Section>
-        <RouteButton label='add activity' path='/AddActivity' />
-      </ThemedView>
+    <ThemedView>
+      <Text variant="displayMedium" style={styles.Text}>Overview</Text>
+      <List.Section>
+        <List.Subheader>Last 14 days</List.Subheader>
+        <List.Item
+          title="Total Sleep Time"
+          description={averageTSTDescription} />
+      </List.Section>
+      <RouteButton label='add activity' path='/AddActivity' />
+    </ThemedView>
   );
 }
 
