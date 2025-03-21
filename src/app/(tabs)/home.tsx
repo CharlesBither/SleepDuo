@@ -26,7 +26,6 @@ export default function Home() {
         }
 
         if (arr.length != sleepArray.length && arr.length !== 0) {
-          console.log("calling setSleepArray. Arr length = " + arr.length);
           setSleepArray(arr);
         }
       }).catch(() => {
@@ -38,7 +37,6 @@ export default function Home() {
 
   const currAverageTST = SleepActivity.getAverageTST(sleepArray);
   const averageTSTDescription = DateFormatter.getHours(currAverageTST) + "h " + DateFormatter.getMinutes(currAverageTST) + "m";
-  console.log("SA length = " + sleepArray.length + " and avg TST = " + SleepActivity.getAverageTST(sleepArray));
   return (
     <ThemedView>
       <Text variant="displayMedium" style={styles.Text}>Overview</Text>
