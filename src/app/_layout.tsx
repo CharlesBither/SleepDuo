@@ -11,22 +11,25 @@ import {
 
 export default function RootLayout() {
   const colorScheme = useColorScheme();
-  const theme = colorScheme === 'dark' ? DarkTheme : LightTheme
+  const paperTheme = colorScheme === 'dark' ? DarkTheme : LightTheme
   return (
-    <PaperProvider theme={theme}>
+    <PaperProvider theme={paperTheme}>
       <Stack
         screenOptions={{
           headerStyle: {
-            backgroundColor: theme.colors.background,
+            backgroundColor: paperTheme.colors.background,
           },
           headerShadowVisible: false,
-          headerTintColor: '#fff',
+          headerTintColor: paperTheme.colors.onBackground,
         }}
       >
         <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
         <Stack.Screen name="+not-found" />
+        <Stack.Screen name="components/AddActivity" options={{
+          headerTitle: "Add Activity",
+        }} />
       </Stack>
-      <StatusBar style="light" />
+      <StatusBar style={ colorScheme === 'dark' ? 'light' : 'dark' } />
     </PaperProvider>
   );
 }

@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { StyleSheet } from "react-native";
-import { Text, List } from "react-native-paper";
+import { List } from "react-native-paper";
 
 import initializeHealthConnect from "@/src/health-connect/initialize";
 import { getSleepData } from "@/src/health-connect/sleep-data";
@@ -39,14 +39,13 @@ export default function Home() {
   const averageTSTDescription = DateFormatter.getHours(currAverageTST) + "h " + DateFormatter.getMinutes(currAverageTST) + "m";
   return (
     <ThemedView>
-      <Text variant="displayMedium" style={styles.Text}>Overview</Text>
       <List.Section>
         <List.Subheader>Last 14 days</List.Subheader>
         <List.Item
           title="Total Sleep Time"
           description={averageTSTDescription} />
       </List.Section>
-      <RouteButton label='add activity' path='/AddActivity' />
+      <RouteButton label='add activity' path='/components/AddActivity' />
     </ThemedView>
   );
 }

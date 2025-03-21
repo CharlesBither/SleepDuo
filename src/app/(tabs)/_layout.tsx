@@ -8,12 +8,12 @@ export default function TabLayout() {
   return (
     <Tabs
       screenOptions={{
-        tabBarActiveTintColor: '#ffd33d',
+        tabBarActiveTintColor: theme.colors.primary,
         headerStyle: {
           backgroundColor: theme.colors.background,
         },
         headerShadowVisible: false,
-        headerTintColor: '#fff',
+        headerTintColor: theme.colors.onBackground,
         tabBarStyle: {
           backgroundColor: theme.colors.background,
         },
@@ -27,6 +27,7 @@ export default function TabLayout() {
           tabBarIcon: ({ color, focused }) => (
             <Ionicons name={focused ? 'home-sharp' : 'home-outline'} color={color} size={24} />
           ),
+          headerTitle: "Overview"
         }}
       />
       <Tabs.Screen
