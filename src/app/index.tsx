@@ -1,8 +1,8 @@
 import { useState, useEffect } from 'react'
 import { useRouter } from 'expo-router';
 
-import ThemedView from '@/src/components/ThemedView';
-import LoadingIndicator from '../components/LoadingIndicator';
+import ThemedView from '@/src/app/components/ThemedView';
+import LoadingIndicator from './components/LoadingIndicator';
 
 import { supabase } from '../lib/supabase'
 import { Session } from '@supabase/supabase-js'

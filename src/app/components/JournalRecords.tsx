@@ -4,7 +4,7 @@ import { Divider, List } from 'react-native-paper';
 
 import { SleepActivity } from "@/src/activities/SleepActivity";
 import { Activity } from '@/src/activities/Activity';
-import { DateFormatter } from '../utils/DateFormatter';
+import { DateFormatter } from '../../utils/DateFormatter';
 
 type Props = {
     activityArray: Activity[], 

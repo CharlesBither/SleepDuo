@@ -5,9 +5,9 @@ import { Activity } from '@/src/activities/Activity';
 import initializeHealthConnect from '@/src/health-connect/initialize';
 import { getSleepData } from '@/src/health-connect/sleep-data';
 import { SleepActivity } from '@/src/activities/SleepActivity';
-import Journal from '@/src/components/JournalRecords';
+import Journal from '@/src/app/components/JournalRecords';
 import { useTheme } from 'react-native-paper';
-import ThemedView from '@/src/components/ThemedView';
+import ThemedView from '@/src/app/components/ThemedView';
 
 export default function JournalScreen() {
     const [activityArray, setActivityArray] = useState<Activity[]>([]);

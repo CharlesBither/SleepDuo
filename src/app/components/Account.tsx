@@ -1,9 +1,9 @@
 import { useState, useEffect } from 'react'
-import { supabase } from '../lib/supabase'
+import { supabase } from '../../lib/supabase'
 import { StyleSheet, View, Alert } from 'react-native'
 import { Button, Input } from '@rneui/themed'
 import { Session } from '@supabase/supabase-js'
-import OverviewRouteButton from './OverviewRouteButton'
+import RouteButton from './RouteButton'
 
 export default function Account({ session }: { session: Session }) {
   const [loading, setLoading] = useState(true)
@@ -102,7 +102,7 @@ export default function Account({ session }: { session: Session }) {
         <Button title="Sign Out" onPress={() => supabase.auth.signOut()} />
       </View>
 
-      <OverviewRouteButton label='Go Home' />
+      {/* <RouteButton label='Go Home' path='/(tabs)/home' /> */}
     </View>
   )
 }
