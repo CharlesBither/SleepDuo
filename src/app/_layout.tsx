@@ -26,7 +26,7 @@ export default function RootLayout() {
         <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
         <Stack.Screen name="+not-found" />
         <Stack.Screen name="components/AddActivity" options={{
-          headerTitle: "Add Activity",
+          headerTitle: "",
         }} />
       </Stack>
       <StatusBar style={ colorScheme === 'dark' ? 'light' : 'dark' } />
