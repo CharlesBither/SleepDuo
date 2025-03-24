@@ -8,7 +8,7 @@ import { SleepActivity } from "@/src/activities/SleepActivity";
 import { Activity } from "@/src/activities/Activity";
 import { DateFormatter } from "@/src/utils/DateFormatter";
 import ThemedView from '@/src/app/components/ThemedView';
-import RouteButton from "@/src/app/components/RouteButton";
+import RouteButton from "@/src/app/components/Button/RouteButton";
 
 export default function Home() {
   const [sleepArray, setSleepArray] = useState<Activity[]>([]);
@@ -45,7 +45,7 @@ export default function Home() {
           title="Total Sleep Time"
           description={averageTSTDescription} />
       </List.Section>
-      <RouteButton label='add activity' path='/components/AddActivity' />
+      <RouteButton label='add activity' path='/components/pages/AddActivity' />
     </ThemedView>
   );
 }

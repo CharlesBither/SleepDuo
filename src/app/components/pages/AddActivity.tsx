@@ -1,6 +1,6 @@
 import { StyleSheet, Pressable } from "react-native"
 import { List, Divider, Text, Portal, Modal, useTheme } from "react-native-paper"
-import ThemedView from "./ThemedView"
+import ThemedView from "../ThemedView"
 import { useState } from "react"
 
 export default function AddActivity() {

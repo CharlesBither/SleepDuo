@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import { Alert, StyleSheet, AppState } from 'react-native'
-import ThemedView from './components/ThemedView'
-import { supabase } from '../lib/supabase'
+import ThemedView from '../../ThemedView'
+import { supabase } from '../../../../lib/supabase'
 import { Button, Input } from '@rneui/themed'
 import { useRouter } from 'expo-router';
 
