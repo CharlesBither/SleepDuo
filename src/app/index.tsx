@@ -27,7 +27,7 @@ export default function Index() {
     if (session && session.user) {
       router.navigate('/(tabs)/home');
     } else if (session && !session.user) {
-      router.navigate('/Auth')
+      router.navigate('/components/pages/Auth/Auth')
     }
   }, [session])
 

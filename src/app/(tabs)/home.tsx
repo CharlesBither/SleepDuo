@@ -4,24 +4,24 @@ import { List } from "react-native-paper";
 
 import initializeHealthConnect from "@/src/health-connect/initialize";
 import { getSleepData } from "@/src/health-connect/sleep-data";
-import { SleepActivity } from "@/src/activities/SleepActivity";
-import { Activity } from "@/src/activities/Activity";
+import { SleepRecord } from "@/src/records/SleepRecord";
+import { Record } from "@/src/records/Record";
 import { DateFormatter } from "@/src/utils/DateFormatter";
 import ThemedView from '@/src/app/components/ThemedView';
 import RouteButton from "@/src/app/components/Button/RouteButton";
 
 export default function Home() {
-  const [sleepArray, setSleepArray] = useState<Activity[]>([]);
+  const [sleepArray, setSleepArray] = useState<Record[]>([]);
 
   //init health-connect SDK
   initializeHealthConnect()
     .then(() => {
       // get sleep records from previous 14 days
       getSleepData().then((data) => {
-        let arr: Activity[] = [];
+        let arr: Record[] = [];
         const records = data.records;
         for (let i = 0; i < records.length; i++) {
-          const currSleepActivity = new SleepActivity(records[i]);
+          const currSleepActivity = new SleepRecord(records[i]);
           arr.push(currSleepActivity);
         }
 
@@ -35,7 +35,7 @@ export default function Home() {
       console.log("could not initialize hc");
     })
 
-  const currAverageTST = SleepActivity.getAverageTST(sleepArray);
+  const currAverageTST = SleepRecord.getAverageTST(sleepArray);
   const averageTSTDescription = DateFormatter.getHours(currAverageTST) + "h " + DateFormatter.getMinutes(currAverageTST) + "m";
   return (
     <ThemedView>

@@ -1,8 +1,8 @@
 import { RecordResult } from 'react-native-health-connect';
 
-import { Activity } from '@/src/activities/Activity';
+import { Record } from '@/src/records/Record';
 
-export class SleepActivity extends Activity {
+export class SleepRecord extends Record {
     private _record: RecordResult<"SleepSession">;
     private _totalSleepTime: number = 0;
     private _sleepEfficiency: String = "0";
@@ -35,7 +35,7 @@ export class SleepActivity extends Activity {
         }
 
         //init sleepEfficiency
-        this._sleepEfficiency = ((this._totalSleepTime / this.activityDuration) * 100).toPrecision(2);
+        this._sleepEfficiency = ((this._totalSleepTime / this.recordDuration) * 100).toPrecision(2);
     }
 
     get totalSleepTime(): number {
@@ -43,20 +43,20 @@ export class SleepActivity extends Activity {
     }
 
     get timeInBed(): number {
-        return this.activityDuration;
+        return this.recordDuration;
     }
 
     get sleepEfficiency(): String {
         return this._sleepEfficiency;
     }
 
-    static getAverageTST(activites: Activity[]): number {
+    static getAverageTST(activites: Record[]): number {
         //TODO: add dates to set. return res / set.length 
         let res = 0, count = 0;
         for (let i = 0; i < activites.length; i++) {
             const activity = activites[i];
-            if (activity.activityType === "sleep") {
-                res += (activity as SleepActivity).totalSleepTime;
+            if (activity.recordType === "sleep") {
+                res += (activity as SleepRecord).totalSleepTime;
                 count++;
             }
         }

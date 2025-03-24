@@ -2,18 +2,18 @@ import React from 'react';
 import { View, ScrollView } from 'react-native';
 import { Divider, List } from 'react-native-paper';
 
-import { SleepActivity } from "@/src/activities/SleepActivity";
-import { Activity } from '@/src/activities/Activity';
+import { SleepRecord } from "@/src/records/SleepRecord";
+import { Record } from '@/src/records/Record';
 import { DateFormatter } from '../../utils/DateFormatter';
 
 type Props = {
-    activityArray: Activity[],
+    recordArray: Record[],
 };
 
-export default function Journal({ activityArray }: Props) {
+export default function Journal({ recordArray: activityArray }: Props) {
 
     const activities = activityArray.map((currActivity) => {
-        if (currActivity instanceof SleepActivity) {
+        if (currActivity instanceof SleepRecord) {
             const sleepTime = currActivity.totalSleepTime;
             const sleepDescription: String = DateFormatter.getHours(sleepTime) + "h " + DateFormatter.getMinutes(sleepTime) + "m asleep";
             return (
