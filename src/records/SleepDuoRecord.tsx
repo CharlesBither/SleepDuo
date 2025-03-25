@@ -1,4 +1,4 @@
-export class Record {
+export class SleepDuoRecord {
     private _date: Date;
     private _startTime: Date;
     private _endTime: Date;

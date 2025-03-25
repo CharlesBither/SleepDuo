@@ -1,8 +1,8 @@
 import { RecordResult } from 'react-native-health-connect';
 
-import { Record } from '@/src/records/Record';
+import { SleepDuoRecord } from '@/src/records/SleepDuoRecord';
 
-export class SleepRecord extends Record {
+export class SleepRecord extends SleepDuoRecord {
     private _record: RecordResult<"SleepSession">;
     private _totalSleepTime: number = 0;
     private _sleepEfficiency: String = "0";
@@ -50,7 +50,7 @@ export class SleepRecord extends Record {
         return this._sleepEfficiency;
     }
 
-    static getAverageTST(activites: Record[]): number {
+    static getAverageTST(activites: SleepDuoRecord[]): number {
         //TODO: add dates to set. return res / set.length 
         let res = 0, count = 0;
         for (let i = 0; i < activites.length; i++) {

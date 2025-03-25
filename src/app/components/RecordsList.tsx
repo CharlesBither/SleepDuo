@@ -3,23 +3,28 @@ import { View, ScrollView } from 'react-native';
 import { Divider, List } from 'react-native-paper';
 
 import { SleepRecord } from "@/src/records/SleepRecord";
-import { Record } from '@/src/records/Record';
+import { SleepDuoRecord } from '@/src/records/SleepDuoRecord';
 import { DateFormatter } from '../../utils/DateFormatter';
 
 type Props = {
-    recordArray: Record[],
+    recordArray: SleepDuoRecord[],
 };
 
-export default function Journal({ recordArray: activityArray }: Props) {
+/*
+ * returns a list of records that will be displayed in '/(tabs)/records'
+ */
+export default function RecordsList({ recordArray: recordArray }: Props) {
+    const dateFormatter = new DateFormatter()
 
-    const activities = activityArray.map((currActivity) => {
-        if (currActivity instanceof SleepRecord) {
-            const sleepTime = currActivity.totalSleepTime;
+    const records = recordArray.map((currRecord) => {
+        if (currRecord instanceof SleepRecord) {
+            const sleepTime = currRecord.totalSleepTime;
             const sleepDescription: String = DateFormatter.getHours(sleepTime) + "h " + DateFormatter.getMinutes(sleepTime) + "m asleep";
+            
             return (
-                <View key={currActivity.endTime.toJSON()}>
+                <View key={currRecord.endTime.toJSON()}> 
                     <List.Section>
-                        <List.Subheader>{currActivity.date.toDateString()}</List.Subheader>
+                        <List.Subheader>{DateFormatter.getLocalDate(currRecord.endTime, dateFormatter.getTimeZone())}</List.Subheader>
                         <List.Item
                             right={(props) => <List.Icon {...props} icon="sleep" />}
                             title="Sleep"
@@ -34,7 +39,7 @@ export default function Journal({ recordArray: activityArray }: Props) {
 
     return (
         <ScrollView>
-            {activities}
+            {records}
         </ScrollView>
     );
 }
