@@ -12,3 +12,10 @@ export const supabase = createClient(supabaseUrl, supabaseAnonKey, {
     detectSessionInUrl: false,
   },
 })
+
+export const printId = async () => {
+  const { data: { user } } = await supabase.auth.getUser()
+  if (user) {
+    console.log(user.id)
+  }
+}

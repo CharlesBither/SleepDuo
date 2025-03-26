@@ -3,9 +3,11 @@ import { useState } from 'react';
 
 import ThemedView from '@/src/app/components/ThemedView';
 import RouteButton from '@/src/app/components/Button/RouteButton';
+import FunctionButton from '../components/Button/FunctionButton';
 import { DateFormatter } from '@/src/utils/DateFormatter';
 import { View, StyleSheet } from 'react-native';
 import Ionicons from '@expo/vector-icons/Ionicons';
+import { printId } from '@/src/lib/supabase';
 
 export default function AboutScreen() {
   const dateFormatter = new DateFormatter();
@@ -46,6 +48,7 @@ export default function AboutScreen() {
 
       {/* Journal content */}
       {journalContent ? <Text>has content</Text> : <Text>no content</Text>}
+      <FunctionButton label='Test SELECT' func={() => printId()} />
     </ThemedView>
   );
 }
