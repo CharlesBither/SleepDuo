@@ -8,6 +8,7 @@ import { DateFormatter } from '@/src/utils/DateFormatter';
 import { View, StyleSheet } from 'react-native';
 import Ionicons from '@expo/vector-icons/Ionicons';
 import { printId } from '@/src/lib/supabase';
+import { useRouter } from 'expo-router';
 
 export default function AboutScreen() {
   const dateFormatter = new DateFormatter();
@@ -17,6 +18,7 @@ export default function AboutScreen() {
 
   const [journalContent, setJournalContent] = useState(null)
   const theme = useTheme()
+  const router = useRouter()
 
   return (
     <ThemedView>
@@ -48,6 +50,7 @@ export default function AboutScreen() {
 
       {/* Journal content */}
       {journalContent ? <Text>has content</Text> : <Text>no content</Text>}
+      <FunctionButton label='add entry' func={() => router.push('/components/pages/JournalEntryEdit')} />
       <FunctionButton label='Test SELECT' func={() => printId()} />
     </ThemedView>
   );
