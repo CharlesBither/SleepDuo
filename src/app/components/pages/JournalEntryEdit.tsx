@@ -6,9 +6,11 @@ import { TimePickerModal } from 'react-native-paper-dates';
 import DisplayTimeBody from "../time-picker/DisplayTimeBody";
 import FunctionButton from "../Button/FunctionButton";
 import { SafeAreaProvider } from "react-native-safe-area-context";
+import { useRouter } from "expo-router";
 
 export default function AddActivity() {
     const theme = useTheme()
+    const router = useRouter()
     const [visible, setVisible] = useState(false)
 
     const onDismiss = useCallback(() => {
@@ -30,6 +32,12 @@ export default function AddActivity() {
     return (
         <SafeAreaProvider>
             <ThemedView>
+                <TimePickerModal
+                    visible={visible}
+                    onDismiss={onDismiss}
+                    onConfirm={onConfirm}
+                    animationType="none"
+                />
                 <Text variant="displaySmall" style={styles.text}>Add Journal Entry</Text>
 
                 <List.Section>
@@ -43,18 +51,7 @@ export default function AddActivity() {
                         right={() => <Pressable onPress={() => setVisible(true)}><DisplayTimeBody hours={drinkHours} minutes={drinkMinutes} /></Pressable>}
                     />
                 </List.Section>
-                <TimePickerModal
-                    visible={visible}
-                    onDismiss={onDismiss}
-                    onConfirm={onConfirm}
-                    animationType="none"
-                // hours={12}
-                // minutes={14}
-                />
-
-
-
-                <FunctionButton label="Pick a time" func={() => setVisible(true)} />
+                <FunctionButton label="Go to test" func={() => router.navigate('/components/pages/Test')} />
             </ThemedView>
 
         </SafeAreaProvider>

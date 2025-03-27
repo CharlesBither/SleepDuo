@@ -21,6 +21,7 @@ export default function RootLayout() {
           },
           headerShadowVisible: false,
           headerTintColor: paperTheme.colors.onBackground,
+          animation: "none",
         }}
       >
         <Stack.Screen name="(tabs)" options={{ headerShown: false }} />

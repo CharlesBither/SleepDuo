@@ -1,8 +1,10 @@
 import { useState, useEffect } from 'react'
-import { useRouter } from 'expo-router';
+import { useRouter, Redirect } from 'expo-router';
 
-import ThemedView from '@/src/app/components/ThemedView';
-import LoadingIndicator from './components/LoadingIndicator';
+// import ThemedView from '@/src/app/components/ThemedView';
+// import LoadingIndicator from './components/LoadingIndicator';
+import Home from './(tabs)/home';
+import Auth from './components/pages/Auth/Auth';
 
 import { supabase } from '../lib/supabase'
 import { Session } from '@supabase/supabase-js'
@@ -18,22 +20,10 @@ export default function Index() {
     })
 
     supabase.auth.onAuthStateChange((_event, session) => {
+      // console.log(session)
       setSession(session)
     })
   }, [])
-
-  // navigate to home or auth depending on session state
-  useEffect(() => {
-    if (session && session.user) {
-      router.navigate('/(tabs)/home');
-    } else if (session && !session.user) {
-      router.navigate('/components/pages/Auth/Auth')
-    }
-  }, [session])
-
-  return (
-    <ThemedView>
-      <LoadingIndicator />
-    </ThemedView>
-  );
+  
+  return session && session.user ? <Redirect href="/(tabs)/home" /> : <Auth />
 }
