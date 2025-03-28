@@ -1,5 +1,4 @@
 import { useState } from "react";
-import { StyleSheet } from "react-native";
 import { List } from "react-native-paper";
 
 import initializeHealthConnect from "@/src/health-connect/initialize";
@@ -8,7 +7,6 @@ import { SleepRecord } from "@/src/records/SleepRecord";
 import { SleepDuoRecord } from "@/src/records/SleepDuoRecord";
 import { DateFormatter } from "@/src/utils/DateFormatter";
 import ThemedView from '@/src/app/components/ThemedView';
-import RouteButton from "@/src/app/components/Button/RouteButton";
 
 export default function Home() {
   const [sleepArray, setSleepArray] = useState<SleepDuoRecord[]>([]);
@@ -45,13 +43,6 @@ export default function Home() {
           title="Total Sleep Time"
           description={averageTSTDescription} />
       </List.Section>
-      <RouteButton label='add activity' path='/components/pages/AddActivity' />
     </ThemedView>
   );
 }
-
-const styles = StyleSheet.create({
-  Text: {
-    textAlign: 'center'
-  }
-})

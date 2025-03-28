@@ -51,7 +51,7 @@ export default function Auth() {
   }
 
   return (
-    <ThemedView style={styles.container}>
+    <ThemedView>
       <ThemedView style={[styles.verticallySpaced, styles.mt20]}>
         <Input
           label="Email"

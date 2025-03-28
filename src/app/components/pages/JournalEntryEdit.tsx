@@ -8,8 +8,7 @@ import FunctionButton from "../Button/FunctionButton";
 import { SafeAreaProvider } from "react-native-safe-area-context";
 import { useRouter } from "expo-router";
 
-export default function AddActivity() {
-    const theme = useTheme()
+export default function JournalEntryEdit() {
     const router = useRouter()
     const [visible, setVisible] = useState(false)
 
