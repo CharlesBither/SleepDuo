@@ -4,8 +4,8 @@ import { useTheme, Button } from 'react-native-paper';
 import { GestureResponderEvent } from 'react-native';
 
 type Props = {
-  label: string;
-  func: (e: GestureResponderEvent) => void;
+  label: string;                            // the text contained in the button
+  func: (e: GestureResponderEvent) => void; // the function that is executed onPress
 };
 
 export default function FunctionButton({ label, func }: Props) {

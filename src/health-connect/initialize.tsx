@@ -10,7 +10,7 @@ const initHealthConnect = async () => {
 };
 
 // request permissions
-const requestSamplePermissions = async () => {
+const requestSleepPermissions = async () => {
     const permissions = await requestPermission([
         {
             accessType: 'read',
@@ -20,8 +20,8 @@ const requestSamplePermissions = async () => {
     console.log('Granted permissions on request ', { permissions });
 };
 
-export default async function initializeHealthConnect() {
+export default async function startHealthConnect() {
     await initHealthConnect();
-    await requestSamplePermissions();
+    await requestSleepPermissions();
     return;
 }

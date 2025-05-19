@@ -3,7 +3,6 @@ import { RecordResult } from 'react-native-health-connect';
 import { SleepDuoRecord } from '@/src/records/SleepDuoRecord';
 
 export class SleepRecord extends SleepDuoRecord {
-    private _record: RecordResult<"SleepSession">;
     private _totalSleepTime: number = 0;
     private _sleepEfficiency: String = "0";
     private _timeStage1: number = 0; // time awake
@@ -14,8 +13,6 @@ export class SleepRecord extends SleepDuoRecord {
 
     constructor(record: RecordResult<"SleepSession">) {
         super(new Date(record.startTime), new Date(record.endTime), "sleep");
-
-        this._record = record;
 
         // init TST
         const stages = record.stages;

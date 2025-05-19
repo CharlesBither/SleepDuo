@@ -2,7 +2,6 @@ import { useTheme, Text, Divider, List } from 'react-native-paper';
 import { useState } from 'react';
 
 import ThemedView from '@/src/app/components/ThemedView';
-import RouteButton from '@/src/app/components/Button/RouteButton';
 import FunctionButton from '../components/Button/FunctionButton';
 import { DateFormatter } from '@/src/utils/DateFormatter';
 import { View, StyleSheet } from 'react-native';
@@ -22,7 +21,7 @@ export default function AboutScreen() {
 
   return (
     <ThemedView>
-      {/* Date navigation */}
+      {/* start date navigation */}
       <Divider />
       <View style={styles.row}>
         <View>
@@ -47,6 +46,7 @@ export default function AboutScreen() {
         </View>
       </View>
       <Divider />
+      {/* end date navigation */}
 
       {/* Journal content */}
       {journalContent ? <Text>has content</Text> : <Text>no content</Text>}

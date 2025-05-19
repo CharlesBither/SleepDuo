@@ -1,40 +1,51 @@
-import { useState } from 'react';
-import { Text } from 'react-native-paper';
+import { useState } from "react";
+import { Text } from "react-native-paper";
 
-import { SleepDuoRecord } from '@/src/records/SleepDuoRecord';
-import initializeHealthConnect from '@/src/health-connect/initialize';
-import { getSleepData } from '@/src/health-connect/sleep-data';
-import { SleepRecord } from '@/src/records/SleepRecord';
-import RecordsList from '@/src/app/components/RecordsList';
-import ThemedView from '@/src/app/components/ThemedView';
+import { SleepDuoRecord } from "@/src/records/SleepDuoRecord";
+import startHealthConnect from "@/src/health-connect/initialize";
+import { getLast14Days } from "@/src/health-connect/sleep-data";
+import { SleepRecord } from "@/src/records/SleepRecord";
+import RecordsList from "@/src/app/components/RecordsList";
+import ThemedView from "@/src/app/components/ThemedView";
+import { ReadRecordsResult } from "react-native-health-connect";
 
+/**
+ * Gets the last 14 days of sleep records and renders it's information
+ * for the user as a list.
+ *
+ * @returns View containing a list of sleep records and their descriptions
+ */
 export default function RecordsScreen() {
   const [recordsArray, setRecordsArray] = useState<SleepDuoRecord[]>([]);
 
-  // connect to Health-Connect API and create a list of recent sleep records
-  initializeHealthConnect()
-    .then(() => {
+  // get required permissions from health-connect and cal getSleepData
+  startHealthConnect()
+    .then(() => getSleepData())
+    .catch(() => console.log("could not initialize hc"));
 
-      // get sleep records from previous 14 days
-      getSleepData().then((data) => {
-        let arr: SleepDuoRecord[] = [];
+  // get ReadRecordsResult<"SleepSession"> from last 14 days
+  // and call initializeRecordsArray
+  const getSleepData = (): void => {
+    getLast14Days()
+      .then((data) => initializeRecordsArray(data))
+      .catch(() => console.log("could not get sleep data"));
+  };
 
-        const records = data.records;
-        for (let i = 0; i < records.length; i++) {
-          const currSleepActivity = new SleepRecord(records[i]);
-          arr.push(currSleepActivity);
-        }
+  // initializes the recordsArray to a list of SleepRecords
+  // param data: the ReadRecordsResult that will be used to create the list
+  const initializeRecordsArray = (data: ReadRecordsResult<"SleepSession">): void => {
+    let arr: SleepDuoRecord[] = [];
 
-        if (arr.length != recordsArray.length) {
-          setRecordsArray(arr);
-        }
-      }).catch(() => {
-        console.log("could not get sleep data");
-      });
+    const records = data.records;
+    for (let i = 0; i < records.length; i++) {
+      const currSleepActivity = new SleepRecord(records[i]);
+      arr.push(currSleepActivity);
+    }
 
-    }).catch(() => {
-      console.log("could not initialize hc");
-    })
+    if (arr.length != recordsArray.length) {
+      setRecordsArray(arr);
+    }
+  };
 
   if (recordsArray) {
     return (
