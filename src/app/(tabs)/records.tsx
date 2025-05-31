@@ -16,23 +16,25 @@ import { ReadRecordsResult } from "react-native-health-connect";
  * @returns View containing a list of sleep records and their descriptions
  */
 export default function RecordsScreen() {
+
   const [recordsArray, setRecordsArray] = useState<SleepDuoRecord[]>([]);
 
-  // get required permissions from health-connect and cal getSleepData
+  /** gets required permissions from health-connect and cal getSleepData */
   startHealthConnect()
     .then(() => getSleepData())
     .catch(() => console.log("could not initialize hc"));
 
-  // get ReadRecordsResult<"SleepSession"> from last 14 days
-  // and call initializeRecordsArray
+  /** Gets ReadRecordsResult<"SleepSession"> from last 14 days */
   const getSleepData = (): void => {
     getLast14Days()
       .then((data) => initializeRecordsArray(data))
       .catch(() => console.log("could not get sleep data"));
   };
 
-  // initializes the recordsArray to a list of SleepRecords
-  // param data: the ReadRecordsResult that will be used to create the list
+  /**
+   * Creates a list of SleepRecords and assigns to recordsArray.
+   * @param data ReadRecordsResult<"SleepSession"> containing 14 days of sleep data.
+   */
   const initializeRecordsArray = (data: ReadRecordsResult<"SleepSession">): void => {
     let arr: SleepDuoRecord[] = [];
 

@@ -21,7 +21,7 @@ export default function AboutScreen() {
 
   return (
     <ThemedView>
-      {/* start date navigation */}
+      {/* date navigation start */}
       <Divider />
       <View style={styles.row}>
         <View>
@@ -46,7 +46,7 @@ export default function AboutScreen() {
         </View>
       </View>
       <Divider />
-      {/* end date navigation */}
+      {/* date navigation end */}
 
       {/* Journal content */}
       {journalContent ? <Text>has content</Text> : <Text>no content</Text>}

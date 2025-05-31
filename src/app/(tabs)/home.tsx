@@ -14,25 +14,27 @@ import { ReadRecordsResult } from "react-native-health-connect";
  * Connects to the health-connect api and gets sleep data from the
  * last 14 days.
  *
- * @returns View containing average total sleep time and efficiency
+ * @returns View element containing average total sleep time and efficiency
  */
 export default function Home() {
   const [sleepArray, setSleepArray] = useState<SleepDuoRecord[]>([]);
 
-  // get required permissions from health-connect
+  /** Gets required permissions from health-connect */
   startHealthConnect()
     .then(() => getSleepRecords())
     .catch(() => console.log("could not initialize health-connect"));
 
-  // get ReadRecordsResult<"SleepSession"> from last 14 days
+  /** Gets ReadRecordsResult<"SleepSession"> from last 14 days */
   const getSleepRecords = (): void => {
     getLast14Days()
       .then((data) => initSleepArray(data))
       .catch(() => console.log("could not get sleep data"));
   };
 
-  // @param data: ReadRecordsResult<"SleepSession"> containing 14 days of sleep data.
-  // creates a list of SleepRecords and assigns to sleepArray.
+  /**
+   * Creates a list of SleepRecords and assigns to sleepArray.
+   * @param data ReadRecordsResult<"SleepSession"> containing 14 days of sleep data.
+   */
   const initSleepArray = (data: ReadRecordsResult<"SleepSession">): void => {
     let arr: SleepDuoRecord[] = [];
     const records = data.records;
@@ -46,7 +48,7 @@ export default function Home() {
     }
   };
 
-  // average total sleep time over the last 14 days
+  /** Average total sleep time over the last 14 days */
   const currAverageTST = SleepRecord.getAverageTST(sleepArray);
   const averageTSTDescription =
     DateFormatter.getHours(currAverageTST) +
