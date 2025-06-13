@@ -2,8 +2,9 @@ import React, { useState } from 'react'
 import { Alert, StyleSheet, AppState } from 'react-native'
 import ThemedView from '../../ThemedView'
 import { supabase } from '../../../../lib/supabase'
-import { Button, Input } from '@rneui/themed'
+import { Button } from '@rneui/themed'
 import { useRouter } from 'expo-router';
+import { TextInput } from 'react-native-paper'
 
 
 // Tells Supabase Auth to continuously refresh the session automatically if
@@ -53,9 +54,8 @@ export default function Auth() {
   return (
     <ThemedView>
       <ThemedView style={[styles.verticallySpaced, styles.mt20]}>
-        <Input
+        <TextInput
           label="Email"
-          leftIcon={{ type: 'font-awesome', name: 'envelope' }}
           onChangeText={(text) => setEmail(text)}
           value={email}
           placeholder="email@address.com"
@@ -63,9 +63,8 @@ export default function Auth() {
         />
       </ThemedView>
       <ThemedView style={styles.verticallySpaced}>
-        <Input
+        <TextInput
           label="Password"
-          leftIcon={{ type: 'font-awesome', name: 'lock' }}
           onChangeText={(text) => setPassword(text)}
           value={password}
           secureTextEntry={true}

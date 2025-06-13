@@ -27,17 +27,28 @@ export class DateFormatter {
     // TODO
   }
 
+  /** @returns the number of hours given milliseconds */
   static getHours(milliseconds: number): number {
     return Math.floor(milliseconds / 1000 / 60 / 60);
   }
 
+  /** @returns the number of minutes given milliseconds */
   static getMinutes(milliseconds: number): number {
     return Math.floor(milliseconds / 1000 / 60) % 60;
   }
 
+  /** @returns new Date 14 days ago */
   static getBeginningOfLast14Days = () => {
     const date = new Date();
     date.setDate(date.getDate() - 14);
+    date.setHours(0, 0, 0, 0);
+    return date;
+  };
+
+  /** @returns new Date 30 days ago */
+  static getBeginningOfLast30Days = () => {
+    const date = new Date();
+    date.setDate(date.getDate() - 30);
     date.setHours(0, 0, 0, 0);
     return date;
   };
