@@ -1,5 +1,5 @@
-import { StyleSheet, Pressable, View } from "react-native";
-import { List, Divider, Text } from "react-native-paper";
+import { StyleSheet, Pressable, View, TextInputEndEditingEventData, NativeSyntheticEvent } from "react-native";
+import { List, Divider, Text, TextInput } from "react-native-paper";
 import ThemedView from "../ThemedView";
 import { useState, useCallback } from "react";
 import { TimePickerModal } from "react-native-paper-dates";
@@ -7,21 +7,26 @@ import DisplayTimeBody from "../time-picker/DisplayTimeBody";
 import { SafeAreaProvider } from "react-native-safe-area-context";
 import { useLocalSearchParams, useRouter } from "expo-router";
 
-export default function JournalEntryEdit(): JSX.Element {
+type Consumable = "alcohol" | "caffiene"
 
+export default function JournalEntryEdit(): JSX.Element {
   // date param passed in from the journal screen
   const params = useLocalSearchParams();
-  if (typeof(params.date) !== "string") {
+  if (typeof params.date !== "string") {
     throw new Error("missing or invalid date param");
   }
   const dateParam = new Date(params.date);
 
   const router = useRouter();
-  const [selectedTimeModal, setSelectedTimeModal] = useState<"alcohol" | "caffiene">("alcohol");
-  const [visible, setVisible] = useState<boolean>(false);            // shows the time picker modal
-  const [alcoholMinutes, setAlcoholMinutes] = useState<number>(-1);   // records minutes from 00:00 since last drink
+  const [selectedTimeModal, setSelectedTimeModal] = useState<
+    "alcohol" | "caffiene"
+  >("alcohol");
+  const [visible, setVisible] = useState<boolean>(false); // shows the time picker modal
+  const [alcoholMinutes, setAlcoholMinutes] = useState<number>(-1); // records minutes from 00:00 since last drink
   const [caffieneMinutes, setCaffieneMinutes] = useState<number>(-1); // records minutes from 00:00 since last drink
-  const [date, setDate] = useState<Date>(dateParam);                 // the date of this journal entry at 00:00
+  const [alcoholQuantity, setAlcoholQuantity] = useState<string>("0"); // records number of alcoholic drink consumed
+  const [caffieneQuantity, setCaffieneQuantity] = useState<string>("0"); // records number of caffiene drink consumed
+  const [date, setDate] = useState<Date>(dateParam); // the date of this journal entry at 00:00
 
   /** called when any time picker is dismissed */
   const onDismiss = useCallback(() => {
@@ -58,30 +63,83 @@ export default function JournalEntryEdit(): JSX.Element {
 
   /** renders a time picker */
   const renderTimePicker = (): JSX.Element => {
-    const onConfirmFunc = (selectedTimeModal === "alcohol" ? onAlcoholConfirm : onCaffieneConfirm);
+    const onConfirmFunc =
+      selectedTimeModal === "alcohol" ? onAlcoholConfirm : onCaffieneConfirm;
     return (
-        <View
-          style={{ justifyContent: "center", flex: 1, alignItems: "center" }}
-        >
-          <TimePickerModal
-            visible={visible}
-            onDismiss={onDismiss}
-            onConfirm={onConfirmFunc}
-            animationType="slide"
-          />
-        </View>
+      <View style={{ justifyContent: "center", flex: 1, alignItems: "center" }}>
+        <TimePickerModal
+          visible={visible}
+          onDismiss={onDismiss}
+          onConfirm={onConfirmFunc}
+          animationType="slide"
+        />
+      </View>
+    );
+  };
+
+  /**
+   * @param type the type of consumed item e.g., "alcohol"
+   * @returns TextInput that allows the user to specify number of consumed items
+   */
+  const renderQuantity = (type: Consumable): JSX.Element => {
+    let valueFunc = alcoholQuantity;
+    if (type === "caffiene") valueFunc = caffieneQuantity;
+
+    return (
+      <TextInput
+        label="Quantity"
+        value={valueFunc}
+        maxLength={2}
+        keyboardType="numeric"
+        onChangeText={text => handleQuantityChange(text, type)}
+        onEndEditing={e => handleQuantityEnd(e, type)}
+      />
     )
   }
 
-  const handleAlcoholTimePress = (): void => {
-    setSelectedTimeModal("alcohol");
-    setVisible(true);
+  /**
+   * Updates quantity of this.state for the given type.
+   * Called each time the text input is changed
+   * @param text the text input from the user
+   * @param type Consumable representing the type of item consumed
+   */
+  const handleQuantityChange = (text: string, type: Consumable): void => {
+    let setQuantityFunc = setAlcoholQuantity;
+    if (type === "caffiene") setQuantityFunc = setCaffieneQuantity;
+
+    const num = Number(text);
+    if (!text.includes(".") && (text === "" || !isNaN(num))) {
+      setQuantityFunc(text);
+    }
   }
 
-  const handleCaffieneTimePress = (): void => {
-    setSelectedTimeModal("caffiene");
-    setVisible(true);
+  /**
+   * Updates quantity of this.state for the given type.
+   * Called when cancelling or submitting the text input (i.e., the last value).
+   * @param e NativeSyntheticEvent<TextInputEndEditingEventData>
+   * @param type Consumable representing the type of item consumed
+   */
+  const handleQuantityEnd = (e: NativeSyntheticEvent<TextInputEndEditingEventData>, type: Consumable): void => {
+    let setQuantityFunc = setAlcoholQuantity;
+    if (type === "caffiene") setQuantityFunc = setCaffieneQuantity;
+
+    const num = Number(e.nativeEvent.text);
+    if (isNaN(num)) {
+      setQuantityFunc("0");
+    } else {
+      setQuantityFunc(String(num));
+    }
   }
+
+  /**
+   * Called when the user clicks the quantity selection.
+   * Sets selectedTimeModal to the given type.
+   * @param type the Consumable that was consumed
+   */
+  const handleTimePress = (type: Consumable): void => {
+    setSelectedTimeModal(type);
+    setVisible(true);
+  };
 
   return (
     <SafeAreaProvider>
@@ -93,21 +151,14 @@ export default function JournalEntryEdit(): JSX.Element {
 
         <List.Section>
           <List.Subheader>Alcohol</List.Subheader>
-            <List.Item
-              title="Drinks containing alcohol"
-              right={() => (
-                <Text
-                  variant="bodyLarge"
-                  theme={{ colors: { onSurface: "gray" } }}
-                >
-                  Add
-                </Text>
-              )}
-            />
+          <List.Item
+            title="Drinks containing alcohol"
+            right={() => renderQuantity("alcohol")}
+          />
           <List.Item
             title="When did you have your last drink"
             right={() => (
-              <Pressable onPress={handleAlcoholTimePress}>
+              <Pressable onPress={() => handleTimePress("alcohol")}>
                 <DisplayTimeBody time={alcoholMinutes} />
               </Pressable>
             )}
@@ -120,20 +171,13 @@ export default function JournalEntryEdit(): JSX.Element {
           <Pressable>
             <List.Item
               title="Drinks containing caffiene"
-              right={() => (
-                <Text
-                  variant="bodyLarge"
-                  theme={{ colors: { onSurface: "gray" } }}
-                >
-                  Add
-                </Text>
-              )}
+              right={() => renderQuantity("caffiene")}
             />
           </Pressable>
           <List.Item
             title="When did you have your last drink"
             right={() => (
-              <Pressable onPress={handleCaffieneTimePress}>
+              <Pressable onPress={() => handleTimePress("caffiene")}>
                 <DisplayTimeBody time={caffieneMinutes} />
               </Pressable>
             )}
@@ -145,8 +189,6 @@ export default function JournalEntryEdit(): JSX.Element {
       </ThemedView>
     </SafeAreaProvider>
   );
-
-  
 }
 
 const styles = StyleSheet.create({
