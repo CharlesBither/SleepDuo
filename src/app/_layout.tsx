@@ -31,7 +31,8 @@ export default function RootLayout() {
           <Stack.Screen name="+not-found" />
           <Stack.Screen name="components/pages/JournalEntryEdit" options={{
             headerTitle: "",
-          }} />
+          }}
+           />
           <Stack.Screen name="components/pages/Auth/Auth" options={{
             headerTitle: "Login",
           }} />

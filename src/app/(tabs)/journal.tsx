@@ -1,4 +1,4 @@
-import { useTheme, Text, Divider, List } from 'react-native-paper';
+import { useTheme, Text, Divider } from 'react-native-paper';
 import { useState } from 'react';
 
 import ThemedView from '@/src/app/components/ThemedView';
@@ -9,15 +9,17 @@ import Ionicons from '@expo/vector-icons/Ionicons';
 import { printId } from '@/src/lib/supabase';
 import { useRouter } from 'expo-router';
 
-export default function AboutScreen() {
+export default function AboutScreen(): JSX.Element {
   const dateFormatter = new DateFormatter();
 
-  const [date, setDate] = useState(new Date())
-  const dayInterval = 1000 * 60 * 60 * 24
+  const currDate = new Date();
+  currDate.setHours(0,0,0,0);
+  const [date, setDate] = useState(currDate);
+  const dayInterval = 1000 * 60 * 60 * 24;
 
-  const [journalContent, setJournalContent] = useState(null)
-  const theme = useTheme()
-  const router = useRouter()
+  const [journalContent, setJournalContent] = useState(null);
+  const theme = useTheme();
+  const router = useRouter();
 
   return (
     <ThemedView>
@@ -50,7 +52,7 @@ export default function AboutScreen() {
 
       {/* Journal content */}
       {journalContent ? <Text>has content</Text> : <Text>no content</Text>}
-      <FunctionButton label='add entry' func={() => router.push('/components/pages/JournalEntryEdit')} />
+      <FunctionButton label='add entry' func={() => router.push({pathname: '/components/pages/JournalEntryEdit', params: {date: date.toJSON()}})} />
       <FunctionButton label='Test SELECT' func={() => printId()} />
     </ThemedView>
   );

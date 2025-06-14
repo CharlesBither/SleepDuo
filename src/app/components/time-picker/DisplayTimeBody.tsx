@@ -1,11 +1,17 @@
 import { Text } from "react-native-paper"
 
 type Props = {
-    hours: number;
-    minutes: number
+    time: number;
   };
 
-export default function DisplayTimeBody({hours, minutes}: Props) {
+/** @returns a text element representing time as HH:mm, or the string 'Add' if time === -1 */
+export default function DisplayTimeBody({time}: Props): JSX.Element {
 
-    return hours != -1 ? <Text variant="bodyLarge">{hours}:{minutes}</Text> : <Text variant="bodyLarge" theme={{ colors: { onSurface: 'gray' } }}>Add</Text>
+  if (time === -1) {
+    return <Text variant="bodyLarge" theme={{ colors: { onSurface: 'gray' } }}>Add</Text>
+  }
+  const hours = Math.floor(time / 60);
+  const minutes = time % 60;
+
+  return <Text variant="bodyLarge">{hours}:{minutes}</Text>
 }
