@@ -12,8 +12,8 @@ import { useRouter } from 'expo-router';
 export default function AboutScreen(): JSX.Element {
   const dateFormatter = new DateFormatter();
 
-  const currDate = new Date();
-  currDate.setHours(0,0,0,0);
+  const currDate = (new Date());
+  // currDate.setHours(0,0,0,0);
   const [date, setDate] = useState(currDate);
   const dayInterval = 1000 * 60 * 60 * 24;
 

@@ -2,12 +2,15 @@ import { StyleSheet, Pressable, View, TextInputEndEditingEventData, NativeSynthe
 import { List, Divider, Text, TextInput } from "react-native-paper";
 import ThemedView from "../ThemedView";
 import { useState, useCallback } from "react";
-import { TimePickerModal } from "react-native-paper-dates";
+import { TimePickerModal, DatePickerModal } from "react-native-paper-dates";
 import DisplayTimeBody from "../time-picker/DisplayTimeBody";
 import { SafeAreaProvider } from "react-native-safe-area-context";
 import { useLocalSearchParams, useRouter } from "expo-router";
+import FunctionButton from "../Button/FunctionButton";
 
+// types of recorded substances consumed
 type Consumable = "alcohol" | "caffiene"
+type Modal = Consumable | "wake" | "sleep"
 
 export default function JournalEntryEdit(): JSX.Element {
   // date param passed in from the journal screen
@@ -18,20 +21,21 @@ export default function JournalEntryEdit(): JSX.Element {
   const dateParam = new Date(params.date);
 
   const router = useRouter();
-  const [selectedTimeModal, setSelectedTimeModal] = useState<
-    "alcohol" | "caffiene"
-  >("alcohol");
-  const [visible, setVisible] = useState<boolean>(false); // shows the time picker modal
-  const [alcoholMinutes, setAlcoholMinutes] = useState<number>(-1); // records minutes from 00:00 since last drink
-  const [caffieneMinutes, setCaffieneMinutes] = useState<number>(-1); // records minutes from 00:00 since last drink
-  const [alcoholQuantity, setAlcoholQuantity] = useState<string>("0"); // records number of alcoholic drink consumed
-  const [caffieneQuantity, setCaffieneQuantity] = useState<string>("0"); // records number of caffiene drink consumed
-  const [date, setDate] = useState<Date>(dateParam); // the date of this journal entry at 00:00
+  const [selectedTimeModal, setSelectedTimeModal] = useState<Modal>("alcohol");
+  const [timeVisible, setTimeVisible] = useState<boolean>(false);         // shows the time picker modal
+  const [dateVisible, setDateVisible] = useState<boolean>(false);         // shows the date picker modal
+  const [wakeMinutes, setWakeMinutes] = useState<number>(-1);             // records minutes from 00:00 since wake up
+  const [sleepMinutes, setSleepMinutes] = useState<number>(-1);           // records minutes from 00:00 since sleep
+  const [alcoholMinutes, setAlcoholMinutes] = useState<number>(-1);       // records minutes from 00:00 since last drink
+  const [caffieneMinutes, setCaffieneMinutes] = useState<number>(-1);     // records minutes from 00:00 since last drink
+  const [alcoholQuantity, setAlcoholQuantity] = useState<string>("0");    // records number of alcoholic drink consumed
+  const [caffieneQuantity, setCaffieneQuantity] = useState<string>("0");  // records number of caffiene drink consumed
+  const [date, setDate] = useState<Date>(dateParam);                      // the date of this journal entry at 00:00
 
   /** called when any time picker is dismissed */
   const onDismiss = useCallback(() => {
-    setVisible(false);
-  }, [setVisible]);
+    setTimeVisible(false);
+  }, [setTimeVisible]);
 
   /**
    * Called when a time is confirmed for last alcohol drink.
@@ -40,11 +44,11 @@ export default function JournalEntryEdit(): JSX.Element {
    */
   const onAlcoholConfirm = useCallback(
     ({ hours, minutes }: { hours: number; minutes: number }) => {
-      setVisible(false);
+      setTimeVisible(false);
       const totalMinutes = hours * 60 + minutes;
       setAlcoholMinutes(totalMinutes);
     },
-    [setVisible]
+    [setTimeVisible]
   );
 
   /**
@@ -54,21 +58,41 @@ export default function JournalEntryEdit(): JSX.Element {
    */
   const onCaffieneConfirm = useCallback(
     ({ hours, minutes }: { hours: number; minutes: number }) => {
-      setVisible(false);
+      setTimeVisible(false);
       const totalMinutes = hours * 60 + minutes;
       setCaffieneMinutes(totalMinutes);
     },
-    [setVisible]
+    [setTimeVisible]
+  );
+
+  const onWakeConfirm = useCallback(
+    ({ hours, minutes }: { hours: number; minutes: number }) => {
+      setTimeVisible(false);
+      const totalMinutes = hours * 60 + minutes;
+      setWakeMinutes(totalMinutes);
+    },
+    [setTimeVisible]
+  );
+
+  const onSleepConfirm = useCallback(
+    ({ hours, minutes }: { hours: number; minutes: number }) => {
+      setTimeVisible(false);
+      const totalMinutes = hours * 60 + minutes;
+      setSleepMinutes(totalMinutes);
+    },
+    [setTimeVisible]
   );
 
   /** renders a time picker */
   const renderTimePicker = (): JSX.Element => {
-    const onConfirmFunc =
-      selectedTimeModal === "alcohol" ? onAlcoholConfirm : onCaffieneConfirm;
+    let onConfirmFunc = onAlcoholConfirm;
+    if (selectedTimeModal === "caffiene") onConfirmFunc = onCaffieneConfirm;
+    else if (selectedTimeModal === "wake") onConfirmFunc = onWakeConfirm;
+    else if (selectedTimeModal === "sleep") onConfirmFunc = onSleepConfirm;
     return (
       <View style={{ justifyContent: "center", flex: 1, alignItems: "center" }}>
         <TimePickerModal
-          visible={visible}
+          visible={timeVisible}
           onDismiss={onDismiss}
           onConfirm={onConfirmFunc}
           animationType="slide"
@@ -76,6 +100,20 @@ export default function JournalEntryEdit(): JSX.Element {
       </View>
     );
   };
+
+  // /** renders a date picker */
+  // const renderDatePicker = (): JSX.Element => {
+  //   return (
+  //     <DatePickerModal
+  //         locale="en"
+  //         mode="single"
+  //         visible={dateVisible}
+  //         onDismiss={onDismissDate}
+  //         date={date}
+  //         onConfirm={onConfirmWakeDate}
+  //       />
+  //   )
+  // }
 
   /**
    * @param type the type of consumed item e.g., "alcohol"
@@ -136,10 +174,22 @@ export default function JournalEntryEdit(): JSX.Element {
    * Sets selectedTimeModal to the given type.
    * @param type the Consumable that was consumed
    */
-  const handleTimePress = (type: Consumable): void => {
+  const handleTimePress = (type: Modal): void => {
     setSelectedTimeModal(type);
-    setVisible(true);
+    setTimeVisible(true);
   };
+
+  // const onDismissDate = useCallback(() => {
+  //   setDateVisible(false);
+  // }, [dateVisible]);
+
+  // const onConfirmWakeDate = useCallback(
+  //   (dateParams) => {
+  //     setDateVisible(false);
+  //     (dateParams.date);
+  //   },
+  //   [dateVisible, wakeMinutes]
+  // );
 
   return (
     <SafeAreaProvider>
@@ -147,6 +197,19 @@ export default function JournalEntryEdit(): JSX.Element {
         <Text variant="displaySmall" style={styles.text}>
           Add Journal Entry
         </Text>
+        <Divider />
+
+        <List.Section>
+          <List.Subheader>Wake up</List.Subheader>
+          <List.Item
+            title="When did you wake up?"
+            right={() => (
+              <Pressable onPress={() => handleTimePress("wake")}>
+                <DisplayTimeBody time={wakeMinutes} />
+              </Pressable>
+            )}
+          />
+        </List.Section>
         <Divider />
 
         <List.Section>
@@ -185,6 +248,22 @@ export default function JournalEntryEdit(): JSX.Element {
         </List.Section>
         <Divider />
 
+        <List.Section>
+          <List.Subheader>Sleep</List.Subheader>
+          <List.Item
+            title="When did you go to sleep?"
+            right={() => (
+              <Pressable onPress={() => handleTimePress("sleep")}>
+                <DisplayTimeBody time={sleepMinutes} />
+              </Pressable>
+            )}
+          />
+        </List.Section>
+        <Divider />
+
+        <FunctionButton label="date" func={() => console.log(date.toString())} />
+
+        {/* {renderDatePicker()} */}
         {renderTimePicker()}
       </ThemedView>
     </SafeAreaProvider>
