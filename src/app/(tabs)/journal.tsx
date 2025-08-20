@@ -1,25 +1,37 @@
-import { useTheme, Text, Divider } from 'react-native-paper';
-import { useState } from 'react';
+import { useTheme, Text, Divider, Button } from 'react-native-paper';
+import { useCallback, useState } from 'react';
 
-import ThemedView from '@/src/app/components/ThemedView';
-import FunctionButton from '../components/Button/FunctionButton';
+import ThemedView from '@/src/components/ThemedView';
 import { DateFormatter } from '@/src/utils/DateFormatter';
 import { View, StyleSheet } from 'react-native';
 import Ionicons from '@expo/vector-icons/Ionicons';
-import { printId } from '@/src/lib/supabase';
-import { useRouter } from 'expo-router';
+import { useFocusEffect, useRouter } from 'expo-router';
+import { journalRecordsMap } from '@/src/database/journal_records';
+import { dateToString } from '@/src/utils/dates';
+import JournalEntryRead from '../JournalEntryRead';
 
 export default function AboutScreen(): JSX.Element {
   const dateFormatter = new DateFormatter();
 
   const currDate = (new Date());
-  // currDate.setHours(0,0,0,0);
   const [date, setDate] = useState(currDate);
+  const [record, setRecord] = useState(journalRecordsMap.get(dateToString(currDate)));
   const dayInterval = 1000 * 60 * 60 * 24;
 
-  const [journalContent, setJournalContent] = useState(null);
   const theme = useTheme();
   const router = useRouter();
+
+  /** Called when the user changes the date */
+  const handleDateChange = (date: Date): void => {
+    setDate(date);
+    setRecord(journalRecordsMap.get(dateToString(date)));
+  }
+
+  useFocusEffect(
+    useCallback(() => {
+      setRecord(journalRecordsMap.get(dateToString(date)));
+    }, [])
+  )
 
   return (
     <ThemedView>
@@ -31,7 +43,7 @@ export default function AboutScreen(): JSX.Element {
           color={theme.colors.primary} 
           size={28} 
           style={styles.rowArrow} 
-          onPress={() => setDate(new Date(date.getTime() - dayInterval))} />
+          onPress={() => handleDateChange(new Date(date.getTime() - dayInterval))} />
         </View>
 
         <View style={styles.row}>
@@ -44,21 +56,24 @@ export default function AboutScreen(): JSX.Element {
           color={theme.colors.primary} 
           size={28} 
           style={styles.rowArrow}
-          onPress={() => setDate(new Date(date.getTime() + dayInterval))} />
+          onPress={() => handleDateChange(new Date(date.getTime() + dayInterval))} />
         </View>
       </View>
       <Divider />
       {/* date navigation end */}
 
       {/* Journal content */}
-      {journalContent ? <Text>has content</Text> : <Text>no content</Text>}
-      <FunctionButton label='add entry' func={() => router.push({pathname: '/components/pages/JournalEntryEdit', params: {date: date.toJSON()}})} />
-      <FunctionButton label='Test SELECT' func={() => printId()} />
+      <JournalEntryRead record={record} />
+      <Button onPress={() => router.push({pathname: '/JournalEntryEdit'})} >add entry</Button>
     </ThemedView>
   );
 }
 
 const styles = StyleSheet.create({
+  text: {
+    marginLeft: 15,
+    marginBottom: 10,
+  },
   row: {
     flexDirection: 'row',
     justifyContent: 'space-between',

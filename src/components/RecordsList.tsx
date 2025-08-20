@@ -4,7 +4,7 @@ import { Divider, List } from 'react-native-paper';
 
 import { SleepRecord } from "@/src/records/SleepRecord";
 import { SleepDuoRecord } from '@/src/records/SleepDuoRecord';
-import { DateFormatter } from '../../utils/DateFormatter';
+import { DateFormatter } from '../utils/DateFormatter';
 
 type Props = {
     recordArray: SleepDuoRecord[],

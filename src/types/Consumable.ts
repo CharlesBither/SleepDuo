@@ -1,0 +1,1 @@
+export type Consumable = "alcohol" | "caffiene"

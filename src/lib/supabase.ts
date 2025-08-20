@@ -1,8 +1,8 @@
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import { createClient } from '@supabase/supabase-js'
 
-const supabaseUrl = "https://cqulufkjijjlvyuqwudk.supabase.co"
-const supabaseAnonKey = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImNxdWx1ZmtqaWpqbHZ5dXF3dWRrIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDE5OTk4NjEsImV4cCI6MjA1NzU3NTg2MX0.ijwizdD9j3KWDnriCOfv5Pltrf4la_rf3iYSDi8GuEQ"
+const supabaseUrl = process.env.EXPO_PUBLIC_SUPABASE_URL as string;
+const supabaseAnonKey = process.env.EXPO_PUBLIC_SUPABASE_KEY as string;
 
 export const supabase = createClient(supabaseUrl, supabaseAnonKey, {
   auth: {
@@ -12,10 +12,3 @@ export const supabase = createClient(supabaseUrl, supabaseAnonKey, {
     detectSessionInUrl: false,
   },
 })
-
-export const printId = async () => {
-  const { data: { user } } = await supabase.auth.getUser()
-  if (user) {
-    console.log(user.id)
-  }
-}

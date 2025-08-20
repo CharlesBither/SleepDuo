@@ -19,9 +19,6 @@
       },
       "package": "com.charlesbither.SleepDuo",
       "permissions": [
-        "android.permission.health.READ_STEPS",
-        "android.permission.health.WRITE_STEPS",
-        "android.permission.health.READ_ACTIVE_CALORIES_BURNED",
         "android.permission.health.READ_SLEEP"
       ]
     },
@@ -54,7 +51,13 @@
           }
         }
       ],
-      ["expo-localization"]
+      ["expo-localization"],
+      [
+        "@react-native-google-signin/google-signin",
+        {
+          "iosUrlScheme": "com.googleusercontent.apps.64191911837-dd2aqql08p23ra2gjnvgfcnig0nbn576"
+        }
+      ]
     ],
     "experiments": {
       "typedRoutes": true

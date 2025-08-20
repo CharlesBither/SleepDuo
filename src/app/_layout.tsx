@@ -7,11 +7,15 @@ import {
   MD3DarkTheme as DarkTheme,
   PaperProvider,
 } from 'react-native-paper';
-
+import * as SystemUI from "expo-system-ui";
 
 export default function RootLayout() {
   const colorScheme = useColorScheme();
   const paperTheme = colorScheme === 'dark' ? DarkTheme : LightTheme
+
+  if (colorScheme === 'dark') {
+    SystemUI.setBackgroundColorAsync("black");
+  }
   return (
     <PaperProvider theme={paperTheme}>
         <Stack
@@ -29,11 +33,11 @@ export default function RootLayout() {
           }} />
           <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
           <Stack.Screen name="+not-found" />
-          <Stack.Screen name="components/pages/JournalEntryEdit" options={{
+          <Stack.Screen name="JournalEntryEdit" options={{
             headerTitle: "",
           }}
            />
-          <Stack.Screen name="components/pages/Auth/Auth" options={{
+          <Stack.Screen name="Auth" options={{
             headerTitle: "Login",
           }} />
         </Stack>

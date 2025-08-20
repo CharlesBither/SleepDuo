@@ -1,13 +1,16 @@
-import { useState } from "react";
+import { useCallback, useState } from "react";
 import { Text } from "react-native-paper";
 
 import { SleepDuoRecord } from "@/src/records/SleepDuoRecord";
-import startHealthConnect from "@/src/health-connect/initialize";
+import { hasRequiredPermissions, initHealthConnect } from "@/src/health-connect/initialize";
 import { getLast14Days } from "@/src/health-connect/sleep-data";
 import { SleepRecord } from "@/src/records/SleepRecord";
-import RecordsList from "@/src/app/components/RecordsList";
-import ThemedView from "@/src/app/components/ThemedView";
-import { ReadRecordsResult } from "react-native-health-connect";
+import RecordsList from "@/src/components/RecordsList";
+import ThemedView from "@/src/components/ThemedView";
+import { getGrantedPermissions, ReadRecordsResult } from "react-native-health-connect";
+import LoadingScreen from "../LoadingScreen";
+import GoHomePermissionCard from "@/src/components/GoHomePermissionCard";
+import { useFocusEffect } from "expo-router";
 
 /**
  * Gets the last 14 days of sleep records and renders it's information
@@ -18,18 +21,19 @@ import { ReadRecordsResult } from "react-native-health-connect";
 export default function RecordsScreen() {
 
   const [recordsArray, setRecordsArray] = useState<SleepDuoRecord[]>([]);
+  const [hasHealthConnectPermissions, setHasHealthConnectPermissions] = useState(false);
+  const [loading, setLoading] = useState(true);
 
-  /** gets required permissions from health-connect and cal getSleepData */
-  startHealthConnect()
-    .then(() => getSleepData())
-    .catch(() => console.log("could not initialize hc"));
-
-  /** Gets ReadRecordsResult<"SleepSession"> from last 14 days */
-  const getSleepData = (): void => {
-    getLast14Days()
-      .then((data) => initializeRecordsArray(data))
-      .catch(() => console.log("could not get sleep data"));
-  };
+  const handleInitHealthConnectSuccess = async () => {
+    setLoading(true);
+    const grantedPermissions = await getGrantedPermissions();
+    if (hasRequiredPermissions(grantedPermissions)) {
+      const data = await getLast14Days();
+      initializeRecordsArray(data);
+      setHasHealthConnectPermissions(true);
+    }
+    setLoading(false);
+  }
 
   /**
    * Creates a list of SleepRecords and assigns to recordsArray.
@@ -49,17 +53,36 @@ export default function RecordsScreen() {
     }
   };
 
-  if (recordsArray) {
+  useFocusEffect(
+    useCallback(() => {
+      if (!hasHealthConnectPermissions) {
+        initHealthConnect()
+          .then(async () => await handleInitHealthConnectSuccess())
+          .catch(() => { throw new Error("could not intialize health connect") })
+      }
+    }, [])
+  )
+
+  if (loading) {
+    return <LoadingScreen />
+  }
+  else if (!hasHealthConnectPermissions) {
+    return (
+      <ThemedView>
+        <GoHomePermissionCard />
+      </ThemedView>
+    )
+  }
+  else if (recordsArray) {
     return (
       <ThemedView>
         <RecordsList recordArray={recordsArray} />
       </ThemedView>
     );
   }
-
   return (
     <ThemedView>
-      <Text>empty arr</Text>
+      <Text>You do not have any sleep records to display.</Text>
     </ThemedView>
   );
 }
