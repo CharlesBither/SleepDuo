@@ -64,7 +64,6 @@ export default function AboutScreen(): JSX.Element {
 
       {/* Journal content */}
       <JournalEntryRead record={record} />
-      <Button onPress={() => router.push({pathname: '/JournalEntryEdit'})} >add entry</Button>
     </ThemedView>
   );
 }

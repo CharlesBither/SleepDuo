@@ -204,11 +204,13 @@ export default function JournalEntryEdit(): JSX.Element {
    * Inserts the record into the journal_records database table.
    */
   const doSavePress = async (): Promise<void> => {
+    if (!wakeDate || !sleepDate) {
+      setDialogMsg("Your entry must include when you woke up and went to sleep");
+      setDialogIsVisible(true);
+      return;
+    }
     setIsLoading(true);
     const uuid = await getId();
-    if (!wakeDate || !sleepDate) {
-      throw new Error("undefined parameters during doSavePress");
-    }
     const record = constructRecord(uuid, wakeDate, sleepDate, alcoholQuantity, caffieneQuantity, alcoholDate, caffieneDate);
     await insertJournalRecord(record);
     journalRecordsMap.set(dateToString(wakeDate), record);

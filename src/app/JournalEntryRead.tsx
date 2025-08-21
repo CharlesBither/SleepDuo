@@ -1,7 +1,9 @@
-import { List, Text, Divider, TextInput } from "react-native-paper";
+import { List, Button, Divider, TextInput } from "react-native-paper";
 import ThemedView from "../components/ThemedView";
 import { Record } from "../types/Record";
 import { Consumable } from "../types/Consumable";
+import { router } from "expo-router";
+import { StyleSheet } from "react-native";
 
 type JournalEntryReadProps = {
     record: Record | undefined;
@@ -10,7 +12,7 @@ type JournalEntryReadProps = {
 export default function JournalEntryRead(props: JournalEntryReadProps) {
 
     if (!props.record) {
-        return <Text>no content</Text>;
+        return <Button onPress={() => router.push({pathname: '/JournalEntryEdit'})} >add entry</Button>;
     }
 
     const wakeDate = props.record.content.wake_date;
@@ -48,7 +50,7 @@ export default function JournalEntryRead(props: JournalEntryReadProps) {
 
     return (
         <ThemedView>
-            <List.Section>
+            <List.Section style={styles.margin}>
                 <List.Subheader>Wake up</List.Subheader>
                 <List.Item
                     title="When did you wake up?"
@@ -57,7 +59,16 @@ export default function JournalEntryRead(props: JournalEntryReadProps) {
             </List.Section>
             <Divider />
 
-            <List.Section>
+            <List.Section style={styles.margin}>
+                <List.Subheader>Sleep</List.Subheader>
+                <List.Item
+                    title="When did you go to sleep?"
+                    description={renderDescription(new Date(sleepDate))}
+                />
+            </List.Section>
+            <Divider />
+
+            <List.Section style={styles.margin}>
                 <List.Subheader>Alcohol</List.Subheader>
                 <List.Item
                     title="Drinks containing alcohol"
@@ -70,7 +81,7 @@ export default function JournalEntryRead(props: JournalEntryReadProps) {
             </List.Section>
             <Divider />
 
-            <List.Section>
+            <List.Section style={styles.margin}>
                 <List.Subheader>Caffiene</List.Subheader>
                 <List.Item
                     title="Drinks containing caffiene"
@@ -81,17 +92,14 @@ export default function JournalEntryRead(props: JournalEntryReadProps) {
                     description={renderDescription(caffieneDate ? new Date(caffieneDate) : undefined)}
                 />
             </List.Section>
-            <Divider />
-
-            <List.Section>
-                <List.Subheader>Sleep</List.Subheader>
-                <List.Item
-                    title="When did you go to sleep?"
-                    description={renderDescription(new Date(sleepDate))}
-                />
-            </List.Section>
-            <Divider />
+            <Button onPress={() => router.push({pathname: '/JournalEntryEdit'})} >edit entry</Button>
 
         </ThemedView>
     )
 }
+
+const styles = StyleSheet.create({
+    margin: {
+        marginVertical: 3,
+    },
+})
