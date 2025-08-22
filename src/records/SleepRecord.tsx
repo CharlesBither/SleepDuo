@@ -13,7 +13,7 @@ export class SleepRecord extends SleepDuoRecord {
     private _timeStage6: number = 0;
 
     constructor(record: RecordResult<"SleepSession">) {
-        super(new Date(record.startTime), new Date(record.endTime), "sleep");
+        super(record.metadata?.id, new Date(record.startTime), new Date(record.endTime), "sleep");
 
         // init TST
         const stages = record.stages;

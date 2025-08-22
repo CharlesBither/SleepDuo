@@ -5,6 +5,7 @@ import { Divider, List } from 'react-native-paper';
 import { SleepRecord } from "@/src/records/SleepRecord";
 import { SleepDuoRecord } from '@/src/records/SleepDuoRecord';
 import { DateFormatter } from '../utils/DateFormatter';
+import { router } from 'expo-router';
 
 type Props = {
     recordArray: SleepDuoRecord[],
@@ -16,10 +17,16 @@ type Props = {
 export default function RecordsList({ recordArray: recordArray }: Props) {
     const dateFormatter = new DateFormatter()
 
+    const handlePress = (guid: string | undefined): void => {
+        if (guid) {
+            router.push(`/RecordDetails?guid=${guid}`);
+        }
+    }
+
     const records = recordArray.map((currRecord) => {
         if (currRecord instanceof SleepRecord) {
             const sleepTime = currRecord.totalSleepTime;
-            const sleepDescription: String = DateFormatter.getHours(sleepTime) + "h " + DateFormatter.getMinutes(sleepTime) + "m asleep";
+            const sleepDescription: String = DateFormatter.getHours(sleepTime) + "h " + DateFormatter.getMinutes(sleepTime) + "m asleep" + "; id: " + currRecord.id;
             
             return (
                 <View key={currRecord.endTime.toJSON()}> 
@@ -29,6 +36,7 @@ export default function RecordsList({ recordArray: recordArray }: Props) {
                             right={(props) => <List.Icon {...props} icon="sleep" />}
                             title="Sleep"
                             description={sleepDescription}
+                            onPress={() => handlePress(currRecord.id)}
                         />
                     </List.Section>
                     <Divider />

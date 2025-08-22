@@ -43,9 +43,9 @@ export default function Index() {
   supabase.auth.getSession().then(({ data: { session } }) => {
     setSession(session)
     if (session && session.user) {
-      initJournalRecordsMap(session.user.id)
-        .then(() => console.log("initialized journalRecordsMap"))
-        .catch(() => console.error("error initializing journalRecordsMap"));
+      // initJournalRecordsMap(session.user.id)
+      //   .then(() => console.log("initialized journalRecordsMap"))
+      //   .catch(() => console.error("error initializing journalRecordsMap"));
     }
     setIsLoading(false)
   })

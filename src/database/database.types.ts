@@ -1,5 +1,3 @@
-import { Content } from "../types/Record"
-
 export type Json =
   | string
   | number
@@ -9,7 +7,7 @@ export type Json =
   | Json[]
 
 export type Database = {
-  // Allows to automatically instanciate createClient with right options
+  // Allows to automatically instantiate createClient with right options
   // instead of createClient<Database, { PostgrestVersion: 'XX' }>(URL, KEY)
   __InternalSupabase: {
     PostgrestVersion: "12.2.3 (519615d)"
@@ -24,10 +22,10 @@ export type Database = {
     Functions: {
       graphql: {
         Args: {
+          extensions?: Json
           operationName?: string
           query?: string
           variables?: Json
-          extensions?: Json
         }
         Returns: Json
       }
@@ -41,7 +39,7 @@ export type Database = {
   }
   public: {
     Tables: {
-      journal_records: {
+      journal_records_old: {
         Row: {
           content: Json
           created_at: string
@@ -113,6 +111,72 @@ export type Database = {
           updated_at?: string | null
           username?: string | null
           website?: string | null
+        }
+        Relationships: []
+      }
+      record_details: {
+        Row: {
+          alcohol_date: string | null
+          alcohol_quantity: string | null
+          caffiene_date: string | null
+          caffiene_quantity: string | null
+          created_at: string
+          guid: string | null
+          id: number
+          uuid: string
+        }
+        Insert: {
+          alcohol_date?: string | null
+          alcohol_quantity?: string | null
+          caffiene_date?: string | null
+          caffiene_quantity?: string | null
+          created_at?: string
+          guid?: string | null
+          id?: number
+          uuid: string
+        }
+        Update: {
+          alcohol_date?: string | null
+          alcohol_quantity?: string | null
+          caffiene_date?: string | null
+          caffiene_quantity?: string | null
+          created_at?: string
+          guid?: string | null
+          id?: number
+          uuid?: string
+        }
+        Relationships: []
+      }
+      record_details_test: {
+        Row: {
+          alcohol_date: string | null
+          alcohol_quantity: string | null
+          caffiene_date: string | null
+          caffiene_quantity: string | null
+          created_at: string
+          guid: string | null
+          id: number
+          uuid: string
+        }
+        Insert: {
+          alcohol_date?: string | null
+          alcohol_quantity?: string | null
+          caffiene_date?: string | null
+          caffiene_quantity?: string | null
+          created_at?: string
+          guid?: string | null
+          id?: number
+          uuid: string
+        }
+        Update: {
+          alcohol_date?: string | null
+          alcohol_quantity?: string | null
+          caffiene_date?: string | null
+          caffiene_quantity?: string | null
+          created_at?: string
+          guid?: string | null
+          id?: number
+          uuid?: string
         }
         Relationships: []
       }

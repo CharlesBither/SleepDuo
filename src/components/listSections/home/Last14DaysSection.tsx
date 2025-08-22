@@ -40,6 +40,8 @@ export default function Last14DaysSection() {
     DateFormatter.getMinutes(currAverageTST) +
     "m";
 
+    getSleepRecords();
+
   return (
     <List.Section>
       <List.Subheader>Last 14 days</List.Subheader>

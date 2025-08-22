@@ -29,7 +29,7 @@ export default function Home() {
   const [requestedPermissions, setRequestedPermissions] = useState(false);
 
   // initialize the journalRecordsMap for the logged in user
-  getId().then((id) => initJournalRecordsMap(id));
+  // getId().then((id) => initJournalRecordsMap(id));
 
   /** Gets required permissions from health-connect */
   initHealthConnect()
