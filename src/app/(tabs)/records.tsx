@@ -9,7 +9,7 @@ import RecordsList from "@/src/components/RecordsList";
 import ThemedView from "@/src/components/ThemedView";
 import { getGrantedPermissions, ReadRecordsResult } from "react-native-health-connect";
 import LoadingScreen from "../LoadingScreen";
-import GoHomePermissionCard from "@/src/components/GoHomePermissionCard";
+import GoHomePermissionCard from "@/src/components/cards/GoHomePermissionCard";
 import { useFocusEffect } from "expo-router";
 
 /**

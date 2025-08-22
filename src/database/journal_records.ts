@@ -124,7 +124,7 @@ export const fetchJournalRecordsByUuid = async (uuid: string): Promise<FetchResp
 
 export const journalRecordsMap = new Map<string, Record>();
 
-export const populateJournalRecordsMap = (data: FetchResponse): void => {
+const populateJournalRecordsMap = (data: FetchResponse): void => {
   journalRecordsMap.clear();
   for (const row of data) {
     const created = new Date(row.created_at);
