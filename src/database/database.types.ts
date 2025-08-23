@@ -117,31 +117,31 @@ export type Database = {
       record_details: {
         Row: {
           alcohol_date: string | null
-          alcohol_quantity: string | null
+          alcohol_quantity: string
           caffiene_date: string | null
-          caffiene_quantity: string | null
+          caffiene_quantity: string
           created_at: string
-          guid: string | null
+          guid: string
           id: number
           uuid: string
         }
         Insert: {
           alcohol_date?: string | null
-          alcohol_quantity?: string | null
+          alcohol_quantity: string
           caffiene_date?: string | null
-          caffiene_quantity?: string | null
+          caffiene_quantity: string
           created_at?: string
-          guid?: string | null
+          guid: string
           id?: number
           uuid: string
         }
         Update: {
           alcohol_date?: string | null
-          alcohol_quantity?: string | null
+          alcohol_quantity?: string
           caffiene_date?: string | null
-          caffiene_quantity?: string | null
+          caffiene_quantity?: string
           created_at?: string
-          guid?: string | null
+          guid?: string
           id?: number
           uuid?: string
         }

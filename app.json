@@ -15,7 +15,7 @@
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./assets/images/icon.png",
-        "backgroundColor": "#000000"
+        "backgroundColor": "#65558F"
       },
       "package": "com.charlesbither.SleepDuo",
       "permissions": [
@@ -35,7 +35,7 @@
           "image": "./assets/images/icon.png",
           "imageWidth": 200,
           "resizeMode": "contain",
-          "backgroundColor": "#000000"
+          "backgroundColor": "#65558F"
         }
       ],
       [
