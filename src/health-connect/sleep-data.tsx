@@ -1,5 +1,5 @@
 import { readRecords } from "react-native-health-connect";
-import { DateFormatter } from "../utils/DateFormatter";
+import { getBeginningOfLast14Days } from "../utils/dates";
 
 const now = () => {
   return new Date();
@@ -10,7 +10,7 @@ export async function getLast14Days() {
     ascendingOrder: false,
     timeRangeFilter: {
       operator: "between",
-      startTime: DateFormatter.getBeginningOfLast14Days().toISOString(),
+      startTime: getBeginningOfLast14Days().toISOString(),
       endTime: now().toISOString(),
     },
   });

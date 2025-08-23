@@ -1,6 +1,6 @@
 import { getLast14Days } from "@/src/health-connect/sleep-data";
 import { SleepRecord } from "@/src/records/SleepRecord";
-import { DateFormatter } from "@/src/utils/DateFormatter";
+import { getHours, getMinutes } from "@/src/utils/dates";
 import { useState } from "react";
 import { ReadRecordsResult } from "react-native-health-connect";
 import { List } from "react-native-paper";
@@ -35,9 +35,9 @@ export default function Last14DaysSection() {
   /** Average total sleep time over the last 14 days */
   const currAverageTST = SleepRecord.getAverageTST(sleepArray);
   const averageTSTDescription =
-    DateFormatter.getHours(currAverageTST) +
+    getHours(currAverageTST) +
     "h " +
-    DateFormatter.getMinutes(currAverageTST) +
+    getMinutes(currAverageTST) +
     "m";
 
     getSleepRecords();

@@ -2,24 +2,20 @@ import { useTheme, Text, Divider, Button } from 'react-native-paper';
 import { useCallback, useState } from 'react';
 
 import ThemedView from '@/src/components/ThemedView';
-import { DateFormatter } from '@/src/utils/DateFormatter';
 import { View, StyleSheet } from 'react-native';
 import Ionicons from '@expo/vector-icons/Ionicons';
-import { useFocusEffect, useRouter } from 'expo-router';
+import { useFocusEffect } from 'expo-router';
 import { journalRecordsMap } from '@/src/database/journal_records';
-import { dateToString } from '@/src/utils/dates';
+import { dateToString, getLocalDate, getTimeZone } from '@/src/utils/dates';
 import JournalEntryRead from '../JournalEntryRead';
 
 export default function AboutScreen(): JSX.Element {
-  const dateFormatter = new DateFormatter();
-
   const currDate = (new Date());
   const [date, setDate] = useState(currDate);
   const [record, setRecord] = useState(journalRecordsMap.get(dateToString(currDate)));
   const dayInterval = 1000 * 60 * 60 * 24;
 
   const theme = useTheme();
-  const router = useRouter();
 
   /** Called when the user changes the date */
   const handleDateChange = (date: Date): void => {
@@ -48,7 +44,7 @@ export default function AboutScreen(): JSX.Element {
 
         <View style={styles.row}>
           <Ionicons name='calendar' color={theme.colors.primary} size={24} style={styles.rowArrow} />
-          <Text variant='bodyLarge' style={styles.rowDate}>{DateFormatter.getLocalDate(date, dateFormatter.getTimeZone())}</Text>
+          <Text variant='bodyLarge' style={styles.rowDate}>{getLocalDate(date, getTimeZone())}</Text>
         </View>
 
         <View>
