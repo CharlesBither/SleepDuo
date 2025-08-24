@@ -7,13 +7,13 @@ import {
 } from "@/src/health-connect/initialize";
 import ThemedView from "@/src/components/ThemedView";
 import { getId } from "@/src/database/auth";
-import { initJournalRecordsMap } from "@/src/database/journal_records";
 import { getGrantedPermissions } from "react-native-health-connect";
 import LoadingScreen from "../LoadingScreen";
 import ManualPermissionCard from "@/src/components/cards/ManualPermissionCard";
 import RequestPermissionCard from "@/src/components/cards/RequestPermissionCard";
 import { useFocusEffect } from "expo-router";
 import Last14DaysSection from "@/src/components/listSections/home/Last14DaysSection";
+import { initRecordDetailsMap } from "@/src/database/recordDetails";
 
 /**
  * This component is shown after the user is authenticated.
@@ -29,7 +29,7 @@ export default function Home() {
   const [requestedPermissions, setRequestedPermissions] = useState(false);
 
   // initialize the journalRecordsMap for the logged in user
-  // getId().then((id) => initJournalRecordsMap(id));
+  getId().then((id) => initRecordDetailsMap(id));
 
   /** Gets required permissions from health-connect */
   initHealthConnect()

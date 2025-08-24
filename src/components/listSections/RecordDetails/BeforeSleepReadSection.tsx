@@ -1,21 +1,22 @@
 import { List, useTheme } from "react-native-paper";
-import { RecordDetails } from "@/src/types/RecordDetails";
 import AntDesign from '@expo/vector-icons/AntDesign';
+import { getRecordDetails } from "@/src/database/recordDetails";
 
 type BeforeSleepReadSectionProps = {
-  details: RecordDetails | undefined;
+  guid: string; // sleep record ID
 };
 
 export default function BeforeSleepReadSection(
   props: BeforeSleepReadSectionProps
 ) {
   const theme = useTheme();
+  const details = getRecordDetails(props.guid);
 
   const handleAddDetailsPress = (): void => {
-    
+    //TODO
   }
 
-  if (!props.details) {
+  if (!details) {
     return (
       <List.Section>
         <List.Subheader>Before sleep</List.Subheader>
@@ -29,14 +30,14 @@ export default function BeforeSleepReadSection(
   }
 
   const alcoholDescription =
-    props.details.alcohol_quantity === "0"
+    details.alcohol_quantity === "0"
       ? `0 drinks consumed`
-      : `${props.details.alcohol_quantity} drinks consumed by ${props.details.alcohol_date}`;
+      : `${details.alcohol_quantity} drinks consumed by ${details.alcohol_date}`;
 
   const caffieneDescription =
-    props.details.caffiene_quantity === "0"
+    details.caffiene_quantity === "0"
       ? `0 drinks consumed`
-      : `${props.details.caffiene_quantity} drinks consumed by ${props.details.caffiene_date}`;
+      : `${details.caffiene_quantity} drinks consumed by ${details.caffiene_date}`;
 
   return (
     <List.Section>
