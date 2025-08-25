@@ -6,6 +6,7 @@ import {
 import { supabase } from '@/src/lib/supabase'
 import { initJournalRecordsMap } from '@/src/database/journal_records'
 import { getId } from '@/src/database/auth'
+import { initRecordDetailsMap } from '@/src/database/recordDetails'
 
 export default function () {
   GoogleSignin.configure({
@@ -32,10 +33,6 @@ export default function () {
           } else {
             throw new Error('no ID token present!');
           }
-
-          // initialize the journalRecordsMap
-          const uuid = await getId();
-          await initJournalRecordsMap(uuid);
         } catch (error: any) {
           if (error.code === statusCodes.SIGN_IN_CANCELLED) {
             // user cancelled the login flow

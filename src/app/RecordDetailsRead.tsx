@@ -13,12 +13,19 @@ export default function RecordDetailsRead() {
   const [loading, setLoading] = useState(true);
   const [record, setRecord] = useState<SleepRecord | undefined>(undefined);
 
-  const getSleepRecord = async (): Promise<void> => {
-    const healthConnectRecord = await readRecord("SleepSession", guid);
+  // const getSleepRecord = async (): Promise<void> => {
+  //   const healthConnectRecord = await readRecord("SleepSession", guid);
+  //   console.log(healthConnectRecord);
+  //   setRecord(new SleepRecord(healthConnectRecord));
+  //   setLoading(false);
+  // };
+  // getSleepRecord();
+
+  readRecord("SleepSession", guid)
+  .then(healthConnectRecord => {
     setRecord(new SleepRecord(healthConnectRecord));
     setLoading(false);
-  };
-  getSleepRecord();
+  })
 
   if (loading) return <LoadingScreen />;
   

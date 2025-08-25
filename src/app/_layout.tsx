@@ -37,6 +37,7 @@ export default function RootLayout() {
             headerTitle: "",
           }}
            />
+           <Stack.Screen name="RecordDetailsEditBeforeSleep" options={{ headerShown: false }} />
           <Stack.Screen name="Auth" options={{
             headerTitle: "Login",
           }} />

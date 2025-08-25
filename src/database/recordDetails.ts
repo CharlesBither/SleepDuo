@@ -128,10 +128,12 @@ export const insertRecordDetails = async (
   type Response = QueryData<typeof query>;
 
   const { data, error } = await query;
-  if (error?.message)
-    console.error("insertRecordDetails threw error: " + error.message);
+  if (error?.message) {
+    throw new Error("insertRecordDetails threw error: " + error.message);
+  }
   if (!data) throw new Error("insertRecordDetails returned null data");
   const response: Response = data;
+  recordDetailsMap.set(details.guid, details);
 
   return response;
 };

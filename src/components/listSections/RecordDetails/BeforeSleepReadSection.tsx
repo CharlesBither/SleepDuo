@@ -1,6 +1,7 @@
 import { List, useTheme } from "react-native-paper";
 import AntDesign from '@expo/vector-icons/AntDesign';
 import { getRecordDetails } from "@/src/database/recordDetails";
+import { router } from "expo-router";
 
 type BeforeSleepReadSectionProps = {
   guid: string; // sleep record ID
@@ -13,7 +14,7 @@ export default function BeforeSleepReadSection(
   const details = getRecordDetails(props.guid);
 
   const handleAddDetailsPress = (): void => {
-    //TODO
+    router.push(`/RecordDetailsEditBeforeSleep?guid=${props.guid}`)
   }
 
   if (!details) {

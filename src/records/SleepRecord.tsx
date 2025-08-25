@@ -1,4 +1,4 @@
-import { RecordResult } from 'react-native-health-connect';
+import { readRecord, RecordResult } from 'react-native-health-connect';
 
 import { SleepDuoRecord } from '@/src/records/SleepDuoRecord';
 import { dateToString } from '../utils/dates';
@@ -61,5 +61,14 @@ export class SleepRecord extends SleepDuoRecord {
             dates.add(dateToString(record.date));
         }
         return res / dates.size;
+    }
+
+    static async getSleepRecord(guid: string): Promise<SleepRecord | undefined> {
+        const healthConnectRecord = await readRecord("SleepSession", guid);
+        console.log(healthConnectRecord);
+        if (healthConnectRecord) {
+            return new SleepRecord(healthConnectRecord);
+        }
+        return undefined;
     }
 }
