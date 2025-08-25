@@ -1,7 +1,9 @@
 import { List, useTheme } from "react-native-paper";
 import AntDesign from '@expo/vector-icons/AntDesign';
 import { getRecordDetails } from "@/src/database/recordDetails";
-import { router } from "expo-router";
+import { router, useFocusEffect } from "expo-router";
+import { useCallback, useState } from "react";
+import { RecordDetails } from "@/src/types/RecordDetails";
 
 type BeforeSleepReadSectionProps = {
   guid: string; // sleep record ID
@@ -11,11 +13,17 @@ export default function BeforeSleepReadSection(
   props: BeforeSleepReadSectionProps
 ) {
   const theme = useTheme();
-  const details = getRecordDetails(props.guid);
+  const [details, setDetails] = useState<RecordDetails | undefined>(getRecordDetails(props.guid));
 
   const handleAddDetailsPress = (): void => {
     router.push(`/RecordDetailsEditBeforeSleep?guid=${props.guid}`)
   }
+
+  useFocusEffect(
+    useCallback(() => {
+      setDetails(getRecordDetails(props.guid))
+    }, [])
+  )
 
   if (!details) {
     return (
@@ -44,12 +52,12 @@ export default function BeforeSleepReadSection(
     <List.Section>
       <List.Subheader>Before sleep</List.Subheader>
       <List.Item
-        title="Alcoholic drinks"
-        description={alcoholDescription}
-      />
-      <List.Item
         title="Caffinated drinks"
         description={caffieneDescription}
+      />
+      <List.Item
+        title="Alcoholic drinks"
+        description={alcoholDescription}
       />
     </List.Section>
   );

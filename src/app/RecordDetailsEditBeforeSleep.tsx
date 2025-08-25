@@ -1,7 +1,6 @@
 import { getRecordDetails, insertRecordDetails } from "@/src/database/recordDetails";
 import { useCallback, useState } from "react";
-import { Dialog, List, Portal, Text, Button, useTheme, Divider } from "react-native-paper";
-import Quantity from "../components/listSections/RecordDetails/Quantity";
+import { Dialog, Portal, Text, Button, useTheme, Divider } from "react-native-paper";
 import DatePicker from "../components/datetimePickers/DatePicker";
 import TimePicker from "../components/datetimePickers/TimePicker";
 import { Modal } from "@/src/types/Modal";
@@ -17,43 +16,35 @@ import { RecordDetails } from "../types/RecordDetails";
 import { getId } from "../database/auth";
 import { StyleSheet } from "react-native";
 import { readRecord } from "react-native-health-connect";
+import AlcoholSection from "../components/listSections/RecordDetails/AlcoholSection";
+import CaffieneSection from "../components/listSections/RecordDetails/CaffieneSection";
+
+// keeps track of date/time picker modal changes
+let selectedTimeModal: Modal = "alcohol";
+let selectedTimeModalDate: Date | undefined = new Date();
+
+let record: SleepRecord | undefined = undefined;
 
 export default function RecordDetailsEditBeforeSleep() {
     const { guid } = useLocalSearchParams<{ guid: string }>();
 
     const details = getRecordDetails(guid);
-    let record: SleepRecord | undefined = undefined;
     const theme = useTheme();
 
     const [alcoholQuantity, setAlcoholQuantity] = useState("0");
     const [alcoholDate, setAlcoholDate] = useState<Date | undefined>(undefined);
     const [caffieneQuantity, setCaffieneQuantity] = useState("0");
     const [caffieneDate, setCaffieneDate] = useState<Date | undefined>(undefined);
-    const [isLoading, setIsLoading] = useState<boolean>(true);
-    // const [record, setRecord] = useState<SleepRecord | undefined>(undefined);
+    const [loading, setLoading] = useState<boolean>(true);
     const [dialogIsVisible, setDialogIsVisible] = useState<boolean>(false);
     const [dialogMsg, setDialogMsg] = useState<string>("");
     const [timeVisible, setTimeVisible] = useState<boolean>(false);         // shows the time picker modal
     const [dateVisible, setDateVisible] = useState<boolean>(false);         // shows the date picker modal
 
-    // keeps track of date/time picker modal changes
-    let selectedTimeModal: Modal = "alcohol";
-    let selectedTimeModalDate: Date | undefined = new Date();
-
-    // const getSleepRecord = async (): Promise<void> => {
-    //     const res = await readRecord("SleepSession", guid);
-    //     console.log(res);
-    //     setRecord(new SleepRecord(res));
-    //     setIsLoading(false);
-    // }
-    // getSleepRecord;
-
     readRecord("SleepSession", guid)
         .then(healthConnectRecord => {
-            // console.log(healthConnectRecord);
             record = new SleepRecord(healthConnectRecord);
-            // console.log(record);
-            setIsLoading(false);
+            setLoading(false);
         })
 
     if (details) {
@@ -80,7 +71,6 @@ export default function RecordDetailsEditBeforeSleep() {
             setDateVisible(false);
             if (!dateParams.date) throw new Error("ReactNativePaperDates dateParams.date is undefined");
             selectedTimeModalDate = dateParams.date;
-            console.log("selectedTimeModalDate = " + selectedTimeModalDate);
             setTimeVisible(true);
         },
         [dateVisible]
@@ -121,8 +111,6 @@ export default function RecordDetailsEditBeforeSleep() {
             throw new Error("record is undefined");
         }
         if (selectedTimeModalDate.getTime() > record.startTime.getTime()) {
-            console.log("modal: " + selectedTimeModalDate.getTime());
-            console.log("record: " + record.startTime.getTime());
             setDialogMsg("Your input time must be before you went to sleep");
             setDialogIsVisible(true);
             selectedTimeModalDate = undefined;
@@ -149,7 +137,7 @@ export default function RecordDetailsEditBeforeSleep() {
      * Inserts the record into the journal_records database table.
      */
     const doSavePress = async (): Promise<void> => {
-        setIsLoading(true);
+        setLoading(true);
         const uuid = await getId();
         const newDetails: RecordDetails = {
             created_at: new Date(),
@@ -165,7 +153,7 @@ export default function RecordDetailsEditBeforeSleep() {
         router.back();
     }
 
-    if (isLoading) {
+    if (loading) {
         return (
             <ThemedView>
                 <LoadingScreen />
@@ -182,18 +170,23 @@ export default function RecordDetailsEditBeforeSleep() {
             </ThemedView>
             <Divider />
 
-            <List.Section>
-                <List.Subheader>Alcohol</List.Subheader>
-                <List.Item
-                    title="Drinks containing alcohol"
-                    right={() => <Quantity quantity={alcoholQuantity} setQuantityFunc={setAlcoholQuantity} setDateFunc={setAlcoholDate} />}
-                />
-                <List.Item
-                    title="When did you have your last drink"
-                    onPress={() => handleDateTimePress("alcohol")}
-                    description={alcoholDate ? alcoholDate.toString() : "Add"}
-                />
-            </List.Section>
+            <CaffieneSection
+                caffieneQuantity={caffieneQuantity}
+                caffieneDate={caffieneDate}
+                setCaffieneQuantity={setCaffieneQuantity}
+                setCaffieneDate={setCaffieneDate}
+                handleDateTimePress={handleDateTimePress}
+            />
+            <Divider />
+
+            <AlcoholSection
+                alcoholQuantity={alcoholQuantity}
+                alcoholDate={alcoholDate}
+                setAlcoholQuantity={setAlcoholQuantity}
+                setAlcoholDate={setAlcoholDate}
+                handleDateTimePress={handleDateTimePress}
+            />
+            <Divider />
 
             <DatePicker dateVisible={dateVisible} onDismissDate={onDismissDate} onConfirmDate={onConfirmDate} />
             <TimePicker timeVisible={timeVisible} onConfirmTime={onConfirmTime} onDismissTime={onDismissTime} />
