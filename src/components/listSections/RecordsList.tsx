@@ -5,7 +5,7 @@ import { Divider, List } from 'react-native-paper';
 import { SleepRecord } from "@/src/records/SleepRecord";
 import { SleepDuoRecord } from '@/src/records/SleepDuoRecord';
 import { router } from 'expo-router';
-import { getHours, getLocalDate, getMinutes, getTimeZone } from '../utils/dates';
+import { getHours, getLocalDate, getMinutes, getTimeZone } from '../../utils/dates';
 
 type Props = {
     recordArray: SleepDuoRecord[],

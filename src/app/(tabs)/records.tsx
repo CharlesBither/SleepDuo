@@ -5,7 +5,7 @@ import { SleepDuoRecord } from "@/src/records/SleepDuoRecord";
 import { hasRequiredPermissions, initHealthConnect } from "@/src/health-connect/initialize";
 import { getLast14Days } from "@/src/health-connect/sleep-data";
 import { SleepRecord } from "@/src/records/SleepRecord";
-import RecordsList from "@/src/components/RecordsList";
+import RecordsList from "@/src/components/listSections/RecordsList";
 import ThemedView from "@/src/components/ThemedView";
 import { getGrantedPermissions, ReadRecordsResult } from "react-native-health-connect";
 import LoadingScreen from "../LoadingScreen";

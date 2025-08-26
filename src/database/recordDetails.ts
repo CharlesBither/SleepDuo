@@ -91,11 +91,14 @@ export const fetchRecordDetails = async (
  * @returns Response data specifying the status of the query
  */
 export const deleteRecordDetails = async (uuid: string, guid: string) => {
-  return await supabase
+  const res =  await supabase
     .from("record_details")
     .delete()
     .eq("uuid", uuid)
     .eq("guid", guid);
+  
+    recordDetailsMap.delete(guid);
+    return res;
 };
 
 /**

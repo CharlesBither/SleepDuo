@@ -5,7 +5,7 @@ import { useState } from "react";
 import LoadingScreen from "./LoadingScreen";
 import { SleepRecord } from "../records/SleepRecord";
 import DuringSleepSection from "../components/listSections/RecordDetails/DuringSleepSection";
-import BeforeSleepReadSection from "../components/listSections/RecordDetails/BeforeSleepReadSection";
+import RecordDetailsBeforeSleepCard from "../components/cards/RecordDetailsBeforeSleepCard";
 
 export default function RecordDetailsRead() {
   const { guid } = useLocalSearchParams<{ guid: string }>();
@@ -27,7 +27,7 @@ export default function RecordDetailsRead() {
 
   return (
     <ThemedView>
-      <BeforeSleepReadSection guid={guid} />
+      <RecordDetailsBeforeSleepCard guid={guid} />
       <DuringSleepSection record={record} />
     </ThemedView>
   );

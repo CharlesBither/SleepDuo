@@ -1,5 +1,5 @@
 import { List, useTheme } from "react-native-paper";
-import Quantity from "./Quantity";
+import Quantity from "../../textInputs/Quantity";
 import { Consumable } from "@/src/types/Consumable";
 
 type AlcoholSectionProps = {
