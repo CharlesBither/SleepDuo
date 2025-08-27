@@ -107,7 +107,12 @@ export const deleteRecordDetails = async (uuid: string, guid: string) => {
  * @returns Response data specifying the status of the query
  */
 export const deleteAllRecordDetailsById = async (uuid: string) => {
-  return await supabase.from("record_details").delete().eq("uuid", uuid);
+  const res = await supabase.from("record_details").delete().eq("uuid", uuid);
+  if (res.error?.message) {
+    throw new Error("deleteAllRecordDetailsById threw error: " + res.error.message);
+  }
+  recordDetailsMap.clear();
+  return res;
 };
 
 /**

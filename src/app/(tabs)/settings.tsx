@@ -1,4 +1,4 @@
-import DeleteJournalSection from "@/src/components/listSections/settings/DeleteJournalSection";
+import DeleteDailyLogsSection from "@/src/components/listSections/settings/DeleteDailyLogsSection";
 import RevokePermissionsSection from "@/src/components/listSections/settings/RevokePermissionsSection";
 import SignOutSection from "@/src/components/listSections/settings/SignOutSection";
 import ThemedView from "@/src/components/ThemedView";
@@ -38,7 +38,7 @@ export default function SettingsScreen() {
       />
       <Divider />
 
-      <DeleteJournalSection showDialogMsg={showDialogMsg} />
+      <DeleteDailyLogsSection />
       <Divider />
 
       <SignOutSection />
