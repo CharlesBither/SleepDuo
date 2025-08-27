@@ -12,7 +12,7 @@ export class SleepDuoRecord {
         this._endTime = endTime;
         this._date = new Date(endTime);
         this._date.setHours(0, 0, 0, 0);
-        this._recordDuration = this._startTime.getTime() - this._endTime.getTime();
+        this._recordDuration = this._endTime.getTime() - this._startTime.getTime();
         this._recordType = recordType;
     }
 
