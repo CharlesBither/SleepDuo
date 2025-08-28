@@ -29,6 +29,14 @@ export const getMinutes = (milliseconds: number): number => {
   return Math.floor(milliseconds / 1000 / 60) % 60;
 };
 
+/** @returns new Date 7 days ago */
+export const getBeginningOfLast7Days = () => {
+  const date = new Date();
+  date.setDate(date.getDate() - 7);
+  date.setHours(0, 0, 0, 0);
+  return date;
+};
+
 /** @returns new Date 14 days ago */
 export const getBeginningOfLast14Days = () => {
   const date = new Date();

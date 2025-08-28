@@ -12,7 +12,6 @@ import LoadingScreen from "../LoadingScreen";
 import ManualPermissionCard from "@/src/components/cards/ManualPermissionCard";
 import RequestPermissionCard from "@/src/components/cards/RequestPermissionCard";
 import { useFocusEffect } from "expo-router";
-import Last14DaysSection from "@/src/components/listSections/home/last14Days/Last14DaysSection";
 import { initRecordDetailsMap } from "@/src/database/recordDetails";
 import OverviewSection from "@/src/components/listSections/home/overview/OverviewSection";
 

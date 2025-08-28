@@ -1,22 +1,23 @@
 import {
   getBeforeNow,
-  getLast14Days,
   getLast30Days,
+  getLast7Days,
 } from "@/src/health-connect/sleep-data";
 import { SleepRecord } from "@/src/records/SleepRecord";
 import { useEffect, useState } from "react";
 import { ReadRecordsResult } from "react-native-health-connect";
-import { List } from "react-native-paper";
 import DurationItem from "./DurationItem";
+import OverviewIntervalSegmentedButton from "@/src/components/buttons/OverviewIntervalSegmentedButton";
 
 export default function OverviewSection() {
-  const [last14Tst, setLast14Tst] = useState(-1);
+  const [last7Tst, setLast7Tst] = useState(-1);
   const [last30Tst, setLast30Tst] = useState(-1);
   const [allTimeTst, setAllTimeTst] = useState(-1);
+  const [interval, setInterval] = useState('7');
 
   useEffect(() => {
-    getLast14Days()
-      .then((records) => handleLast14DaysResult(records))
+    getLast7Days()
+      .then((records) => handleLast7DaysResult(records))
       .catch((e) => {
         throw new Error("OverviewSection getLast14Days threw error: " + e);
       });
@@ -30,11 +31,11 @@ export default function OverviewSection() {
     getBeforeNow().then((records) => handleBeforeNowResult(records));
   }, []);
 
-  const handleLast14DaysResult = (
+  const handleLast7DaysResult = (
     records: ReadRecordsResult<"SleepSession">
   ): void => {
     const sleepArray = SleepRecord.constructSleepRecordArray(records);
-    setLast14Tst(SleepRecord.getAverageTST(sleepArray));
+    setLast7Tst(SleepRecord.getAverageTST(sleepArray));
   };
 
   const handleLast30DaysResult = (
@@ -52,10 +53,13 @@ export default function OverviewSection() {
   };
 
   return (
-    <DurationItem
-      last14DaysTst={last14Tst}
-      last30DaysTst={last30Tst}
-      allTimeTst={allTimeTst}
-    />
+    <>
+      <OverviewIntervalSegmentedButton interval={interval} setInterval={setInterval} />
+      <DurationItem
+        last7DaysTst={last7Tst}
+        last30DaysTst={last30Tst}
+        allTimeTst={allTimeTst}
+      />
+    </>
   );
 }
