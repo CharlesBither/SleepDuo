@@ -65,10 +65,36 @@ export class SleepRecord extends SleepDuoRecord {
         let res = 0;
         for (let i = 0; i < records.length; i++) {
             const record = records[i];
-            res += (record as SleepRecord).totalSleepTime;
+            res += record.totalSleepTime;
             dates.add(dateToString(record.date));
         }
         return res / dates.size;
+    }
+
+    static getAverageTimeInBed(records: SleepRecord[]): number {
+        if (records.length === 0) return 0;
+
+        const dates = new Set<string>();
+        let res = 0;
+        for (let i = 0; i < records.length; i++) {
+            const record = records[i];
+            res += record.timeInBed;
+            dates.add(dateToString(record.date));
+        }
+        return res / dates.size;
+    }
+
+    static getAverageSleepEfficiency(records: SleepRecord[]): string {
+        if (records.length === 0) return '0';
+
+        let tst = 0;
+        let timeInBed = 0;
+        for (let i = 0; i < records.length; i++) {
+            const record = records[i];
+            tst += record.totalSleepTime;
+            timeInBed += record.timeInBed;
+        }
+        return ((tst / timeInBed) * 100).toPrecision(2);
     }
 
     static async getSleepRecord(guid: string): Promise<SleepRecord | undefined> {

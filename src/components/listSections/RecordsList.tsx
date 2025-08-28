@@ -25,7 +25,7 @@ export default function RecordsList({ recordArray: recordArray }: Props) {
     const records = recordArray.map((currRecord) => {
         if (currRecord instanceof SleepRecord) {
             const sleepTime = currRecord.totalSleepTime;
-            const sleepDescription: String = getHours(sleepTime) + "h " + getMinutes(sleepTime) + "m asleep" + "; id: " + currRecord.id;
+            const sleepDescription: String = getHours(sleepTime) + "h " + getMinutes(sleepTime) + "m asleep"
             
             return (
                 <View key={currRecord.endTime.toJSON()}> 

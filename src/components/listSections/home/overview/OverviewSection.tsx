@@ -8,12 +8,14 @@ import { useEffect, useState } from "react";
 import { ReadRecordsResult } from "react-native-health-connect";
 import DurationItem from "./DurationItem";
 import OverviewIntervalSegmentedButton from "@/src/components/buttons/OverviewIntervalSegmentedButton";
+import { OverviewDetails } from "@/src/types/OverviewDetails";
+import { Divider } from "react-native-paper";
 
 export default function OverviewSection() {
-  const [last7Tst, setLast7Tst] = useState(-1);
-  const [last30Tst, setLast30Tst] = useState(-1);
-  const [allTimeTst, setAllTimeTst] = useState(-1);
   const [interval, setInterval] = useState('7');
+  const [last7Details, setLast7Details] = useState<OverviewDetails | undefined>(undefined);
+  const [last30Details, setLast30Details] = useState<OverviewDetails | undefined>(undefined);
+  const [allTimeDetails, setAllTimeDetails] = useState<OverviewDetails | undefined>(undefined);
 
   useEffect(() => {
     getLast7Days()
@@ -35,31 +37,45 @@ export default function OverviewSection() {
     records: ReadRecordsResult<"SleepSession">
   ): void => {
     const sleepArray = SleepRecord.constructSleepRecordArray(records);
-    setLast7Tst(SleepRecord.getAverageTST(sleepArray));
+    setLast7Details({
+      totalSleepTime: SleepRecord.getAverageTST(sleepArray),
+      timeInBed: SleepRecord.getAverageTimeInBed(sleepArray),
+      sleepEfficiency: SleepRecord.getAverageSleepEfficiency(sleepArray)
+    })
   };
 
   const handleLast30DaysResult = (
     records: ReadRecordsResult<"SleepSession">
   ): void => {
     const sleepArray = SleepRecord.constructSleepRecordArray(records);
-    setLast30Tst(SleepRecord.getAverageTST(sleepArray));
+    setLast30Details({
+      totalSleepTime: SleepRecord.getAverageTST(sleepArray),
+      timeInBed: SleepRecord.getAverageTimeInBed(sleepArray),
+      sleepEfficiency: SleepRecord.getAverageSleepEfficiency(sleepArray)
+    })
   };
 
   const handleBeforeNowResult = (
     records: ReadRecordsResult<"SleepSession">
   ): void => {
     const sleepArray = SleepRecord.constructSleepRecordArray(records);
-    setAllTimeTst(SleepRecord.getAverageTST(sleepArray));
+    setAllTimeDetails({
+      totalSleepTime: SleepRecord.getAverageTST(sleepArray),
+      timeInBed: SleepRecord.getAverageTimeInBed(sleepArray),
+      sleepEfficiency: SleepRecord.getAverageSleepEfficiency(sleepArray)
+    })
   };
 
   return (
     <>
       <OverviewIntervalSegmentedButton interval={interval} setInterval={setInterval} />
       <DurationItem
-        last7DaysTst={last7Tst}
-        last30DaysTst={last30Tst}
-        allTimeTst={allTimeTst}
+        last7Details={last7Details}
+        last30Details={last30Details}
+        allTimeDetails={allTimeDetails}
+        interval={interval}
       />
+      <Divider />
     </>
   );
 }
