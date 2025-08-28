@@ -1,4 +1,4 @@
-import { readRecord, RecordResult } from 'react-native-health-connect';
+import { readRecord, ReadRecordsResult, RecordResult } from 'react-native-health-connect';
 
 import { SleepDuoRecord } from '@/src/records/SleepDuoRecord';
 import { dateToString } from '../utils/dates';
@@ -48,6 +48,14 @@ export class SleepRecord extends SleepDuoRecord {
 
     get sleepEfficiency(): String {
         return this._sleepEfficiency;
+    }
+
+    static constructSleepRecordArray(records: ReadRecordsResult<"SleepSession">): SleepRecord[] {
+        const res = [];
+        for (const record of records.records) {
+            res.push(new SleepRecord(record));
+        }
+        return res;
     }
 
     static getAverageTST(records: SleepRecord[]): number {
