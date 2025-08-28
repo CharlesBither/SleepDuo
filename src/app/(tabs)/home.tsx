@@ -1,4 +1,4 @@
-import { useCallback, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 
 import {
   hasRequiredPermissions,
@@ -12,7 +12,7 @@ import LoadingScreen from "../LoadingScreen";
 import ManualPermissionCard from "@/src/components/cards/ManualPermissionCard";
 import RequestPermissionCard from "@/src/components/cards/RequestPermissionCard";
 import { useFocusEffect } from "expo-router";
-import Last14DaysSection from "@/src/components/listSections/home/Last14DaysSection";
+import Last14DaysSection from "@/src/components/listSections/home/last14Days/Last14DaysSection";
 import { initRecordDetailsMap } from "@/src/database/recordDetails";
 
 /**
@@ -28,15 +28,17 @@ export default function Home() {
     useState(false);
   const [requestedPermissions, setRequestedPermissions] = useState(false);
 
-  // initialize the journalRecordsMap for the logged in user
-  getId().then((id) => initRecordDetailsMap(id));
-
-  /** Gets required permissions from health-connect */
-  initHealthConnect()
-    .then(async () => await handleInitHealthConnectSuccess())
-    .catch(() => {
-      throw new Error("could not intialize health connect");
-    });
+  useEffect(() => {
+    /** Gets required permissions from health-connect */
+    initHealthConnect()
+      .then(async () => await handleInitHealthConnectSuccess())
+      .catch(() => {
+        throw new Error("could not intialize health connect");
+      });
+    
+      // initialize the journalRecordsMap for the logged in user
+    getId().then((id) => initRecordDetailsMap(id));
+  }, [])
 
   const handleInitHealthConnectSuccess = async () => {
     await checkForPermissions();

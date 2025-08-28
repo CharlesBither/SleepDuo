@@ -1,18 +1,29 @@
 import { getLast14Days } from "@/src/health-connect/sleep-data";
 import { SleepRecord } from "@/src/records/SleepRecord";
-import { getHours, getMinutes } from "@/src/utils/dates";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { ReadRecordsResult } from "react-native-health-connect";
 import { List } from "react-native-paper";
+import TstItem from "./TstItem";
 
 export default function Last14DaysSection() {
   const [sleepArray, setSleepArray] = useState<SleepRecord[]>([]);
+  const [averageTst, setAverageTst] = useState(-1);
+
+  useEffect(() => {
+    getSleepRecords()
+      .then(() => {
+        setAverageTst(SleepRecord.getAverageTST(sleepArray));
+      })
+  }, [averageTst]);
 
   /** Gets ReadRecordsResult<"SleepSession"> from last 14 days */
-  const getSleepRecords = (): void => {
-    getLast14Days()
-      .then((data) => initSleepArray(data))
-      .catch(() => console.log("could not get sleep data"));
+  const getSleepRecords = async (): Promise<void> => {
+    try {
+      const data = await getLast14Days();
+      return initSleepArray(data);
+    } catch {
+      return console.log("could not get sleep data");
+    }
   };
 
   /**
@@ -32,20 +43,10 @@ export default function Last14DaysSection() {
     }
   };
 
-  /** Average total sleep time over the last 14 days */
-  const currAverageTST = SleepRecord.getAverageTST(sleepArray);
-  const averageTSTDescription =
-    getHours(currAverageTST) +
-    "h " +
-    getMinutes(currAverageTST) +
-    "m";
-
-    getSleepRecords();
-
   return (
     <List.Section>
       <List.Subheader>Last 14 days</List.Subheader>
-      <List.Item title="Total Sleep Time" description={averageTSTDescription} />
+      <TstItem averageTst={averageTst} />
     </List.Section>
   );
 }
