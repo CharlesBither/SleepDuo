@@ -12,8 +12,8 @@ import {
   Divider,
   ActivityIndicator,
 } from "react-native-paper";
-import DatePicker from "../components/datetimePickers/DatePicker";
-import TimePicker from "../components/datetimePickers/TimePicker";
+import DatePicker from "../components/modals/datetimePickers/DatePicker";
+import TimePicker from "../components/modals/datetimePickers/TimePicker";
 import { Modal } from "@/src/types/Modal";
 import { SingleChange } from "react-native-paper-dates/lib/typescript/Date/Calendar";
 import { SleepRecord } from "@/src/records/SleepRecord";
