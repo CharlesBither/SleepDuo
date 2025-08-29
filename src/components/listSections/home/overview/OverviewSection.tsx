@@ -2,14 +2,14 @@ import {
   getBeforeNow,
   getLast30Days,
   getLast7Days,
-} from "@/src/health-connect/sleep-data";
-import { SleepRecord } from "@/src/records/SleepRecord";
+} from "@/src/lib/health-connect/sleep-data";
 import { useEffect, useState } from "react";
 import { ReadRecordsResult } from "react-native-health-connect";
 import DurationItem from "./DurationItem";
 import OverviewIntervalSegmentedButton from "@/src/components/buttons/OverviewIntervalSegmentedButton";
 import { OverviewDetails } from "@/src/types/OverviewDetails";
 import { Divider } from "react-native-paper";
+import { constructSleepRecordArray, getAverageSleepEfficiency, getAverageTimeInBed, getAverageTst } from "@/src/utils/SleepRecord";
 
 export default function OverviewSection() {
   const [interval, setInterval] = useState('7');
@@ -36,33 +36,33 @@ export default function OverviewSection() {
   const handleLast7DaysResult = (
     records: ReadRecordsResult<"SleepSession">
   ): void => {
-    const sleepArray = SleepRecord.constructSleepRecordArray(records);
+    const sleepArray = constructSleepRecordArray(records);
     setLast7Details({
-      totalSleepTime: SleepRecord.getAverageTST(sleepArray),
-      timeInBed: SleepRecord.getAverageTimeInBed(sleepArray),
-      sleepEfficiency: SleepRecord.getAverageSleepEfficiency(sleepArray)
+      totalSleepTime: getAverageTst(sleepArray),
+      timeInBed: getAverageTimeInBed(sleepArray),
+      sleepEfficiency: getAverageSleepEfficiency(sleepArray)
     })
   };
 
   const handleLast30DaysResult = (
     records: ReadRecordsResult<"SleepSession">
   ): void => {
-    const sleepArray = SleepRecord.constructSleepRecordArray(records);
+    const sleepArray = constructSleepRecordArray(records);
     setLast30Details({
-      totalSleepTime: SleepRecord.getAverageTST(sleepArray),
-      timeInBed: SleepRecord.getAverageTimeInBed(sleepArray),
-      sleepEfficiency: SleepRecord.getAverageSleepEfficiency(sleepArray)
+      totalSleepTime: getAverageTst(sleepArray),
+      timeInBed: getAverageTimeInBed(sleepArray),
+      sleepEfficiency: getAverageSleepEfficiency(sleepArray)
     })
   };
 
   const handleBeforeNowResult = (
     records: ReadRecordsResult<"SleepSession">
   ): void => {
-    const sleepArray = SleepRecord.constructSleepRecordArray(records);
+    const sleepArray = constructSleepRecordArray(records);
     setAllTimeDetails({
-      totalSleepTime: SleepRecord.getAverageTST(sleepArray),
-      timeInBed: SleepRecord.getAverageTimeInBed(sleepArray),
-      sleepEfficiency: SleepRecord.getAverageSleepEfficiency(sleepArray)
+      totalSleepTime: getAverageTst(sleepArray),
+      timeInBed: getAverageTimeInBed(sleepArray),
+      sleepEfficiency: getAverageSleepEfficiency(sleepArray)
     })
   };
 

@@ -3,9 +3,10 @@ import ThemedView from "../components/ThemedView";
 import { readRecord } from "react-native-health-connect";
 import { useState } from "react";
 import LoadingScreen from "./LoadingScreen";
-import { SleepRecord } from "../records/SleepRecord";
+import { SleepRecord } from "../types/SleepRecord";
 import DuringSleepSection from "../components/listSections/RecordDetails/DuringSleepSection";
 import RecordDetailsBeforeSleepCard from "../components/cards/RecordDetailsBeforeSleepCard";
+import { constructSleepRecord } from "../utils/SleepRecord";
 
 export default function RecordDetailsRead() {
   const { guid } = useLocalSearchParams<{ guid: string }>();
@@ -15,7 +16,7 @@ export default function RecordDetailsRead() {
 
   readRecord("SleepSession", guid)
   .then(healthConnectRecord => {
-    setRecord(new SleepRecord(healthConnectRecord));
+    setRecord(constructSleepRecord(healthConnectRecord));
     setLoading(false);
   })
 

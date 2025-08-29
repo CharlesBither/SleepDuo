@@ -1,16 +1,16 @@
 import { useCallback, useState } from "react";
 import { Text } from "react-native-paper";
 
-import { SleepDuoRecord } from "@/src/records/SleepDuoRecord";
-import { hasRequiredPermissions, initHealthConnect } from "@/src/health-connect/initialize";
-import { getLast14Days } from "@/src/health-connect/sleep-data";
-import { SleepRecord } from "@/src/records/SleepRecord";
+import { SleepRecord } from "@/src/types/SleepRecord";
+import { hasRequiredPermissions, initHealthConnect } from "@/src/lib/health-connect/initialize";
+import { getLast14Days } from "@/src/lib/health-connect/sleep-data";
 import RecordsList from "@/src/components/listSections/RecordsList";
 import ThemedView from "@/src/components/ThemedView";
 import { getGrantedPermissions, ReadRecordsResult } from "react-native-health-connect";
 import LoadingScreen from "../LoadingScreen";
 import GoHomePermissionCard from "@/src/components/cards/GoHomePermissionCard";
 import { useFocusEffect } from "expo-router";
+import { constructSleepRecord } from "@/src/utils/SleepRecord";
 
 /**
  * Gets the last 14 days of sleep records and renders it's information
@@ -20,7 +20,7 @@ import { useFocusEffect } from "expo-router";
  */
 export default function RecordsScreen() {
 
-  const [recordsArray, setRecordsArray] = useState<SleepDuoRecord[]>([]);
+  const [recordsArray, setRecordsArray] = useState<SleepRecord[]>([]);
   const [hasHealthConnectPermissions, setHasHealthConnectPermissions] = useState(false);
   const [loading, setLoading] = useState(true);
 
@@ -40,11 +40,11 @@ export default function RecordsScreen() {
    * @param data ReadRecordsResult<"SleepSession"> containing 14 days of sleep data.
    */
   const initializeRecordsArray = (data: ReadRecordsResult<"SleepSession">): void => {
-    let arr: SleepDuoRecord[] = [];
+    let arr: SleepRecord[] = [];
 
     const records = data.records;
     for (let i = 0; i < records.length; i++) {
-      const currSleepActivity = new SleepRecord(records[i]);
+      const currSleepActivity = constructSleepRecord(records[i]);
       arr.push(currSleepActivity);
     }
 

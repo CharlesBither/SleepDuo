@@ -1,4 +1,4 @@
-import { SleepRecord } from "@/src/records/SleepRecord";
+import { SleepRecord } from "@/src/types/SleepRecord";
 import { getHours, getMinutes } from "@/src/utils/dates";
 import { List } from "react-native-paper";
 

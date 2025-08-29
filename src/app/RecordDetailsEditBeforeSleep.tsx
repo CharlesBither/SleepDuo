@@ -16,7 +16,7 @@ import DatePicker from "../components/modals/datetimePickers/DatePicker";
 import TimePicker from "../components/modals/datetimePickers/TimePicker";
 import { Modal } from "@/src/types/Modal";
 import { SingleChange } from "react-native-paper-dates/lib/typescript/Date/Calendar";
-import { SleepRecord } from "@/src/records/SleepRecord";
+import { SleepRecord } from "../types/SleepRecord";
 import { router, useLocalSearchParams } from "expo-router";
 import ThemedView from "../components/ThemedView";
 import LoadingScreen from "./LoadingScreen";
@@ -30,6 +30,7 @@ import { readRecord } from "react-native-health-connect";
 import AlcoholSection from "../components/listSections/RecordDetails/AlcoholSection";
 import CaffieneSection from "../components/listSections/RecordDetails/CaffieneSection";
 import DuringSleepSection from "../components/listSections/RecordDetails/DuringSleepSection";
+import { constructSleepRecord } from "../utils/SleepRecord";
 
 // keeps track of date/time picker modal changes
 let selectedTimeModal: Modal = "alcohol";
@@ -55,7 +56,7 @@ export default function RecordDetailsEditBeforeSleep() {
 
   useEffect(() => {
     readRecord("SleepSession", guid).then((healthConnectRecord) => {
-      record = new SleepRecord(healthConnectRecord);
+      record = constructSleepRecord(healthConnectRecord);
       setLoading(false);
     });
 

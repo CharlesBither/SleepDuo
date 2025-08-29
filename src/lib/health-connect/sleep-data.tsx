@@ -1,5 +1,5 @@
+import { getBeginningOfLast14Days, getBeginningOfLast30Days, getBeginningOfLast7Days } from "@/src/utils/dates";
 import { readRecords, ReadRecordsResult } from "react-native-health-connect";
-import { getBeginningOfLast14Days, getBeginningOfLast30Days, getBeginningOfLast7Days } from "../utils/dates";
 
 const now = () => {
   return new Date();

@@ -1,0 +1,1 @@
+export type SleepStage = "awake" | "light" | "deep" | "rem"
