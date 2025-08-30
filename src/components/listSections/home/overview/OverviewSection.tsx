@@ -9,7 +9,7 @@ import DurationItem from "./DurationItem";
 import OverviewIntervalSegmentedButton from "@/src/components/buttons/OverviewIntervalSegmentedButton";
 import { OverviewDetails } from "@/src/types/OverviewDetails";
 import { Divider } from "react-native-paper";
-import { constructSleepRecordArray, getAverageSleepEfficiency, getAverageTimeInBed, getAverageTst } from "@/src/utils/SleepRecord";
+import { constructSleepRecordArray, getAverageSleepEfficiency, getAverageTimeInBed, getAverageTimeInStage, getAverageTst } from "@/src/utils/SleepRecord";
 
 export default function OverviewSection() {
   const [interval, setInterval] = useState('7');
@@ -21,7 +21,7 @@ export default function OverviewSection() {
     getLast7Days()
       .then((records) => handleLast7DaysResult(records))
       .catch((e) => {
-        throw new Error("OverviewSection getLast14Days threw error: " + e);
+        throw new Error("OverviewSection getLast7Days threw error: " + e);
       });
 
     getLast30Days()
@@ -40,7 +40,10 @@ export default function OverviewSection() {
     setLast7Details({
       totalSleepTime: getAverageTst(sleepArray),
       timeInBed: getAverageTimeInBed(sleepArray),
-      sleepEfficiency: getAverageSleepEfficiency(sleepArray)
+      sleepEfficiency: getAverageSleepEfficiency(sleepArray),
+      timeLightSleep: getAverageTimeInStage(sleepArray, "light"),
+      timeDeepSleep: getAverageTimeInStage(sleepArray, "deep"),
+      timeRemSleep: getAverageTimeInStage(sleepArray, "rem"),
     })
   };
 
@@ -51,7 +54,10 @@ export default function OverviewSection() {
     setLast30Details({
       totalSleepTime: getAverageTst(sleepArray),
       timeInBed: getAverageTimeInBed(sleepArray),
-      sleepEfficiency: getAverageSleepEfficiency(sleepArray)
+      sleepEfficiency: getAverageSleepEfficiency(sleepArray),
+      timeLightSleep: getAverageTimeInStage(sleepArray, "light"),
+      timeDeepSleep: getAverageTimeInStage(sleepArray, "deep"),
+      timeRemSleep: getAverageTimeInStage(sleepArray, "rem"),
     })
   };
 
@@ -62,7 +68,10 @@ export default function OverviewSection() {
     setAllTimeDetails({
       totalSleepTime: getAverageTst(sleepArray),
       timeInBed: getAverageTimeInBed(sleepArray),
-      sleepEfficiency: getAverageSleepEfficiency(sleepArray)
+      sleepEfficiency: getAverageSleepEfficiency(sleepArray),
+      timeLightSleep: getAverageTimeInStage(sleepArray, "light"),
+      timeDeepSleep: getAverageTimeInStage(sleepArray, "deep"),
+      timeRemSleep: getAverageTimeInStage(sleepArray, "rem"),
     })
   };
 
