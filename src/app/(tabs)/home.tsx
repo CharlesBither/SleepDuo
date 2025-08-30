@@ -13,7 +13,7 @@ import ManualPermissionCard from "@/src/components/cards/ManualPermissionCard";
 import RequestPermissionCard from "@/src/components/cards/RequestPermissionCard";
 import { useFocusEffect } from "expo-router";
 import { initRecordDetailsMap } from "@/src/database/recordDetails";
-import OverviewSection from "@/src/components/listSections/home/overview/OverviewSection";
+import OverviewContainer from "@/src/components/containers/OverviewContainer";
 import OverviewExploreCard from "@/src/components/cards/OverviewExploreCard";
 
 /**
@@ -93,7 +93,7 @@ export default function Home() {
   }
   return (
     <ThemedView>
-      <OverviewSection />
+      <OverviewContainer />
       <OverviewExploreCard />
     </ThemedView>
   );
