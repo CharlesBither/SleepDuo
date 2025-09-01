@@ -2,6 +2,7 @@ import { ActivityIndicator, Divider, List, Text } from "react-native-paper";
 import { getHours, getMinutes } from "@/src/utils/dates";
 import { OverviewDetails } from "@/src/types/OverviewDetails";
 import { StyleSheet } from "react-native";
+import ExploreDataSection from "../../ExploreDataSection";
 
 type DurationItemProps = {
   last7Details: OverviewDetails | undefined;
@@ -23,54 +24,7 @@ export default function OverviewSection(props: DurationItemProps) {
   if (props.interval === '30') details = props.last30Details;
   else if (props.interval === 'All time') details = props.allTimeDetails;
 
-  return (
-    <>
-      <List.Section>
-        <List.Subheader>Duration</List.Subheader>
-        <List.Item
-          title="Asleep"
-          right={() => <Text>{getHours(details.totalSleepTime)}h {getMinutes(details.totalSleepTime)}m</Text>}
-          description="Average time spent asleep"
-          contentStyle={styles.listItem}
-        />
-        <List.Item
-          title="In bed"
-          right={() => <Text>{getHours(details.timeInBed)}h {getMinutes(details.timeInBed)}m</Text>}
-          description="Average time spent in bed"
-          contentStyle={styles.listItem}
-        />
-        <List.Item
-          title="Efficiency"
-          right={() => <Text>{details.sleepEfficiency}%</Text>}
-          description="Average time in bed spent asleep"
-          contentStyle={styles.listItem}
-        />
-      </List.Section>
-      <Divider style={styles.divider} />
-      <List.Section>
-        <List.Subheader>Sleep stages</List.Subheader>
-        <List.Item
-          title="Light sleep"
-          right={() => <Text>{getHours(details.timeLightSleep)}h {getMinutes(details.timeLightSleep)}m</Text>}
-          description="Average time in light sleep"
-          contentStyle={styles.listItem}
-        />
-        <List.Item
-          title="Deep sleep"
-          right={() => <Text>{getHours(details.timeDeepSleep)}h {getMinutes(details.timeDeepSleep)}m</Text>}
-          description="Average time in deep sleep"
-          contentStyle={styles.listItem}
-        />
-        <List.Item
-          title="REM sleep"
-          right={() => <Text>{getHours(details.timeRemSleep)}h {getMinutes(details.timeRemSleep)}m</Text>}
-          description="Average time in REM sleep"
-          contentStyle={styles.listItem}
-        />
-      </List.Section>
-    </>
-
-  );
+  return <ExploreDataSection details={details} />
 }
 
 const styles = StyleSheet.create({
