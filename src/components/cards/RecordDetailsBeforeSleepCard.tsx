@@ -6,6 +6,7 @@ import { useCallback, useState } from "react";
 import { RecordDetails } from "@/src/types/RecordDetails";
 import { View } from "react-native";
 import RecordDetailsDeleteButton from "../buttons/RecordDetailsDeleteButton";
+import { getTimeZone } from "@/src/utils/dates";
 
 type RecordDetailsBeforeSleepCardProps = {
   guid: string; // sleep record ID
@@ -52,12 +53,12 @@ export default function RecordDetailsBeforeSleepCard(
   const alcoholDescription =
     details.alcohol_quantity === "0"
       ? `0 drinks consumed`
-      : `${details.alcohol_quantity} drinks consumed by ${details.alcohol_date?.toLocaleString()}`;
+      : `${details.alcohol_quantity} drinks consumed by ${details.alcohol_date?.toLocaleString('en-US', {timeZone: getTimeZone(), timeZoneName: "short"})}`;
 
   const caffieneDescription =
     details.caffiene_quantity === "0"
       ? `0 drinks consumed`
-      : `${details.caffiene_quantity} drinks consumed by ${details.caffiene_date?.toLocaleString()}`;
+      : `${details.caffiene_quantity} drinks consumed by ${details.caffiene_date?.toLocaleString('en-US', {timeZone: getTimeZone(), timeZoneName: "short"})}`;
 
   return (
     <Card>

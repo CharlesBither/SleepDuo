@@ -1,5 +1,5 @@
 import { SleepRecord } from "@/src/types/SleepRecord";
-import { getHours, getMinutes } from "@/src/utils/dates";
+import { getHours, getMinutes, getTimeZone } from "@/src/utils/dates";
 import { List } from "react-native-paper";
 
 type DuringSleepSectionProps = {
@@ -10,8 +10,8 @@ export default function DuringSleepSection(props: DuringSleepSectionProps) {
   return (
     <List.Section>
       <List.Subheader>During sleep</List.Subheader>
-      <List.Item title="Went to sleep at" description={props.record.startTime.toLocaleString()} />
-      <List.Item title="Got out of bed at" description={props.record.endTime.toLocaleString()} />
+      <List.Item title="Went to sleep at" description={props.record.startTime.toLocaleString("en-US", {timeZone: getTimeZone(), timeZoneName: "short"})} />
+      <List.Item title="Got out of bed at" description={props.record.endTime.toLocaleString('en-US', {timeZone: getTimeZone(), timeZoneName: "short"})} />
       <List.Item
         title="Duration"
         description={`${getHours(props.record.totalSleepTime)}h ${getMinutes(
