@@ -10,7 +10,8 @@ type ExploreDataSectionProps = {
 export default function ExploreDataSection({ details }: ExploreDataSectionProps) {
     if (!details) {
         return <ActivityIndicator />
-    } else if (details.totalSleepTime === 0) {
+    } 
+    else if (details.totalSleepTime === 0) {
         return (
             <Text>Not enough recorded logs. Create additional logs to view this data.</Text>
         )

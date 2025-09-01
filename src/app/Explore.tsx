@@ -27,10 +27,9 @@ export default function Explore() {
             timeRemSleep: getAverageTimeInStage(sleepArray, "rem"),
           })
         })
-
+        .catch((error) => {throw new Error("getSleepRecordArraysByFilter threw error: " + error)});
     }
-
-  })
+  }, [filterType, activity]);
 
   const renderActivityTitle = (): string => {
     return `Activity: ${activity}`;
@@ -70,7 +69,7 @@ export default function Explore() {
             description="Click the button to switch the filter type"
             right={() => (
               <Button onPress={handleSwitchPress}>
-                Change activity
+                Switch filter
               </Button>
             )}
           />
@@ -103,7 +102,7 @@ export default function Explore() {
           description="Click the button to switch the filter type"
           right={() => (
             <Button onPress={handleSwitchPress}>
-              Change activity
+              Switch filter
             </Button>
           )}
         />

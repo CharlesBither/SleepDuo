@@ -188,7 +188,7 @@ export const getRecordDetails = (guid: string): RecordDetails | undefined => {
 }
 
 export const getRecordDetailsMapValues = (): RecordDetails[] => {
-  return recordDetailsMap.values().toArray();
+  return [...recordDetailsMap.values()];
 }
 
 const populateRecordDetailsMap = (data: FetchResponse): void => {
