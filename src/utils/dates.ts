@@ -60,10 +60,34 @@ export const getTimeZone = (): string => {
 
 export const getFormattedDate = (date: Date): string => {
   const options: Intl.DateTimeFormatOptions = {
-    timeStyle: "medium",
-    dateStyle: "short",
-    timeZone: getTimeZone(), 
-    timeZoneName: "short"
+    weekday: "short",
+    month: "short",
+    day: "numeric",
   }
-  return date.toLocaleDateString("en-US", options);
-}
+  return date.toLocaleString("en-US", options);
+};
+
+export const getFormattedTime = (date: Date): string => {
+  const options: Intl.DateTimeFormatOptions = {
+    timeZone: getTimeZone(), 
+    timeZoneName: "short",
+    dayPeriod: "narrow",
+    hour: "numeric",
+    minute: "numeric"
+  }
+  return date.toLocaleString("en-US", options);
+};
+
+export const getFormattedDateTime = (date: Date): string => {
+  const options: Intl.DateTimeFormatOptions = {
+    timeZone: getTimeZone(), 
+    timeZoneName: "short",
+    weekday: "short",
+    month: "short",
+    day: "numeric",
+    dayPeriod: "narrow",
+    hour: "numeric",
+    minute: "numeric"
+  }
+  return date.toLocaleString("en-US", options);
+};
