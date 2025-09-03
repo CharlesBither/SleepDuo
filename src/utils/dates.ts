@@ -58,21 +58,12 @@ export const getTimeZone = (): string => {
   return timeZone ? timeZone : "UTC";
 };
 
-export const getLocalDate = (date: Date, tz: string): string => {
+export const getFormattedDate = (date: Date): string => {
   const options: Intl.DateTimeFormatOptions = {
-    weekday: "short",
-    month: "short",
-    day: "numeric",
-    timeZone: tz,
-  };
-
+    timeStyle: "medium",
+    dateStyle: "short",
+    timeZone: getTimeZone(), 
+    timeZoneName: "short"
+  }
   return date.toLocaleDateString("en-US", options);
-};
-
-export const dateTimeFormat = new Intl.DateTimeFormat('en-US', {
-  timeStyle: "medium",
-  dateStyle: "short",
-  timeZone: getTimeZone(), 
-  timeZoneName: "short"
-})
-
+}

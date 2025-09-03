@@ -5,10 +5,9 @@ import { Divider, List } from "react-native-paper";
 import { SleepRecord } from "@/src/types/SleepRecord";
 import { router } from "expo-router";
 import {
+  getFormattedDate,
   getHours,
-  getLocalDate,
   getMinutes,
-  getTimeZone,
 } from "../../utils/dates";
 
 type Props = {
@@ -34,7 +33,7 @@ export default function RecordsList({ recordArray: recordArray }: Props) {
       <View key={currRecord.endTime.toJSON()}>
         <List.Section>
           <List.Subheader>
-            {getLocalDate(currRecord.endTime, getTimeZone())}
+            {getFormattedDate(currRecord.endTime)}
           </List.Subheader>
           <List.Item
             right={(props) => <List.Icon {...props} icon="sleep" />}

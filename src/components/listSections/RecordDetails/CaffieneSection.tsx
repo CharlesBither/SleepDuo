@@ -1,7 +1,7 @@
 import { List, useTheme } from "react-native-paper";
 import Quantity from "../../textInputs/Quantity";
 import { Consumable } from "@/src/types/Consumable";
-import { dateTimeFormat } from "@/src/utils/dates";
+import { getFormattedDate } from "@/src/utils/dates";
 
 type CaffieneSectionProps = {
     caffieneQuantity: string;
@@ -23,7 +23,7 @@ export default function CaffieneSection(props: CaffieneSectionProps) {
                 />
                 <List.Item
                     title="When did you have your last drink"
-                    description={props.caffieneDate ? dateTimeFormat.format(props.caffieneDate) : "N/A"}
+                    description={props.caffieneDate ? getFormattedDate(props.caffieneDate) : "N/A"}
                     style={{ backgroundColor: theme.colors.surfaceDisabled }}
                 />
             </List.Section>

@@ -6,7 +6,7 @@ import { useCallback, useState } from "react";
 import { RecordDetails } from "@/src/types/RecordDetails";
 import { View } from "react-native";
 import RecordDetailsDeleteButton from "../buttons/RecordDetailsDeleteButton";
-import { dateTimeFormat, getTimeZone } from "@/src/utils/dates";
+import { getFormattedDate } from "@/src/utils/dates";
 
 type RecordDetailsBeforeSleepCardProps = {
   guid: string; // sleep record ID
@@ -51,14 +51,14 @@ export default function RecordDetailsBeforeSleepCard(
   }
 
   const alcoholDescription =
-    details.alcohol_quantity === "0"
+    details.alcohol_quantity === "0" || !details.alcohol_date
       ? `0 drinks consumed`
-      : `${details.alcohol_quantity} drinks consumed by ${dateTimeFormat.format(details.alcohol_date)}`;
+      : `${details.alcohol_quantity} drinks consumed by ${getFormattedDate(details.alcohol_date)}`;
 
   const caffieneDescription =
-    details.caffiene_quantity === "0"
+    details.caffiene_quantity === "0" || !details.caffiene_date
       ? `0 drinks consumed`
-      : `${details.caffiene_quantity} drinks consumed by ${dateTimeFormat.format(details.caffiene_date)}`;
+      : `${details.caffiene_quantity} drinks consumed by ${getFormattedDate(details.caffiene_date)}`;
 
   return (
     <Card>

@@ -6,7 +6,6 @@ import ThemedView from '../components/ThemedView';
 
 import { supabase } from '../lib/supabase'
 import { Session } from '@supabase/supabase-js'
-import { initJournalRecordsMap } from '../database/journal_records';
 import LoadingScreen from './LoadingScreen';
 
 // register en locale for react-native-paper-dates
@@ -42,11 +41,6 @@ export default function Index() {
 
   supabase.auth.getSession().then(({ data: { session } }) => {
     setSession(session)
-    if (session && session.user) {
-      // initJournalRecordsMap(session.user.id)
-      //   .then(() => console.log("initialized journalRecordsMap"))
-      //   .catch(() => console.error("error initializing journalRecordsMap"));
-    }
     setIsLoading(false)
   })
 
