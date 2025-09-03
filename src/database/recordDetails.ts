@@ -192,6 +192,7 @@ export const getRecordDetailsMapValues = (): RecordDetails[] => {
 }
 
 const populateRecordDetailsMap = (data: FetchResponse): void => {
+  recordDetailsMap.clear();
   for (const row of data) {
     const created = new Date(row.created_at);
 
