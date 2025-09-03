@@ -1,50 +1,27 @@
-# Welcome to your Expo app 👋
+# Welcome to SleepDuo
 
-This is an [Expo](https://expo.dev) project created with [`create-expo-app`](https://www.npmjs.com/package/create-expo-app).
+SleepDuo is both a sleep diary and sleep-tracking Android app, allowing you to log activities about your day and see how they impact your sleep. SleepDuo is integrated with Health Connect so that your sleep data is is up to date with your other apps. This means that SleepDuo will work with any wearable sleep tracker that also supports Health Connect such as Fitbit, Garmin, and Oura Ring.
+
+## Download
+
+Download link here
+
+## Setup
+
+After installing the app, you must complete the following steps before you can start using SleepDuo:
+
+1. Upon starting the app, sign in with a Google account.
+
+
+2. Click the "Set up Health Connect" button to grant SleepDuo permission to read Health Connect sleep data.
+
 
 ## Get started
 
-1. Install dependencies
+After completing the setup instructions above and wearing a supported sleep tracker, your sleep sessions will appear in the Records tab.
 
-   ```bash
-   npm install
-   ```
+Pressing a record will show you a page with details about that specific sleep session. From here, you can click on the plus icon to record a log for the sleep session.
 
-2. Start the app
+The Home tab will show you a view of your average sleep data including sleep time, sleep efficiency, and time in different sleep stages. 
 
-   ```bash
-    npx expo start
-   ```
-
-In the output, you'll find options to open the app in a
-
-- [development build](https://docs.expo.dev/develop/development-builds/introduction/)
-- [Android emulator](https://docs.expo.dev/workflow/android-studio-emulator/)
-- [iOS simulator](https://docs.expo.dev/workflow/ios-simulator/)
-- [Expo Go](https://expo.dev/go), a limited sandbox for trying out app development with Expo
-
-You can start developing by editing the files inside the **app** directory. This project uses [file-based routing](https://docs.expo.dev/router/introduction).
-
-## Get a fresh project
-
-When you're ready, run:
-
-```bash
-npm run reset-project
-```
-
-This command will move the starter code to the **app-example** directory and create a blank **app** directory where you can start developing.
-
-## Learn more
-
-To learn more about developing your project with Expo, look at the following resources:
-
-- [Expo documentation](https://docs.expo.dev/): Learn fundamentals, or go into advanced topics with our [guides](https://docs.expo.dev/guides).
-- [Learn Expo tutorial](https://docs.expo.dev/tutorial/introduction/): Follow a step-by-step tutorial where you'll create a project that runs on Android, iOS, and the web.
-
-## Join the community
-
-Join our community of developers creating universal apps.
-
-- [Expo on GitHub](https://github.com/expo/expo): View our open source platform and contribute.
-- [Discord community](https://chat.expo.dev): Chat with Expo users and ask questions.
+To view even more detailed data, you can click on the Explore card. This will bring you to a page where you can filter your sleep data. For example, if you recorded that you drank alcohol on one or more of your records, then you can view your avereage sleep data only on the sleep session where you drank alcohol the day before.
