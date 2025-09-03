@@ -8,7 +8,7 @@ import { dateToString } from "./dates";
 import { SleepStage } from "../types/SleepStage";
 import { SleepRecordFilter } from "../types/SleepRecordFilter";
 import { getBeforeNow } from "../lib/health-connect/sleep-data";
-import { getRecordDetails } from "../database/recordDetails";
+import { getRecordDetails, getRecordDetailsMapValues } from "../database/recordDetails";
 
 export const constructSleepRecord = (
   record: RecordResult<"SleepSession">
@@ -140,22 +140,23 @@ export const getSleepRecord = async (
  * Gets all sleep records that are associated to a given filter. For example, if the filter is "alcohol",
  * then this function will return all SleepRecords where alcohol use was recorded.
  * @param filter An activity that is associated to a SleepSession
- * @returns SleepRecord[] such that each record is associated to the filter
+ * @returns SleepRecord[][] such that SleepRecord[0][] contains records where the filter is included
+ * and SleepRecord[1][] contains records where the filter is excluded
  */
-export const getSleepRecordArrayWithFilter = async (filter: SleepRecordFilter): Promise<SleepRecord[]> => {
-    const res = [];
-    const data = await getBeforeNow();
-    for (const record of data.records) {
-        if (!record.metadata?.id) continue;
+export const getSleepRecordArraysByFilter = async (filter: SleepRecordFilter): Promise<[SleepRecord[], SleepRecord[]]> => {
+  const included = [];
+  const excluded = [];
 
-        const guid = record.metadata.id;
-        const details = getRecordDetails(guid);
-        if (!details) continue;
-
-        if ((filter === "alcohol" && details.alcohol_quantity !== "0")
-            || (filter === "caffiene" && details.caffiene_quantity !== "0")) {
-            res.push(constructSleepRecord(record));
-        }
+  const detailsArray = getRecordDetailsMapValues();
+  for (const details of detailsArray) {
+    const sleepRecord = constructSleepRecord(await readRecord("SleepSession", details.guid));
+    if ((filter === "alcohol" && details.alcohol_quantity !== "0")
+      || (filter === "caffiene" && details.caffiene_quantity !== "0")) {
+        included.push(sleepRecord);
+    } else {
+      excluded.push(sleepRecord);
     }
-    return res;
+  }
+
+  return [included, excluded];
 }

@@ -1,11 +1,13 @@
+import { Consumable } from "@/src/types/Consumable";
+import { SleepRecordFilter } from "@/src/types/SleepRecordFilter";
 import { useState } from "react";
 import { StyleSheet, View } from "react-native";
 import { Modal, Portal, RadioButton, Button, useTheme } from "react-native-paper";
 
 type ExploreModalProps = {
-  activity: string;
+  activity: SleepRecordFilter | "";
   visible: boolean;
-  setActivity: React.Dispatch<React.SetStateAction<string>>;
+  setActivity: React.Dispatch<React.SetStateAction<"" | Consumable>>;
   setVisible: React.Dispatch<React.SetStateAction<boolean>>;
 };
 
@@ -28,6 +30,12 @@ export default function ExploreModal(props: ExploreModalProps) {
     props.setVisible(false);
   }
 
+  const handleValueChange = (newValue: string): void => {
+    if (newValue === "alcohol" || newValue === "caffiene" || newValue === "") {
+      setValue(newValue);
+    }
+  }
+
   return (
     <Portal>
       <Modal
@@ -36,12 +44,12 @@ export default function ExploreModal(props: ExploreModalProps) {
         contentContainerStyle={containerStyle}
       >
         <RadioButton.Group
-          onValueChange={(newValue) => setValue(newValue)}
+          onValueChange={(newValue) => handleValueChange(newValue)}
           value={value}
         >
 
-          <RadioButton.Item label="Alcohol" value="Alcohol" style={{backgroundColor: theme.colors.elevation.level2}} />
-          <RadioButton.Item label="Caffiene" value="Caffiene" style={{backgroundColor: theme.colors.elevation.level2}} />
+          <RadioButton.Item label="Alcohol" value="alcohol" style={{backgroundColor: theme.colors.elevation.level2}} />
+          <RadioButton.Item label="Caffiene" value="caffiene" style={{backgroundColor: theme.colors.elevation.level2}} />
         </RadioButton.Group>
         <View style={styles.buttonContainer}>
           <View style={{flex: 1}}></View>

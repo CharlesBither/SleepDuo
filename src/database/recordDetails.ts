@@ -187,6 +187,10 @@ export const getRecordDetails = (guid: string): RecordDetails | undefined => {
   return recordDetailsMap.get(guid);
 }
 
+export const getRecordDetailsMapValues = (): RecordDetails[] => {
+  return [...recordDetailsMap.values()];
+}
+
 const populateRecordDetailsMap = (data: FetchResponse): void => {
   for (const row of data) {
     const created = new Date(row.created_at);

@@ -1,7 +1,7 @@
 import { useLocalSearchParams } from "expo-router";
 import ThemedView from "../components/ThemedView";
 import { readRecord } from "react-native-health-connect";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import LoadingScreen from "./LoadingScreen";
 import { SleepRecord } from "../types/SleepRecord";
 import DuringSleepSection from "../components/listSections/RecordDetails/DuringSleepSection";
@@ -14,14 +14,16 @@ export default function RecordDetailsRead() {
   const [loading, setLoading] = useState(true);
   const [record, setRecord] = useState<SleepRecord | undefined>(undefined);
 
-  readRecord("SleepSession", guid)
-  .then(healthConnectRecord => {
-    setRecord(constructSleepRecord(healthConnectRecord));
-    setLoading(false);
-  })
+  useEffect(() => {
+    readRecord("SleepSession", guid)
+      .then(healthConnectRecord => {
+        setRecord(constructSleepRecord(healthConnectRecord));
+        setLoading(false);
+      })
+  }, []);
 
   if (loading) return <LoadingScreen />;
-  
+
   else if (!record) {
     throw new Error("record is undefined in RecordDetailsRead");
   }
