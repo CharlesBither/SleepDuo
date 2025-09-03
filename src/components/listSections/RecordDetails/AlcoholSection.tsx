@@ -1,6 +1,7 @@
 import { List, useTheme } from "react-native-paper";
 import Quantity from "../../textInputs/Quantity";
 import { Consumable } from "@/src/types/Consumable";
+import { dateTimeFormat } from "@/src/utils/dates";
 
 type AlcoholSectionProps = {
     alcoholQuantity: string;
@@ -22,7 +23,7 @@ export default function AlcoholSection(props: AlcoholSectionProps) {
                 />
                 <List.Item
                     title="When did you have your last drink"
-                    description={props.alcoholDate ? props.alcoholDate.toString() : "Add"}
+                    description={props.alcoholDate ? dateTimeFormat.format(props.alcoholDate) : "N/A"}
                     style={{ backgroundColor: theme.colors.surfaceDisabled }}
                 />
             </List.Section>
@@ -38,7 +39,7 @@ export default function AlcoholSection(props: AlcoholSectionProps) {
             <List.Item
                 title="When did you have your last drink"
                 onPress={() => props.handleDateTimePress("alcohol")}
-                description={props.alcoholDate ? props.alcoholDate.toString() : "Add"}
+                description={props.alcoholDate ? dateTimeFormat.format(props.alcoholDate) : "Add"}
             />
         </List.Section>
     )

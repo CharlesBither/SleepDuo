@@ -68,3 +68,11 @@ export const getLocalDate = (date: Date, tz: string): string => {
 
   return date.toLocaleDateString("en-US", options);
 };
+
+export const dateTimeFormat = new Intl.DateTimeFormat('en-US', {
+  timeStyle: "medium",
+  dateStyle: "short",
+  timeZone: getTimeZone(), 
+  timeZoneName: "short"
+})
+
