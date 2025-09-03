@@ -13,7 +13,7 @@ export default function ExploreDataSection({ details }: ExploreDataSectionProps)
     } 
     else if (details.totalSleepTime === 0) {
         return (
-            <Text>Not enough recorded logs. Create additional logs to view this data.</Text>
+            <Text style={styles.text}>Not enough recorded logs. Create additional logs in the 'Records' page to view this data.</Text>
         )
     }
     return (
@@ -39,8 +39,7 @@ export default function ExploreDataSection({ details }: ExploreDataSectionProps)
                     contentStyle={styles.listItem}
                 />
             </List.Section>
-            <Divider style={styles.divider} />
-            <List.Section>
+            <List.Section style={styles.listSection}>
                 <List.Subheader>Sleep stages</List.Subheader>
                 <List.Item
                     title="Light sleep"
@@ -70,7 +69,10 @@ const styles = StyleSheet.create({
   listItem: {
     marginVertical: -5,
   },
-  divider: {
-    marginBottom: -5,
+  listSection: {
+    marginTop: -5,
+  },
+  text: {
+    marginHorizontal: 15,
   }
 })

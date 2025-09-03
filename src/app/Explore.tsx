@@ -6,6 +6,7 @@ import { SleepRecordFilter } from "../types/SleepRecordFilter";
 import { OverviewDetails } from "../types/OverviewDetails";
 import { getAverageSleepEfficiency, getAverageTimeInBed, getAverageTimeInStage, getAverageTst, getSleepRecordArraysByFilter } from "../utils/SleepRecord";
 import ExploreDataSection from "../components/listSections/ExploreDataSection";
+import { StyleSheet } from "react-native";
 
 export default function Explore() {
   const [activity, setActivity] = useState<SleepRecordFilter | "">("");
@@ -45,9 +46,9 @@ export default function Explore() {
 
   const renderFilterStatement = (): JSX.Element => {
     if (filterType === "included") {
-      return <Text>{`On days where you had ${activity}...`}</Text>;
+      return <Text variant="titleMedium" style={styles.title}>{`On days where you had ${activity}...`}</Text>;
     }
-    return <Text>{`On days where you didn't have ${activity}...`}</Text>
+    return <Text variant="titleMedium" style={styles.title}>{`On days where you didn't have ${activity}...`}</Text>
   }
 
   if (activity === "") {
@@ -119,3 +120,10 @@ export default function Explore() {
     </ThemedView>
   );
 }
+
+const styles = StyleSheet.create({
+  title: {
+    marginLeft: 15,
+    marginTop: 10,
+  }
+})
