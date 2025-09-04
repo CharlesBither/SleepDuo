@@ -1,4 +1,4 @@
-import { NativeSyntheticEvent, TextInputEndEditingEventData } from "react-native";
+import { NativeSyntheticEvent, TextInputEndEditingEventData, TextInputFocusEventData } from "react-native";
 import { TextInput } from "react-native-paper";
 
 type QuantityProps = {
@@ -15,9 +15,18 @@ export default function Quantity(props: QuantityProps) {
    * @param text the text input from the user
    */
     const handleQuantityChange = (text: string): void => {
-        const num = Number(text);
-        if (!text.includes(".") && (text === "" || !isNaN(num))) {
+        // Only allow numbers
+        if (/^\d*$/.test(text)) {
             props.setQuantityFunc(text);
+        }
+    }
+
+    /** Called when the text input field is focused.
+     *  Clears the input if the quantity is 0.
+     */
+    const handleFocusEvent = (e: NativeSyntheticEvent<TextInputFocusEventData>): void => {
+        if (props.quantity === "0") {
+            props.setQuantityFunc("");
         }
     }
 
@@ -45,6 +54,7 @@ export default function Quantity(props: QuantityProps) {
             value={props.quantity}
             maxLength={2}
             keyboardType="numeric"
+            onFocus={e => handleFocusEvent(e)}
             onChangeText={text => handleQuantityChange(text)}
             onEndEditing={e => handleQuantityEnd(e)}
         />
