@@ -4,13 +4,10 @@ import {
   statusCodes,
 } from '@react-native-google-signin/google-signin'
 import { supabase } from '@/src/lib/supabase'
-import { initJournalRecordsMap } from '@/src/database/journal_records'
-import { getId } from '@/src/database/auth'
-import { initRecordDetailsMap } from '@/src/database/recordDetails'
 
 export default function () {
   GoogleSignin.configure({
-    webClientId: '64191911837-s609cbkdsj4p0f64sdsov1nbeik95p1h.apps.googleusercontent.com',
+    webClientId: process.env.EXPO_PUBLIC_GOOGLE_CLIENT_ID,
   })
 
   return (

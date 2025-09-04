@@ -9,9 +9,12 @@ export default function SignOutSection() {
 
   const handleSignOutPress = async (): Promise<void> => {
     try {
+      GoogleSignin.configure({
+        webClientId: process.env.EXPO_PUBLIC_GOOGLE_CLIENT_ID,
+      });
       await GoogleSignin.signOut();
       await supabase.auth.signOut();
-    } catch(e) {
+    } catch (e) {
       console.log("Sign out threw error: " + e);
     }
     router.replace("/");
