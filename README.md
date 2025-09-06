@@ -1,6 +1,8 @@
 # Welcome to SleepDuo
 
-SleepDuo is both a sleep diary and sleep-tracking Android app, allowing you to log activities about your day and see how they impact your sleep. SleepDuo is integrated with Health Connect so that your sleep data is is up to date with your other apps. This means that SleepDuo will work with any wearable sleep tracker that also supports Health Connect such as Fitbit, Garmin, and Oura Ring.
+Sleep smarter with SleepDuo, an Android app that combines a sleep diary with advanced sleep tracking. Log your daily activities and see how they affect your rest, all in one place.
+
+SleepDuo integrates seamlessly with Health Connect, keeping your data up to date across your favorite apps and devices. Whether you use a Fitbit, Garmin, Oura Ring, or any other Health Connect–compatible wearable, SleepDuo fits right into your routine.
 
 ## Download
 
@@ -8,20 +10,22 @@ Download link here
 
 ## Setup
 
-After installing the app, you must complete the following steps before you can start using SleepDuo:
+Getting started takes just a minute:
 
-1. Upon starting the app, sign in with a Google account.
+1. Sign in with your Google account when you open the app.
+
+2. Tap “Set up Health Connect” to grant SleepDuo permission to read your sleep data.
+
+<img src="assets/images/readmeImages/login.png" alt="login page" width="300" height="680"><img src="assets/images/readmeImages/permissionsRequest.png" alt="permissions request page" width="300" height="680" hspace="10"><img src="assets/images/readmeImages/permissionsSelect.png" alt="permissions select page" width="300" height="680">
+
+## How it works
+Once setup is complete, your tracked sleep sessions will appear automatically in the Records tab.
+
+* Home Overview – See your average sleep time, efficiency, and time in each sleep stage at a glance.
+
+* Detailed Records – Tap a session to view insights, then add personal logs (e.g., caffeine/alcohol consumption).
+
+* Explore Insights – Filter and analyze your data. For example, compare nights when you logged alcohol consumption with nights when you didn’t.
 
 
-2. Click the "Set up Health Connect" button to grant SleepDuo permission to read Health Connect sleep data.
-
-
-## Get started
-
-After completing the setup instructions above and wearing a supported sleep tracker, your sleep sessions will appear in the Records tab.
-
-Pressing a record will show you a page with details about that specific sleep session. From here, you can click on the plus icon to record a log for the sleep session.
-
-The Home tab will show you a view of your average sleep data including sleep time, sleep efficiency, and time in different sleep stages. 
-
-To view even more detailed data, you can click on the Explore card. This will bring you to a page where you can filter your sleep data. For example, if you recorded that you drank alcohol on one or more of your records, then you can view your avereage sleep data only on the sleep session where you drank alcohol the day before.
+<img src="assets/images/readmeImages/home.png" alt="home page" width="300" height="680"><img src="assets/images/readmeImages/records.png" alt="records page" width="300" height="680" hspace="10"><img src="assets/images/readmeImages/explore.png" alt="explore page" width="300" height="680">
