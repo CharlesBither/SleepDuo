@@ -39,54 +39,6 @@ export type Database = {
   }
   public: {
     Tables: {
-      journal_records_old: {
-        Row: {
-          content: Json
-          created_at: string
-          id: number
-          journal_date: string
-          uuid: string
-        }
-        Insert: {
-          content: Json
-          created_at?: string
-          id?: number
-          journal_date: string
-          uuid: string
-        }
-        Update: {
-          content?: Json
-          created_at?: string
-          id?: number
-          journal_date?: string
-          uuid?: string
-        }
-        Relationships: []
-      }
-      journal_records_test: {
-        Row: {
-          content: Json
-          created_at: string
-          id: number
-          journal_date: string
-          uuid: string
-        }
-        Insert: {
-          content: Json
-          created_at?: string
-          id?: number
-          journal_date: string
-          uuid: string
-        }
-        Update: {
-          content?: Json
-          created_at?: string
-          id?: number
-          journal_date?: string
-          uuid?: string
-        }
-        Relationships: []
-      }
       profiles: {
         Row: {
           avatar_url: string | null
@@ -116,33 +68,39 @@ export type Database = {
       }
       record_details: {
         Row: {
-          alcohol_date: string | null
           alcohol_quantity: string
-          caffiene_date: string | null
+          alcohol_time: string | null
           caffiene_quantity: string
+          caffiene_time: string | null
           created_at: string
           guid: string
+          had_nap: boolean
           id: number
+          quality_of_sleep: string
           uuid: string
         }
         Insert: {
-          alcohol_date?: string | null
           alcohol_quantity: string
-          caffiene_date?: string | null
+          alcohol_time?: string | null
           caffiene_quantity: string
+          caffiene_time?: string | null
           created_at?: string
           guid: string
+          had_nap: boolean
           id?: number
+          quality_of_sleep: string
           uuid: string
         }
         Update: {
-          alcohol_date?: string | null
           alcohol_quantity?: string
-          caffiene_date?: string | null
+          alcohol_time?: string | null
           caffiene_quantity?: string
+          caffiene_time?: string | null
           created_at?: string
           guid?: string
+          had_nap?: boolean
           id?: number
+          quality_of_sleep?: string
           uuid?: string
         }
         Relationships: []

@@ -5,7 +5,7 @@ import { useEffect, useState } from "react";
 import LoadingScreen from "./LoadingScreen";
 import { SleepRecord } from "../types/SleepRecord";
 import DuringSleepSection from "../components/listSections/RecordDetails/DuringSleepSection";
-import RecordDetailsBeforeSleepCard from "../components/cards/RecordDetailsBeforeSleepCard";
+import RecordDetailsCard from "../components/cards/RecordDetailsCard";
 import { constructSleepRecord } from "../utils/SleepRecord";
 
 export default function RecordDetailsRead() {
@@ -30,7 +30,7 @@ export default function RecordDetailsRead() {
 
   return (
     <ThemedView>
-      <RecordDetailsBeforeSleepCard guid={guid} />
+      <RecordDetailsCard guid={guid} />
       <DuringSleepSection record={record} />
     </ThemedView>
   );

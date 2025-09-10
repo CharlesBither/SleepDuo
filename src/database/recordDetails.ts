@@ -10,8 +10,10 @@ const fetchQuery = supabase.from("record_details").select(`
         guid,
         alcohol_quantity,
         caffiene_quantity,
-        alcohol_date,
-        caffiene_date
+        alcohol_time,
+        caffiene_time,
+        had_nap,
+        quality_of_sleep
         `);
 
 export type FetchResponse = QueryData<typeof fetchQuery>;
@@ -24,22 +26,14 @@ const fetchResponseToRecordDetails = (
   const row = response[0];
   const created = new Date(row.created_at);
 
-  let alcoholDate = undefined;
-  if (row.alcohol_date) {
-    alcoholDate = new Date(row.alcohol_date);
-  }
-
-  let caffiene_date = undefined;
-  if (row.caffiene_date) {
-    caffiene_date = new Date(row.caffiene_date);
-  }
-
   if (
     !row.uuid ||
     !row.alcohol_quantity ||
     !row.caffiene_quantity ||
     !row.guid ||
-    !row.created_at
+    !row.created_at ||
+    !row.had_nap ||
+    !row.quality_of_sleep
   ) {
     throw new Error(
       "populateRecordDetailsCache FetchResponse contains invalid data: " + row
@@ -51,9 +45,11 @@ const fetchResponseToRecordDetails = (
     uuid: row.uuid,
     guid: row.guid,
     alcohol_quantity: row.alcohol_quantity,
-    alcohol_date: alcoholDate,
+    alcohol_time: row.alcohol_time,
     caffiene_quantity: row.caffiene_quantity,
-    caffiene_date: caffiene_date,
+    caffiene_time: row.caffiene_time,
+    had_nap: row.had_nap,
+    quality_of_sleep: row.quality_of_sleep
   };
 };
 
@@ -91,14 +87,14 @@ export const fetchRecordDetails = async (
  * @returns Response data specifying the status of the query
  */
 export const deleteRecordDetails = async (uuid: string, guid: string) => {
-  const res =  await supabase
+  const res = await supabase
     .from("record_details")
     .delete()
     .eq("uuid", uuid)
     .eq("guid", guid);
-  
-    recordDetailsMap.delete(guid);
-    return res;
+
+  recordDetailsMap.delete(guid);
+  return res;
 };
 
 /**
@@ -159,8 +155,10 @@ const fetchRecordDetailsByUuid = async (
         guid,
         alcohol_quantity,
         caffiene_quantity,
-        alcohol_date,
-        caffiene_date
+        alcohol_time,
+        caffiene_time,
+        had_nap,
+        quality_of_sleep
         `
     )
     .eq("uuid", uuid);
@@ -196,14 +194,14 @@ const populateRecordDetailsMap = (data: FetchResponse): void => {
   for (const row of data) {
     const created = new Date(row.created_at);
 
-    let alcoholDate = undefined;
-    if (row.alcohol_date) {
-      alcoholDate = new Date(row.alcohol_date);
+    let alcoholTime = undefined;
+    if (row.alcohol_time) {
+      alcoholTime = row.alcohol_time;
     }
 
     let caffiene_date = undefined;
-    if (row.caffiene_date) {
-      caffiene_date = new Date(row.caffiene_date);
+    if (row.caffiene_time) {
+      caffiene_date = new Date(row.caffiene_time);
     }
 
     if (
@@ -211,7 +209,9 @@ const populateRecordDetailsMap = (data: FetchResponse): void => {
       !row.alcohol_quantity ||
       !row.caffiene_quantity ||
       !row.guid ||
-      !row.created_at
+      !row.created_at ||
+      !row.had_nap ||
+      !row.quality_of_sleep
     ) {
       throw new Error(
         "populateRecordDetailsMap FetchResponse contains invalid data: " + row
@@ -223,9 +223,11 @@ const populateRecordDetailsMap = (data: FetchResponse): void => {
       uuid: row.uuid,
       guid: row.guid,
       alcohol_quantity: row.alcohol_quantity,
-      alcohol_date: alcoholDate,
+      alcohol_time: row.alcohol_time,
       caffiene_quantity: row.caffiene_quantity,
-      caffiene_date: caffiene_date,
+      caffiene_time: row.caffiene_time,
+      had_nap: row.had_nap,
+      quality_of_sleep: row.quality_of_sleep
     });
   }
 };

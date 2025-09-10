@@ -1,0 +1,1 @@
+export type TimeOfDay = "AM" | "PM" | "LN" | "NA"
