@@ -13,7 +13,8 @@ type CaffieneSectionProps = {
 
 export default function CaffieneSection(props: CaffieneSectionProps) {
     const theme = useTheme();
-    if (props.caffieneQuantity === "0" || props.caffieneQuantity === "") {
+
+    if (props.caffieneQuantity === "0" || props.caffieneQuantity === "" || props.caffieneQuantity === "00") {
         return (
             <List.Section>
                 <List.Subheader>Caffiene</List.Subheader>

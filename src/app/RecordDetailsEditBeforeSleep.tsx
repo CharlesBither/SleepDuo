@@ -43,10 +43,10 @@ export default function RecordDetailsEditBeforeSleep() {
   const details = getRecordDetails(guid);
   const theme = useTheme();
 
-  const [alcoholQuantity, setAlcoholQuantity] = useState("0");
   const [alcoholDate, setAlcoholDate] = useState<Date | undefined>(undefined);
-  const [caffieneQuantity, setCaffieneQuantity] = useState("0");
   const [caffieneDate, setCaffieneDate] = useState<Date | undefined>(undefined);
+  const [alcoholQuantity, setAlcoholQuantity] = useState("0");
+  const [caffieneQuantity, setCaffieneQuantity] = useState("0");
   const [loading, setLoading] = useState<boolean>(true);
   const [saveLoading, setSaveLoading] = useState<boolean>(false);
   const [dialogIsVisible, setDialogIsVisible] = useState<boolean>(false);
@@ -62,11 +62,11 @@ export default function RecordDetailsEditBeforeSleep() {
 
     if (details) {
       setAlcoholQuantity(details.alcohol_quantity);
-      setAlcoholDate(details.alcohol_date);
       setCaffieneQuantity(details.caffiene_quantity);
+      setAlcoholDate(details.alcohol_date);
       setCaffieneDate(details.caffiene_date);
     }
-  }, [guid]);
+  }, []);
 
   /** Called whenever the user wants to record a date */
   const handleDateTimePress = (type: Modal): void => {

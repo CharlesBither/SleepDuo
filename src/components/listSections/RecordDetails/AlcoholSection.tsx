@@ -13,7 +13,7 @@ type AlcoholSectionProps = {
 
 export default function AlcoholSection(props: AlcoholSectionProps) {
     const theme = useTheme();
-    if (props.alcoholQuantity === "0" || props.alcoholQuantity === "") {
+    if (props.alcoholQuantity === "0" || props.alcoholQuantity === "" || props.alcoholQuantity === "00") {
         return (
             <List.Section>
                 <List.Subheader>Alcohol</List.Subheader>
