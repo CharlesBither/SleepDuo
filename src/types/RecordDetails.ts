@@ -1,3 +1,4 @@
+import { HadNapValue } from "./HadNapValue";
 import { QualityOfSleep } from "./QualityOfSleep";
 import { TimeOfDay } from "./TimeOfDay";
 
@@ -9,6 +10,6 @@ export type RecordDetails = {
   caffiene_quantity: string;
   alcohol_time: TimeOfDay;
   caffiene_time: TimeOfDay;
-  had_nap: boolean;
+  had_nap: HadNapValue;
   quality_of_sleep: QualityOfSleep;
 }

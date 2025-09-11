@@ -74,7 +74,7 @@ export type Database = {
           caffiene_time: string | null
           created_at: string
           guid: string
-          had_nap: boolean
+          had_nap: string
           id: number
           quality_of_sleep: string
           uuid: string
@@ -86,7 +86,7 @@ export type Database = {
           caffiene_time?: string | null
           created_at?: string
           guid: string
-          had_nap: boolean
+          had_nap: string
           id?: number
           quality_of_sleep: string
           uuid: string
@@ -98,7 +98,7 @@ export type Database = {
           caffiene_time?: string | null
           created_at?: string
           guid?: string
-          had_nap?: boolean
+          had_nap?: string
           id?: number
           quality_of_sleep?: string
           uuid?: string

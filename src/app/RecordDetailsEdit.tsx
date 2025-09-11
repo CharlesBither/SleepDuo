@@ -2,7 +2,7 @@ import {
   getRecordDetails,
   insertRecordDetails,
 } from "@/src/database/recordDetails";
-import { useCallback, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import {
   Dialog,
   Portal,
@@ -11,11 +11,8 @@ import {
   useTheme,
   Divider,
   ActivityIndicator,
+  List,
 } from "react-native-paper";
-import DatePicker from "../components/modals/datetimePickers/DatePicker";
-import TimePicker from "../components/modals/datetimePickers/TimePicker";
-import { Modal } from "@/src/types/Modal";
-import { SingleChange } from "react-native-paper-dates/lib/typescript/Date/Calendar";
 import { SleepRecord } from "../types/SleepRecord";
 import { router, useLocalSearchParams } from "expo-router";
 import ThemedView from "../components/ThemedView";
@@ -27,16 +24,14 @@ import { RecordDetails } from "../types/RecordDetails";
 import { getId } from "../database/auth";
 import { StyleSheet } from "react-native";
 import { readRecord } from "react-native-health-connect";
-import AlcoholSection from "../components/listSections/RecordDetails/AlcoholSection";
-import CaffieneSection from "../components/listSections/RecordDetails/CaffieneSection";
-import DuringSleepSection from "../components/listSections/RecordDetails/DuringSleepSection";
+import AlcoholItem from "../components/listSections/RecordDetails/AlcoholItem";
+import CaffieneItem from "../components/listSections/RecordDetails/CaffieneItem";
 import { constructSleepRecord } from "../utils/SleepRecord";
 import { TimeOfDay } from "../types/TimeOfDay";
 import { QualityOfSleep } from "../types/QualityOfSleep";
-
-// keeps track of date/time picker modal changes
-// let selectedTimeModal: Modal = "alcohol";
-// let selectedTimeModalDate: Date | undefined = new Date();
+import AfterSleepSection from "../components/listSections/RecordDetails/AfterSleepSection";
+import NapItem from "../components/listSections/RecordDetails/NapItem";
+import { HadNapValue } from "../types/HadNapValue";
 
 let record: SleepRecord | undefined = undefined;
 
@@ -49,85 +44,20 @@ export default function RecordDetailsEdit() {
   const [caffieneTime, setCaffieneTime] = useState<TimeOfDay>("NA");
   const [alcoholQuantity, setAlcoholQuantity] = useState<string>(details ? details.alcohol_quantity : "0");
   const [caffieneQuantity, setCaffieneQuantity] = useState<string>(details ? details.caffiene_quantity : "0");
-  const [hadNap, setHadNap] = useState<boolean>(details ? details.had_nap : false);
+  const [hadNap, setHadNap] = useState<HadNapValue>(details ? details.had_nap : "no");
   const [qualityOfSleep, setQualityOfSleep] = useState<QualityOfSleep>(details ? details.quality_of_sleep : "5");
 
   const [loading, setLoading] = useState<boolean>(true);
   const [saveLoading, setSaveLoading] = useState<boolean>(false);
   const [dialogIsVisible, setDialogIsVisible] = useState<boolean>(false);
   const [dialogMsg, setDialogMsg] = useState<string>("");
-  const [timeVisible, setTimeVisible] = useState<boolean>(false); // shows the time picker modal
-  const [dateVisible, setDateVisible] = useState<boolean>(false); // shows the date picker modal
 
   useEffect(() => {
     readRecord("SleepSession", guid).then((healthConnectRecord) => {
       record = constructSleepRecord(healthConnectRecord);
       setLoading(false);
     });
-  }, []);
-
-  // /** Called whenever the user wants to record a date */
-  // const handleDateTimePress = (type: Modal): void => {
-  //   selectedTimeModal = type;
-  //   setDateVisible(true);
-  // };
-
-  // /** Called when the date modal is cancelled */
-  // const onDismissDate = useCallback(() => {
-  //   setDateVisible(false);
-  // }, [dateVisible]);
-
-  // /** Called when the date modal is confirmed */
-  // const onConfirmDate: SingleChange = useCallback(
-  //   (dateParams) => {
-  //     setDateVisible(false);
-  //     if (!dateParams.date)
-  //       throw new Error("ReactNativePaperDates dateParams.date is undefined");
-  //     selectedTimeModalDate = dateParams.date;
-  //     setTimeVisible(true);
-  //   },
-  //   [dateVisible]
-  // );
-
-  // /** called when the time picker is dismissed */
-  // const onDismissTime = useCallback(() => {
-  //   setTimeVisible(false);
-  // }, [setTimeVisible]);
-
-  // /** called when the time picker is confirmed */
-  // const onConfirmTime = useCallback(
-  //   ({ hours, minutes }: { hours: number; minutes: number }) => {
-  //     setTimeVisible(false);
-  //     if (!selectedTimeModalDate) {
-  //       throw new Error("selectedTimeModalDate is undefined");
-  //     }
-  //     selectedTimeModalDate.setHours(hours, minutes);
-
-  //     // check for user input errors
-  //     validateTimeInput();
-
-  //     if (selectedTimeModal === "alcohol") {
-  //       setAlcoholTime(selectedTimeModalDate);
-  //     } else if (selectedTimeModal === "caffiene") {
-  //       setCaffieneTime(selectedTimeModalDate);
-  //     }
-  //   },
-  //   [setTimeVisible]
-  // );
-
-  // const validateTimeInput = (): void => {
-  //   if (!selectedTimeModalDate) {
-  //     throw new Error("SelectedTimeModalDate is undefined");
-  //   }
-  //   if (!record) {
-  //     throw new Error("record is undefined");
-  //   }
-  //   if (selectedTimeModalDate.getTime() > record.startTime.getTime()) {
-  //     setDialogMsg("Your input time must be before you went to sleep");
-  //     setDialogIsVisible(true);
-  //     selectedTimeModalDate = undefined;
-  //   }
-  // };
+  }, [guid]);
 
   const requiredFieldsAreValid = (): boolean => {
     return !(alcoholQuantity !== "0" && alcoholTime === "NA" || caffieneQuantity !== "0" && caffieneTime === "NA");
@@ -155,7 +85,6 @@ export default function RecordDetailsEdit() {
    */
   const doSavePress = async (): Promise<void> => {
     if (!requiredFieldsAreValid()) {
-        console.log("invalid fields");
         setDialogMsg("You must input a time for your drinks if the quantity is non-zero.");
         setDialogIsVisible(true);
         return;
@@ -197,38 +126,31 @@ export default function RecordDetailsEdit() {
       </ThemedView>
       <Divider />
 
-{/* TODO: update section components and children */}
-      <CaffieneSection
-        caffieneQuantity={caffieneQuantity}
-        caffieneDate={caffieneTime}
-        setCaffieneQuantity={setCaffieneQuantity}
-        setCaffieneDate={setCaffieneTime}
-        // handleDateTimePress={handleDateTimePress}
-      />
+      <List.Section>
+        <List.Subheader>Before sleep</List.Subheader>
+        <CaffieneItem
+          caffieneQuantity={caffieneQuantity}
+          caffieneTime={caffieneTime}
+          setCaffieneQuantity={setCaffieneQuantity}
+          setCaffieneTime={setCaffieneTime}
+        />
+        <Divider />
+
+        <AlcoholItem
+          alcoholQuantity={alcoholQuantity}
+          alcoholTime={alcoholTime}
+          setAlcoholQuantity={setAlcoholQuantity}
+          setAlcoholTime={setAlcoholTime}
+        />
+        <Divider />
+
+        <NapItem value={hadNap} setValue={setHadNap} />
+      </List.Section>
+      
+      <Divider />
+      <AfterSleepSection quality={qualityOfSleep} setQuality={setQualityOfSleep} />
       <Divider />
 
-      <AlcoholSection
-        alcoholQuantity={alcoholQuantity}
-        alcoholDate={alcoholTime}
-        setAlcoholQuantity={setAlcoholQuantity}
-        setAlcoholDate={setAlcoholTime}
-        // handleDateTimePress={handleDateTimePress}
-      />
-      <Divider />
-
-      <DuringSleepSection record={record} />
-      <Divider />
-
-      {/* <DatePicker
-        dateVisible={dateVisible}
-        onDismissDate={onDismissDate}
-        onConfirmDate={onConfirmDate}
-      />
-      <TimePicker
-        timeVisible={timeVisible}
-        onConfirmTime={onConfirmTime}
-        onDismissTime={onDismissTime}
-      /> */}
 
       <Portal>
         <Dialog

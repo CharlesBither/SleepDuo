@@ -68,11 +68,11 @@ export default function RecordDetailsCard(
       case "NA":
         return "0 drinks consumed";
       case "AM":
-        return `${details.caffiene_time} drinks consumed in the morning`;
+        return `${details.caffiene_quantity} drinks consumed in the morning`;
       case "PM":
-        return `${details.caffiene_time} drinks consumed by the evening`;
+        return `${details.caffiene_quantity} drinks consumed by the evening`;
       case "LN":
-        return `${details.caffiene_time} drinks consumed by late at night`;
+        return `${details.caffiene_quantity} drinks consumed by late at night`;
     }
   }
   return (
@@ -89,7 +89,7 @@ export default function RecordDetailsCard(
             description={getAlcoholDescription()}
           />
           <List.Item
-            title={details.had_nap ? "I took a nap" : "I didn't take a nap"}
+            title={details.had_nap === "yes" ? "I took a nap" : "I didn't take a nap"}
           />
         </List.Section>
         <List.Section>

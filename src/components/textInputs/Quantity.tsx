@@ -1,16 +1,14 @@
-import { useState } from "react";
+import { TimeOfDay } from "@/src/types/TimeOfDay";
 import { NativeSyntheticEvent, TextInputEndEditingEventData, TextInputFocusEventData } from "react-native";
 import { TextInput } from "react-native-paper";
 
 type QuantityProps = {
     quantity: string;
     setQuantityFunc: (quantity: string) => void;
-    setDateFunc: (date?: Date) => void;
+    setTime: (timeOfDay: TimeOfDay) => void;
 }
 
 export default function Quantity(props: QuantityProps) {
-
-    const [quantity, setQuantity] = useState(props.quantity);
 
     /**
    * Updates quantity of this.state for the given type.
@@ -20,7 +18,6 @@ export default function Quantity(props: QuantityProps) {
     const handleQuantityChange = (text: string): void => {
         // Only allow numbers
         if (/^\d*$/.test(text)) {
-            setQuantity(text);
             props.setQuantityFunc(text);
         }
     }
@@ -30,7 +27,6 @@ export default function Quantity(props: QuantityProps) {
      */
     const handleFocusEvent = (e: NativeSyntheticEvent<TextInputFocusEventData>): void => {
         if (props.quantity === "0") {
-            setQuantity("");
             props.setQuantityFunc("");
         }
     }
@@ -43,11 +39,9 @@ export default function Quantity(props: QuantityProps) {
     const handleQuantityEnd = (e: NativeSyntheticEvent<TextInputEndEditingEventData>): void => {
         const text = e.nativeEvent.text
         const num = Number(text);
-        if (text === "" || isNaN(num)) {
+        if (text === "" || isNaN(num) || num === 0) {
             props.setQuantityFunc("0");
-            props.setDateFunc(undefined);
-        } else if (num === 0) {
-            props.setDateFunc(undefined);
+            props.setTime("NA");
         } else {
             props.setQuantityFunc(String(num));
         }
@@ -56,7 +50,7 @@ export default function Quantity(props: QuantityProps) {
     return (
         <TextInput
             label="Quantity"
-            value={quantity}
+            value={props.quantity}
             maxLength={2}
             keyboardType="numeric"
             onFocus={e => handleFocusEvent(e)}
