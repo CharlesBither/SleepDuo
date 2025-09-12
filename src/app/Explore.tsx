@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { Button, Divider, List, Text } from "react-native-paper";
 import ExploreModal from "../components/modals/ExploreModal";
-import ThemedView from "../components/ThemedView";
+import ThemedView from "../views/ThemedView";
 import { SleepRecordFilter } from "../types/SleepRecordFilter";
 import { OverviewDetails } from "../types/OverviewDetails";
 import { getAverageSleepEfficiency, getAverageTimeInBed, getAverageTimeInStage, getAverageTst, getSleepRecordArraysByFilter } from "../utils/SleepRecord";

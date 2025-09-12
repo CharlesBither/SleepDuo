@@ -1,5 +1,5 @@
 import { ActivityIndicator, useTheme } from "react-native-paper";
-import ThemedView from "../components/ThemedView";
+import ThemedView from "../views/ThemedView";
 import { StyleSheet } from "react-native";
 
 

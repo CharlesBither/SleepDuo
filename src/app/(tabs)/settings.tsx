@@ -1,7 +1,7 @@
 import DeleteDailyLogsSection from "@/src/components/listSections/settings/DeleteDailyLogsSection";
 import RevokePermissionsSection from "@/src/components/listSections/settings/RevokePermissionsSection";
 import SignOutSection from "@/src/components/listSections/settings/SignOutSection";
-import ThemedView from "@/src/components/ThemedView";
+import ThemedView from "@/src/views/ThemedView";
 import { useFocusEffect } from "expo-router";
 import { useCallback, useState } from "react";
 import { getGrantedPermissions } from "react-native-health-connect";

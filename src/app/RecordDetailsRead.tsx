@@ -1,5 +1,5 @@
 import { useLocalSearchParams } from "expo-router";
-import ThemedView from "../components/ThemedView";
+import ThemedView from "../views/ThemedView";
 import { readRecord } from "react-native-health-connect";
 import { useEffect, useState } from "react";
 import LoadingScreen from "./LoadingScreen";

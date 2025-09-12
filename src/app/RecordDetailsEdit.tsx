@@ -15,7 +15,7 @@ import {
 } from "react-native-paper";
 import { SleepRecord } from "../types/SleepRecord";
 import { router, useLocalSearchParams } from "expo-router";
-import ThemedView from "../components/ThemedView";
+import ThemedView from "../views/ThemedView";
 import LoadingScreen from "./LoadingScreen";
 import { Pressable } from "react-native";
 import FontAwesome6 from "@expo/vector-icons/FontAwesome6";

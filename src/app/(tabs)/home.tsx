@@ -5,7 +5,7 @@ import {
   initHealthConnect,
   requestSleepPermissions,
 } from "@/src/lib/health-connect/initialize";
-import ThemedView from "@/src/components/ThemedView";
+import ThemedView from "@/src/views/ThemedView";
 import { getId } from "@/src/database/auth";
 import { getGrantedPermissions } from "react-native-health-connect";
 import LoadingScreen from "../LoadingScreen";
@@ -13,7 +13,7 @@ import ManualPermissionCard from "@/src/components/cards/ManualPermissionCard";
 import RequestPermissionCard from "@/src/components/cards/RequestPermissionCard";
 import { useFocusEffect } from "expo-router";
 import { initRecordDetailsMap } from "@/src/database/recordDetails";
-import OverviewContainer from "@/src/components/containers/OverviewContainer";
+import OverviewContainer from "@/src/views/Overview";
 import OverviewExploreCard from "@/src/components/cards/OverviewExploreCard";
 
 /**

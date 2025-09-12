@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react'
 import { Redirect } from 'expo-router';
 
 import Auth from './Auth';
-import ThemedView from '../components/ThemedView';
+import ThemedView from '../views/ThemedView';
 
 import { supabase } from '../lib/supabase'
 import { Session } from '@supabase/supabase-js'

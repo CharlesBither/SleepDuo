@@ -5,7 +5,7 @@ import {
 } from "@/src/lib/health-connect/sleep-data";
 import { useEffect, useState } from "react";
 import { ReadRecordsResult } from "react-native-health-connect";
-import OverviewSection from "../listSections/home/overview/OverviewSection";
+import OverviewSection from "../components/listSections/home/overview/OverviewSection";
 import OverviewIntervalSegmentedButton from "@/src/components/buttons/OverviewIntervalSegmentedButton";
 import { OverviewDetails } from "@/src/types/OverviewDetails";
 import { Divider } from "react-native-paper";

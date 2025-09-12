@@ -1,6 +1,6 @@
 import React from 'react'
 import { StyleSheet, AppState } from 'react-native'
-import ThemedView from '../components/ThemedView'
+import ThemedView from '../views/ThemedView'
 import { supabase } from '../lib/supabase'
 import { Text } from 'react-native-paper'
 import SignInWithGoogleButton from '../components/buttons/SignInWithGoogleButton'
