@@ -8,33 +8,6 @@ import { supabase } from '../lib/supabase'
 import { Session } from '@supabase/supabase-js'
 import LoadingScreen from './LoadingScreen';
 
-// register en locale for react-native-paper-dates
-require('@formatjs/intl-getcanonicallocales/polyfill')
-require('@formatjs/intl-locale/polyfill')
-
-require('@formatjs/intl-pluralrules/polyfill')
-require('@formatjs/intl-pluralrules/locale-data/en.js')
-
-require('@formatjs/intl-displaynames/polyfill')
-require('@formatjs/intl-displaynames/locale-data/en.js')
-
-require('@formatjs/intl-listformat/polyfill')
-require('@formatjs/intl-listformat/locale-data/en.js')
-
-require('@formatjs/intl-numberformat/polyfill')
-require('@formatjs/intl-numberformat/locale-data/en.js')
-
-require('@formatjs/intl-relativetimeformat/polyfill')
-require('@formatjs/intl-relativetimeformat/locale-data/en.js')
-
-require('@formatjs/intl-datetimeformat/polyfill')
-require('@formatjs/intl-datetimeformat/locale-data/en.js')
-
-require('@formatjs/intl-datetimeformat/add-golden-tz.js')
-
-import { en, registerTranslation } from 'react-native-paper-dates'
-registerTranslation('en', en)
-
 export default function Index() {
   const [session, setSession] = useState<Session | null>(null)
   const [isLoading, setIsLoading] = useState<boolean>(true)
