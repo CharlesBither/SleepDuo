@@ -4,11 +4,15 @@ import {
   statusCodes,
 } from '@react-native-google-signin/google-signin'
 import { supabase } from '@/src/lib/supabase'
+import { setErrorMsg } from '@/src/stores/error'
+import { useRouter } from 'expo-router'
 
 export default function () {
   GoogleSignin.configure({
     webClientId: process.env.EXPO_PUBLIC_GOOGLE_CLIENT_ID,
   })
+
+  const router = useRouter();
 
   return (
     <GoogleSigninButton
@@ -33,18 +37,18 @@ export default function () {
         } catch (error: any) {
           if (error.code === statusCodes.SIGN_IN_CANCELLED) {
             // user cancelled the login flow
-            console.error('user cancelled the login flow');
+            setErrorMsg('user cancelled the login flow');
           } else if (error.code === statusCodes.IN_PROGRESS) {
             // operation (e.g. sign in) is in progress already
-            console.error('login in process already');
+            setErrorMsg('login in process already');
           } else if (error.code === statusCodes.PLAY_SERVICES_NOT_AVAILABLE) {
             // play services not available or outdated
-            console.error('play services not available or outdated');
+            setErrorMsg('play services not available or outdated');
           } else {
             // some other error happened
-            console.error('could not sign in');
-            console.error(error);
+            setErrorMsg('GoogleSignIn threw error: ' + error);
           }
+          router.replace("/ErrorScreen");
         }
       }}
     />
