@@ -2,6 +2,8 @@ import {
     initialize,
     requestPermission,
     Permission,
+    BackgroundAccessPermission,
+    WriteExerciseRoutePermission,
 } from 'react-native-health-connect';
 
 export const initHealthConnect = async () => {
@@ -10,7 +12,7 @@ export const initHealthConnect = async () => {
     return isInitialized;
 };
 
-export const hasRequiredPermissions = (permissions: Permission[]): boolean => {
+export const hasRequiredPermissions = (permissions: (Permission | WriteExerciseRoutePermission | BackgroundAccessPermission)[]): boolean => {
     for (const permission of permissions) {
         if (permission.recordType === "SleepSession" && permission.accessType == "read") return true;
     }
