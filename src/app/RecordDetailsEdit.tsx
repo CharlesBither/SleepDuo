@@ -25,7 +25,7 @@ import { getId } from "../database/auth";
 import { StyleSheet } from "react-native";
 import { readRecord } from "react-native-health-connect";
 import AlcoholItem from "../components/listSections/RecordDetails/AlcoholItem";
-import CaffieneItem from "../components/listSections/RecordDetails/CaffieneItem";
+import CaffeineItem from "../components/listSections/RecordDetails/CaffeineItem";
 import { constructSleepRecord } from "../utils/SleepRecord";
 import { TimeOfDay } from "../types/TimeOfDay";
 import { QualityOfSleep } from "../types/QualityOfSleep";
@@ -41,9 +41,9 @@ export default function RecordDetailsEdit() {
   const theme = useTheme();
 
   const [alcoholTime, setAlcoholTime] = useState<TimeOfDay>("NA");
-  const [caffieneTime, setCaffieneTime] = useState<TimeOfDay>("NA");
+  const [caffeineTime, setCaffeineTime] = useState<TimeOfDay>("NA");
   const [alcoholQuantity, setAlcoholQuantity] = useState<string>(details ? details.alcohol_quantity : "0");
-  const [caffieneQuantity, setCaffieneQuantity] = useState<string>(details ? details.caffiene_quantity : "0");
+  const [caffeineQuantity, setCaffeineQuantity] = useState<string>(details ? details.caffeine_quantity : "0");
   const [hadNap, setHadNap] = useState<HadNapValue>(details ? details.had_nap : "no");
   const [qualityOfSleep, setQualityOfSleep] = useState<QualityOfSleep>(details ? details.quality_of_sleep : "5");
 
@@ -60,7 +60,7 @@ export default function RecordDetailsEdit() {
   }, [guid]);
 
   const requiredFieldsAreValid = (): boolean => {
-    return !(alcoholQuantity !== "0" && alcoholTime === "NA" || caffieneQuantity !== "0" && caffieneTime === "NA");
+    return !(alcoholQuantity !== "0" && alcoholTime === "NA" || caffeineQuantity !== "0" && caffeineTime === "NA");
   }
 
   const renderCancelButton = (): JSX.Element => {
@@ -97,8 +97,8 @@ export default function RecordDetailsEdit() {
       guid: guid,
       alcohol_quantity: alcoholQuantity,
       alcohol_time: alcoholTime,
-      caffiene_quantity: caffieneQuantity,
-      caffiene_time: caffieneTime,
+      caffeine_quantity: caffeineQuantity,
+      caffeine_time: caffeineTime,
       had_nap: hadNap,
       quality_of_sleep: qualityOfSleep,
     };
@@ -128,11 +128,11 @@ export default function RecordDetailsEdit() {
 
       <List.Section>
         <List.Subheader>Before sleep</List.Subheader>
-        <CaffieneItem
-          caffieneQuantity={caffieneQuantity}
-          caffieneTime={caffieneTime}
-          setCaffieneQuantity={setCaffieneQuantity}
-          setCaffieneTime={setCaffieneTime}
+        <CaffeineItem
+          caffeineQuantity={caffeineQuantity}
+          caffeineTime={caffeineTime}
+          setCaffeineQuantity={setCaffeineQuantity}
+          setCaffeineTime={setCaffeineTime}
         />
         <Divider />
 

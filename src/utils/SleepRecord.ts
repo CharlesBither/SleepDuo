@@ -151,7 +151,7 @@ export const getSleepRecordArraysByFilter = async (filter: SleepRecordFilter): P
   for (const details of detailsArray) {
     const sleepRecord = constructSleepRecord(await readRecord("SleepSession", details.guid));
     if ((filter === "alcohol" && details.alcohol_quantity !== "0")
-      || (filter === "caffiene" && details.caffiene_quantity !== "0")) {
+      || (filter === "caffeine" && details.caffeine_quantity !== "0")) {
         included.push(sleepRecord);
     } else {
       excluded.push(sleepRecord);

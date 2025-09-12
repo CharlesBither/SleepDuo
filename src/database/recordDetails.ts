@@ -9,9 +9,9 @@ const fetchQuery = supabase.from("record_details").select(`
         uuid,
         guid,
         alcohol_quantity,
-        caffiene_quantity,
+        caffeine_quantity,
         alcohol_time,
-        caffiene_time,
+        caffeine_time,
         had_nap,
         quality_of_sleep
         `);
@@ -29,7 +29,7 @@ const fetchResponseToRecordDetails = (
   if (
     !row.uuid ||
     !row.alcohol_quantity ||
-    !row.caffiene_quantity ||
+    !row.caffeine_quantity ||
     !row.guid ||
     !row.created_at ||
     !row.had_nap ||
@@ -46,8 +46,8 @@ const fetchResponseToRecordDetails = (
     guid: row.guid,
     alcohol_quantity: row.alcohol_quantity,
     alcohol_time: row.alcohol_time,
-    caffiene_quantity: row.caffiene_quantity,
-    caffiene_time: row.caffiene_time,
+    caffeine_quantity: row.caffeine_quantity,
+    caffeine_time: row.caffeine_time,
     had_nap: row.had_nap,
     quality_of_sleep: row.quality_of_sleep
   };
@@ -154,9 +154,9 @@ const fetchRecordDetailsByUuid = async (
         uuid,
         guid,
         alcohol_quantity,
-        caffiene_quantity,
+        caffeine_quantity,
         alcohol_time,
-        caffiene_time,
+        caffeine_time,
         had_nap,
         quality_of_sleep
         `
@@ -199,15 +199,15 @@ const populateRecordDetailsMap = (data: FetchResponse): void => {
       alcoholTime = row.alcohol_time;
     }
 
-    let caffiene_date = undefined;
-    if (row.caffiene_time) {
-      caffiene_date = new Date(row.caffiene_time);
+    let caffeine_date = undefined;
+    if (row.caffeine_time) {
+      caffeine_date = new Date(row.caffeine_time);
     }
 
     if (
       !row.uuid ||
       !row.alcohol_quantity ||
-      !row.caffiene_quantity ||
+      !row.caffeine_quantity ||
       !row.guid ||
       !row.created_at ||
       !row.had_nap ||
@@ -224,8 +224,8 @@ const populateRecordDetailsMap = (data: FetchResponse): void => {
       guid: row.guid,
       alcohol_quantity: row.alcohol_quantity,
       alcohol_time: row.alcohol_time,
-      caffiene_quantity: row.caffiene_quantity,
-      caffiene_time: row.caffiene_time,
+      caffeine_quantity: row.caffeine_quantity,
+      caffeine_time: row.caffeine_time,
       had_nap: row.had_nap,
       quality_of_sleep: row.quality_of_sleep
     });

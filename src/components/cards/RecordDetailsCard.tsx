@@ -63,16 +63,16 @@ export default function RecordDetailsCard(
     }
   }
 
-  const getCaffieneDescription = (): string => {
-    switch (details.caffiene_time) {
+  const getCaffeineDescription = (): string => {
+    switch (details.caffeine_time) {
       case "NA":
         return "0 drinks consumed";
       case "AM":
-        return `${details.caffiene_quantity} drinks consumed in the morning`;
+        return `${details.caffeine_quantity} drinks consumed in the morning`;
       case "PM":
-        return `${details.caffiene_quantity} drinks consumed by the evening`;
+        return `${details.caffeine_quantity} drinks consumed by the evening`;
       case "LN":
-        return `${details.caffiene_quantity} drinks consumed by late at night`;
+        return `${details.caffeine_quantity} drinks consumed by late at night`;
     }
   }
   return (
@@ -81,11 +81,11 @@ export default function RecordDetailsCard(
         <List.Section>
           <List.Subheader>Before sleep</List.Subheader>
           <List.Item
-            title="Caffinated drinks"
-            description={getCaffieneDescription()}
+            title="Drinks containing caffeine"
+            description={getCaffeineDescription()}
           />
           <List.Item
-            title="Alcoholic drinks"
+            title="Drinks containing alcohol"
             description={getAlcoholDescription()}
           />
           <List.Item

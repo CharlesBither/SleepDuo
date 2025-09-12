@@ -31,7 +31,7 @@ export default function ExploreModal(props: ExploreModalProps) {
   }
 
   const handleValueChange = (newValue: string): void => {
-    if (newValue === "alcohol" || newValue === "caffiene" || newValue === "") {
+    if (newValue === "alcohol" || newValue === "caffeine" || newValue === "") {
       setValue(newValue);
     }
   }
@@ -49,7 +49,7 @@ export default function ExploreModal(props: ExploreModalProps) {
         >
 
           <RadioButton.Item label="Alcohol" value="alcohol" style={{backgroundColor: theme.colors.elevation.level2}} />
-          <RadioButton.Item label="Caffiene" value="caffiene" style={{backgroundColor: theme.colors.elevation.level2}} />
+          <RadioButton.Item label="Caffeine" value="caffeine" style={{backgroundColor: theme.colors.elevation.level2}} />
         </RadioButton.Group>
         <View style={styles.buttonContainer}>
           <View style={{flex: 1}}></View>

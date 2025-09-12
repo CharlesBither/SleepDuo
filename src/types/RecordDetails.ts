@@ -7,9 +7,9 @@ export type RecordDetails = {
   uuid: string;
   guid: string;
   alcohol_quantity: string;
-  caffiene_quantity: string;
+  caffeine_quantity: string;
   alcohol_time: TimeOfDay;
-  caffiene_time: TimeOfDay;
+  caffeine_time: TimeOfDay;
   had_nap: HadNapValue;
   quality_of_sleep: QualityOfSleep;
 }

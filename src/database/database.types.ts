@@ -70,8 +70,8 @@ export type Database = {
         Row: {
           alcohol_quantity: string
           alcohol_time: string | null
-          caffiene_quantity: string
-          caffiene_time: string | null
+          caffeine_quantity: string
+          caffeine_time: string | null
           created_at: string
           guid: string
           had_nap: string
@@ -82,8 +82,8 @@ export type Database = {
         Insert: {
           alcohol_quantity: string
           alcohol_time?: string | null
-          caffiene_quantity: string
-          caffiene_time?: string | null
+          caffeine_quantity: string
+          caffeine_time?: string | null
           created_at?: string
           guid: string
           had_nap: string
@@ -94,8 +94,8 @@ export type Database = {
         Update: {
           alcohol_quantity?: string
           alcohol_time?: string | null
-          caffiene_quantity?: string
-          caffiene_time?: string | null
+          caffeine_quantity?: string
+          caffeine_time?: string | null
           created_at?: string
           guid?: string
           had_nap?: string
@@ -109,8 +109,8 @@ export type Database = {
         Row: {
           alcohol_date: string | null
           alcohol_quantity: string | null
-          caffiene_date: string | null
-          caffiene_quantity: string | null
+          caffeine_date: string | null
+          caffeine_quantity: string | null
           created_at: string
           guid: string | null
           id: number
@@ -119,8 +119,8 @@ export type Database = {
         Insert: {
           alcohol_date?: string | null
           alcohol_quantity?: string | null
-          caffiene_date?: string | null
-          caffiene_quantity?: string | null
+          caffeine_date?: string | null
+          caffeine_quantity?: string | null
           created_at?: string
           guid?: string | null
           id?: number
@@ -129,8 +129,8 @@ export type Database = {
         Update: {
           alcohol_date?: string | null
           alcohol_quantity?: string | null
-          caffiene_date?: string | null
-          caffiene_quantity?: string | null
+          caffeine_date?: string | null
+          caffeine_quantity?: string | null
           created_at?: string
           guid?: string | null
           id?: number
