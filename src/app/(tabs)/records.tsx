@@ -25,7 +25,6 @@ export default function RecordsScreen() {
   const [loading, setLoading] = useState(true);
 
   const handleInitHealthConnectSuccess = async () => {
-    setLoading(true);
     const grantedPermissions = await getGrantedPermissions();
     if (hasRequiredPermissions(grantedPermissions)) {
       const data = await getLast14Days();
