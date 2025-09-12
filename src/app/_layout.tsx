@@ -50,6 +50,10 @@ export default function RootLayout() {
             headerTitle: "Login",
           }}
         />
+        <Stack.Screen
+          name="ErrorScreen"
+          options={{ headerShown: false }}
+        />
       </Stack>
       <StatusBar style={colorScheme === "dark" ? "light" : "dark"} />
     </PaperProvider>
