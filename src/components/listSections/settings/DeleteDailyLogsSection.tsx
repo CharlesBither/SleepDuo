@@ -11,21 +11,29 @@ import { StyleSheet } from "react-native";
 import { useState } from "react";
 import { getId } from "@/src/database/auth";
 import { deleteAllRecordDetailsById } from "@/src/database/recordDetails";
+import { setErrorMsg } from "@/src/stores/error";
+import { useRouter } from "expo-router";
 
 export default function DeleteDailyLogsSection() {
   const [deleteLoading, setDeleteLoading] = useState(false);
   const [confirmDialogIsVisible, setConfirmDialogIsVisible] = useState(false);
   const [successDialogIsVisible, setSuccessDialogIsVisible] = useState(false);
   const theme = useTheme();
+  const router = useRouter();
 
   /** Deletes all journal entries that the user created */
   const handleDeleteDailyLogsPress = async (): Promise<void> => {
-    setDeleteLoading(true);
-    const uuid = await getId();
-    await deleteAllRecordDetailsById(uuid);
-    setDeleteLoading(false);
-    setConfirmDialogIsVisible(false);
-    setSuccessDialogIsVisible(true);
+    try{
+      setDeleteLoading(true);
+      const uuid = await getId();
+      await deleteAllRecordDetailsById(uuid);
+      setDeleteLoading(false);
+      setConfirmDialogIsVisible(false);
+      setSuccessDialogIsVisible(true);
+    } catch (e) {
+      setErrorMsg("handleDeleteDailyLogsPress threw error: " + e);
+      router.replace("/ErrorScreen");
+    }
   };
 
   return (
@@ -85,7 +93,6 @@ export default function DeleteDailyLogsSection() {
                   backgroundColor: theme.colors.errorContainer
                 }}
                 textColor={theme.colors.onErrorContainer}
-                // theme={{ colors: { primary: theme.colors.errorContainer, text: theme.colors.onErrorContainer } }}
                 onPress={handleDeleteDailyLogsPress}
               >
                 Delete

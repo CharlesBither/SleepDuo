@@ -1,8 +1,9 @@
 import DeleteDailyLogsSection from "@/src/components/listSections/settings/DeleteDailyLogsSection";
 import RevokePermissionsSection from "@/src/components/listSections/settings/RevokePermissionsSection";
 import SignOutSection from "@/src/components/listSections/settings/SignOutSection";
+import { setErrorMsg } from "@/src/stores/error";
 import ThemedView from "@/src/views/ThemedView";
-import { useFocusEffect } from "expo-router";
+import { useFocusEffect, useRouter } from "expo-router";
 import { useCallback, useState } from "react";
 import { getGrantedPermissions } from "react-native-health-connect";
 import { Button, Dialog, Divider, Portal, Text } from "react-native-paper";
@@ -11,15 +12,15 @@ export default function SettingsScreen() {
   const [hasHealthConnectPermissions, setHasHealthConnectPermissions] = useState(false);
   const [dialogMsg, setDialogMsg] = useState<string | undefined>();
   const [dialogIsVisible, setDialogIsVisible] = useState(false);
+  const router = useRouter();
 
   useFocusEffect(
     useCallback(() => {
       getGrantedPermissions()
         .then((data) => setHasHealthConnectPermissions(data.length !== 0))
-        .catch(() => {
-          throw new Error(
-            "Could not fetch granted permissions from Health Connect."
-          );
+        .catch((e) => {
+          setErrorMsg("getGrantedPermissions threw error: " + e);
+          router.replace("/ErrorScreen");
         });
     }, [])
   );
