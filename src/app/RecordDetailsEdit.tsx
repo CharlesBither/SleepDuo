@@ -14,7 +14,7 @@ import {
   List,
 } from "react-native-paper";
 import { SleepRecord } from "../types/SleepRecord";
-import { router, useLocalSearchParams, useRouter } from "expo-router";
+import { useLocalSearchParams, useRouter } from "expo-router";
 import ThemedView from "../views/ThemedView";
 import LoadingScreen from "./LoadingScreen";
 import { Pressable } from "react-native";
@@ -23,18 +23,15 @@ import FontAwesome from "@expo/vector-icons/FontAwesome";
 import { RecordDetails } from "../types/RecordDetails";
 import { getId } from "../database/auth";
 import { StyleSheet } from "react-native";
-import { readRecord } from "react-native-health-connect";
 import AlcoholItem from "../components/listSections/RecordDetails/AlcoholItem";
 import CaffeineItem from "../components/listSections/RecordDetails/CaffeineItem";
-import { constructSleepRecord, getSleepRecordFromReadRecord } from "../utils/SleepRecord";
+import { getSleepRecordFromReadRecord } from "../utils/SleepRecord";
 import { TimeOfDay } from "../types/TimeOfDay";
 import { QualityOfSleep } from "../types/QualityOfSleep";
 import AfterSleepSection from "../components/listSections/RecordDetails/AfterSleepSection";
 import NapItem from "../components/listSections/RecordDetails/NapItem";
 import { HadNapValue } from "../types/HadNapValue";
 import { setErrorMsg } from "../stores/error";
-
-let record: SleepRecord | undefined = undefined;
 
 export default function RecordDetailsEdit() {
   const { guid } = useLocalSearchParams<{ guid: string }>();
@@ -43,8 +40,8 @@ export default function RecordDetailsEdit() {
   const router = useRouter();
 
   const [record, setRecord] = useState<SleepRecord | undefined>(undefined);
-  const [alcoholTime, setAlcoholTime] = useState<TimeOfDay>("NA");
-  const [caffeineTime, setCaffeineTime] = useState<TimeOfDay>("NA");
+  const [alcoholTime, setAlcoholTime] = useState<TimeOfDay>(details ? details.alcohol_time : "NA");
+  const [caffeineTime, setCaffeineTime] = useState<TimeOfDay>(details ? details.caffeine_time : "NA");
   const [alcoholQuantity, setAlcoholQuantity] = useState<string>(details ? details.alcohol_quantity : "0");
   const [caffeineQuantity, setCaffeineQuantity] = useState<string>(details ? details.caffeine_quantity : "0");
   const [hadNap, setHadNap] = useState<HadNapValue>(details ? details.had_nap : "no");
