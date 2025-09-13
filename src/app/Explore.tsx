@@ -7,12 +7,15 @@ import { OverviewDetails } from "../types/OverviewDetails";
 import { getAverageSleepEfficiency, getAverageTimeInBed, getAverageTimeInStage, getAverageTst, getSleepRecordArraysByFilter } from "../utils/SleepRecord";
 import ExploreDataSection from "../components/listSections/ExploreDataSection";
 import { StyleSheet } from "react-native";
+import { setErrorMsg } from "../stores/error";
+import { useRouter } from "expo-router";
 
 export default function Explore() {
   const [activity, setActivity] = useState<SleepRecordFilter | "">("");
   const [filterType, setFilterType] = useState<"included" | "excluded">("included");
   const [modalVisible, setModalVisible] = useState(false);
   const [details, setDetails] = useState<OverviewDetails | undefined>(undefined);
+  const router = useRouter();
 
   useEffect(() => {
     if (activity !== "") {
@@ -28,7 +31,10 @@ export default function Explore() {
             timeRemSleep: getAverageTimeInStage(sleepArray, "rem"),
           })
         })
-        .catch((error) => {throw new Error("getSleepRecordArraysByFilter threw error: " + error)});
+        .catch((error) => {
+          setErrorMsg("getSleepRecordArraysByFilter threw error: " + error);
+          router.replace("/ErrorScreen");
+        });
     }
   }, [filterType, activity]);
 

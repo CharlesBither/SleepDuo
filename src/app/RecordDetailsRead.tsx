@@ -1,31 +1,38 @@
-import { useLocalSearchParams } from "expo-router";
+import { useLocalSearchParams, useRouter } from "expo-router";
 import ThemedView from "../views/ThemedView";
-import { readRecord } from "react-native-health-connect";
 import { useEffect, useState } from "react";
 import LoadingScreen from "./LoadingScreen";
 import { SleepRecord } from "../types/SleepRecord";
 import DuringSleepSection from "../components/listSections/RecordDetails/DuringSleepSection";
 import RecordDetailsCard from "../components/cards/RecordDetailsCard";
-import { constructSleepRecord } from "../utils/SleepRecord";
+import { getSleepRecordFromReadRecord } from "../utils/SleepRecord";
+import { setErrorMsg } from "../stores/error";
 
 export default function RecordDetailsRead() {
   const { guid } = useLocalSearchParams<{ guid: string }>();
 
   const [loading, setLoading] = useState(true);
   const [record, setRecord] = useState<SleepRecord | undefined>(undefined);
+  const router = useRouter();
 
   useEffect(() => {
-    readRecord("SleepSession", guid)
-      .then(healthConnectRecord => {
-        setRecord(constructSleepRecord(healthConnectRecord));
+    getSleepRecordFromReadRecord(guid)
+      .then(sleepRecord => {
+        setRecord(sleepRecord);
         setLoading(false);
+      })
+      .catch(e => {
+        setErrorMsg("readRecord threw error: " + e);
+        router.replace("/ErrorScreen");
       })
   }, []);
 
   if (loading) return <LoadingScreen />;
 
   else if (!record) {
-    throw new Error("record is undefined in RecordDetailsRead");
+    setErrorMsg("record is undefined in RecordDetailsRead");
+    router.replace("/ErrorScreen");
+    return;
   }
 
   return (

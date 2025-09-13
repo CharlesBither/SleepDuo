@@ -123,18 +123,20 @@ export const getAverageTimeInStage = (
 
 /**
  * 
- * @param guid The UID of the Health Connect sleep record
- * @returns SleepRecord with the same guid
+ * @param guid The unique id of the health connect sleep record
+ * @returns Promise of type SleepRecord
  */
-export const getSleepRecord = async (
-  guid: string
-): Promise<SleepRecord | undefined> => {
-  const healthConnectRecord = await readRecord("SleepSession", guid);
-  if (healthConnectRecord) {
+export const getSleepRecordFromReadRecord = async (guid: string): Promise<SleepRecord> => {
+  try {
+    const healthConnectRecord = await readRecord("SleepSession", guid);
+    if (!healthConnectRecord.metadata) {
+      throw new Error("getSleepRecordFromReadRecord metadata is undefined");
+    }
     return constructSleepRecord(healthConnectRecord);
+  } catch(e) {
+    throw new Error("getSleepRecordFromReadRecord threw error: " + e);
   }
-  return undefined;
-};
+}
 
 /**
  * Gets all sleep records that are associated to a given filter. For example, if the filter is "alcohol",
@@ -149,7 +151,7 @@ export const getSleepRecordArraysByFilter = async (filter: SleepRecordFilter): P
 
   const detailsArray = getRecordDetailsMapValues();
   for (const details of detailsArray) {
-    const sleepRecord = constructSleepRecord(await readRecord("SleepSession", details.guid));
+    const sleepRecord = await getSleepRecordFromReadRecord(details.guid);
     if ((filter === "alcohol" && details.alcohol_quantity !== "0")
       || (filter === "caffeine" && details.caffeine_quantity !== "0")) {
         included.push(sleepRecord);

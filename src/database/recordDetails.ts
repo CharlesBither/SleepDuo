@@ -3,6 +3,9 @@ import { supabase } from "../lib/supabase";
 import { Tables } from "./database.types";
 import { RecordDetails } from "../types/RecordDetails";
 
+/** Maps SleepRecord guid to the corresponding RecordDetails */
+const recordDetailsMap: Map<string, RecordDetails> = new Map();
+
 const fetchQuery = supabase.from("record_details").select(`
         id,
         created_at,
@@ -173,9 +176,6 @@ const fetchRecordDetailsByUuid = async (
 
   return response;
 };
-
-/** Maps SleepRecord guid to the corresponding RecordDetails */
-const recordDetailsMap: Map<string, RecordDetails> = new Map();
 
 /**
  * @param guid the guid of the sleep record

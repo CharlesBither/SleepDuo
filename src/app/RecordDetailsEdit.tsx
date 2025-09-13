@@ -14,7 +14,7 @@ import {
   List,
 } from "react-native-paper";
 import { SleepRecord } from "../types/SleepRecord";
-import { router, useLocalSearchParams } from "expo-router";
+import { router, useLocalSearchParams, useRouter } from "expo-router";
 import ThemedView from "../views/ThemedView";
 import LoadingScreen from "./LoadingScreen";
 import { Pressable } from "react-native";
@@ -26,12 +26,13 @@ import { StyleSheet } from "react-native";
 import { readRecord } from "react-native-health-connect";
 import AlcoholItem from "../components/listSections/RecordDetails/AlcoholItem";
 import CaffeineItem from "../components/listSections/RecordDetails/CaffeineItem";
-import { constructSleepRecord } from "../utils/SleepRecord";
+import { constructSleepRecord, getSleepRecordFromReadRecord } from "../utils/SleepRecord";
 import { TimeOfDay } from "../types/TimeOfDay";
 import { QualityOfSleep } from "../types/QualityOfSleep";
 import AfterSleepSection from "../components/listSections/RecordDetails/AfterSleepSection";
 import NapItem from "../components/listSections/RecordDetails/NapItem";
 import { HadNapValue } from "../types/HadNapValue";
+import { setErrorMsg } from "../stores/error";
 
 let record: SleepRecord | undefined = undefined;
 
@@ -39,7 +40,9 @@ export default function RecordDetailsEdit() {
   const { guid } = useLocalSearchParams<{ guid: string }>();
   const details = getRecordDetails(guid);
   const theme = useTheme();
+  const router = useRouter();
 
+  const [record, setRecord] = useState<SleepRecord | undefined>(undefined);
   const [alcoholTime, setAlcoholTime] = useState<TimeOfDay>("NA");
   const [caffeineTime, setCaffeineTime] = useState<TimeOfDay>("NA");
   const [alcoholQuantity, setAlcoholQuantity] = useState<string>(details ? details.alcohol_quantity : "0");
@@ -53,11 +56,16 @@ export default function RecordDetailsEdit() {
   const [dialogMsg, setDialogMsg] = useState<string>("");
 
   useEffect(() => {
-    readRecord("SleepSession", guid).then((healthConnectRecord) => {
-      record = constructSleepRecord(healthConnectRecord);
-      setLoading(false);
-    });
-  }, [guid]);
+      getSleepRecordFromReadRecord(guid)
+        .then(sleepRecord => {
+          setRecord(sleepRecord);
+          setLoading(false);
+        })
+        .catch(e => {
+          setErrorMsg("RecordDetailsEdit useEffect threw error: " + e);
+          router.replace("/ErrorScreen");
+        })
+    }, []);
 
   const requiredFieldsAreValid = (): boolean => {
     return !(alcoholQuantity !== "0" && alcoholTime === "NA" || caffeineQuantity !== "0" && caffeineTime === "NA");
@@ -74,7 +82,7 @@ export default function RecordDetailsEdit() {
   const renderSaveButton = (): JSX.Element => {
     if (saveLoading) return <ActivityIndicator />
     return (
-      <Pressable onPress={async () => await doSavePress()}>
+      <Pressable onPress={async () => await handleSavePress()}>
         <FontAwesome name="save" size={24} color={theme.colors.onBackground} />
       </Pressable>
     );
@@ -83,28 +91,35 @@ export default function RecordDetailsEdit() {
   /** Called when the user tries to save a journal record.
    * Inserts the record into the journal_records database table.
    */
-  const doSavePress = async (): Promise<void> => {
+  const handleSavePress = async (): Promise<void> => {
     if (!requiredFieldsAreValid()) {
         setDialogMsg("You must input a time for your drinks if the quantity is non-zero.");
         setDialogIsVisible(true);
         return;
     }
     setSaveLoading(true);
-    const uuid = await getId();
-    const newDetails: RecordDetails = {
-      created_at: new Date(),
-      uuid: uuid,
-      guid: guid,
-      alcohol_quantity: alcoholQuantity,
-      alcohol_time: alcoholTime,
-      caffeine_quantity: caffeineQuantity,
-      caffeine_time: caffeineTime,
-      had_nap: hadNap,
-      quality_of_sleep: qualityOfSleep,
-    };
 
-    await insertRecordDetails(newDetails);
-    router.back();
+    try {
+      const uuid = await getId();
+      const newDetails: RecordDetails = {
+        created_at: new Date(),
+        uuid: uuid,
+        guid: guid,
+        alcohol_quantity: alcoholQuantity,
+        alcohol_time: alcoholTime,
+        caffeine_quantity: caffeineQuantity,
+        caffeine_time: caffeineTime,
+        had_nap: hadNap,
+        quality_of_sleep: qualityOfSleep,
+      };
+
+      await insertRecordDetails(newDetails);
+      router.back();
+    } catch(e) {
+      setErrorMsg("handleSavePress threw error: " + e);
+      router.replace("/ErrorScreen");
+    }
+    
   };
 
   if (loading) {
@@ -114,7 +129,9 @@ export default function RecordDetailsEdit() {
       </ThemedView>
     );
   } else if (!record) {
-    throw new Error("record is undefined");
+    setErrorMsg("record is undefined");
+    router.replace("/ErrorScreen");
+    return;
   }
 
   return (

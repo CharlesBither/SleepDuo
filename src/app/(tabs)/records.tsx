@@ -9,8 +9,9 @@ import ThemedView from "@/src/views/ThemedView";
 import { getGrantedPermissions, ReadRecordsResult } from "react-native-health-connect";
 import LoadingScreen from "../LoadingScreen";
 import GoHomePermissionCard from "@/src/components/cards/GoHomePermissionCard";
-import { useFocusEffect } from "expo-router";
+import { useFocusEffect, useRouter } from "expo-router";
 import { constructSleepRecord } from "@/src/utils/SleepRecord";
+import { setErrorMsg } from "@/src/stores/error";
 
 /**
  * Gets the last 14 days of sleep records and renders it's information
@@ -23,15 +24,35 @@ export default function RecordsScreen() {
   const [recordsArray, setRecordsArray] = useState<SleepRecord[]>([]);
   const [hasHealthConnectPermissions, setHasHealthConnectPermissions] = useState(false);
   const [loading, setLoading] = useState(true);
+  const router = useRouter();
+
+  useFocusEffect(
+    useCallback(() => {
+      if (!hasHealthConnectPermissions) {
+        initHealthConnect()
+          .then(async () => await handleInitHealthConnectSuccess())
+          .catch((e) => { 
+            setErrorMsg("Could not intialize health connect. Make sure you have the health connect app installed on your device. " + e);
+            router.replace("/ErrorScreen");
+          })
+      }
+    }, [])
+  )
 
   const handleInitHealthConnectSuccess = async () => {
-    const grantedPermissions = await getGrantedPermissions();
-    if (hasRequiredPermissions(grantedPermissions)) {
-      const data = await getLast14Days();
-      initializeRecordsArray(data);
-      setHasHealthConnectPermissions(true);
+    try {
+      const grantedPermissions = await getGrantedPermissions();
+      if (hasRequiredPermissions(grantedPermissions)) {
+        const data = await getLast14Days();
+        initializeRecordsArray(data);
+        setHasHealthConnectPermissions(true);
+      }
+      setLoading(false);
     }
-    setLoading(false);
+    catch (e) {
+      setErrorMsg("handleInitHealthConnectSuccess threw error: " + e);
+      router.replace("/ErrorScreen");
+    }
   }
 
   /**
@@ -51,16 +72,6 @@ export default function RecordsScreen() {
       setRecordsArray(arr);
     }
   };
-
-  useFocusEffect(
-    useCallback(() => {
-      if (!hasHealthConnectPermissions) {
-        initHealthConnect()
-          .then(async () => await handleInitHealthConnectSuccess())
-          .catch(() => { throw new Error("could not intialize health connect") })
-      }
-    }, [])
-  )
 
   if (loading) {
     return <LoadingScreen />
