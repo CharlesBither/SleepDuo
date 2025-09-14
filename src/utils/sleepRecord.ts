@@ -9,6 +9,12 @@ import { SleepStage } from "../types/SleepStage";
 import { SleepRecordFilter } from "../types/SleepRecordFilter";
 import { getRecordDetailsMapValues } from "../database/recordDetails";
 
+/**
+ * Converts a raw Health Connect record into a normalized SleepRecord.
+ * 
+ * @param record - A Health Connect record returned by a function in `healthConnectSleepData.ts`.
+ * @returns A SleepRecord object containing the fields from the provided record.
+ */
 export const constructSleepRecord = (
   record: RecordResult<"SleepSession">
 ): SleepRecord => {
@@ -58,6 +64,12 @@ export const constructSleepRecord = (
   };
 };
 
+/**
+ * Converts raw Health Connect records into normalized SleepRecords.
+ * 
+ * @param records - Array of Health Connect records returned by a function in `healthConnectSleepData.ts`.
+ * @returns An array of SleepRecords.
+ */
 export const constructSleepRecordArray = (
   records: ReadRecordsResult<"SleepSession">
 ): SleepRecord[] => {
@@ -68,6 +80,12 @@ export const constructSleepRecordArray = (
   return res;
 };
 
+/**
+ * Calculates the average Total Sleep Time (TST) in milliseconds from a list of sleep records.
+ * 
+ * @param records - An array of SleepRecords to compute the average TST from.
+ * @returns The average tst across all provided records in milliseconds.
+ */
 export const getAverageTst = (records: SleepRecord[]): number => {
   if (records.length === 0) return 0;
   const dates = new Set<string>();
@@ -79,6 +97,12 @@ export const getAverageTst = (records: SleepRecord[]): number => {
   return res / dates.size;
 };
 
+/**
+ * Calculates the average time in bed in milliseconds from a list of sleep records.
+ * 
+ * @param records - An array of SleepRecords to compute the average time in bed from.
+ * @returns The average time in bed across all provided records in milliseconds.
+ */
 export const getAverageTimeInBed = (records: SleepRecord[]): number => {
   if (records.length === 0) return 0;
   const dates = new Set<string>();
@@ -90,6 +114,12 @@ export const getAverageTimeInBed = (records: SleepRecord[]): number => {
   return res / dates.size;
 };
 
+/**
+ * Calculates the average sleep efficiency from a list of sleep records.
+ * 
+ * @param records - An array of SleepRecords to compute the average sleep efficiency from.
+ * @returns The average sleep efficiency across all provided records (i.e., tst / time in bed).
+ */
 export const getAverageSleepEfficiency = (records: SleepRecord[]): string => {
   if (records.length === 0) return "0";
   let tst = 0;
@@ -101,6 +131,13 @@ export const getAverageSleepEfficiency = (records: SleepRecord[]): string => {
   return ((tst / timeInBed) * 100).toPrecision(2);
 };
 
+/**
+ * Calculates the average time in a sleep stage in milliseconds from a list of sleep records.
+ * 
+ * @param records - An array of SleepRecords to compute the average time in stage from.
+ * @param stage - The target SleepStage
+ * @returns The average time in the provided stage across all provided records in milliseconds.
+ */
 export const getAverageTimeInStage = (
   records: SleepRecord[],
   stage: SleepStage
@@ -121,9 +158,10 @@ export const getAverageTimeInStage = (
 };
 
 /**
+ * Retrieves a Health Connect sleep record by its unique identifier.
  * 
  * @param guid The unique id of the health connect sleep record
- * @returns Promise of type SleepRecord
+ * @returns A Promise that resolves to a SleepRecord.
  */
 export const getSleepRecordFromReadRecord = async (guid: string): Promise<SleepRecord> => {
   try {
@@ -132,17 +170,20 @@ export const getSleepRecordFromReadRecord = async (guid: string): Promise<SleepR
       throw new Error("getSleepRecordFromReadRecord metadata is undefined");
     }
     return constructSleepRecord(healthConnectRecord);
-  } catch(e) {
+  } catch (e) {
     throw new Error("getSleepRecordFromReadRecord threw error: " + e);
   }
 }
 
 /**
- * Gets all sleep records that are associated to a given filter. For example, if the filter is "alcohol",
- * then this function will return all SleepRecords where alcohol use was recorded.
- * @param filter An activity that is associated to a SleepSession
- * @returns SleepRecord[][] such that SleepRecord[0][] contains records where the filter is included
- * and SleepRecord[1][] contains records where the filter is excluded
+ * Retrieves all sleep records grouped by whether they match a given activity filter such that
+ * - `SleepRecord[0][]` Contains all records where the filter activity was recorded.
+ * - `SleepRecord[1][]` Contains all records where the filter activity was not recorded.
+ * 
+ * @param filter An activity associated to a SleepSession.
+ * @returns A tuple of SleepRecord arrays:
+ *   - Index 0: Records that include the specified filter.
+ *   - Index 1: Records that exclude the specified filter.
  */
 export const getSleepRecordArraysByFilter = async (filter: SleepRecordFilter): Promise<[SleepRecord[], SleepRecord[]]> => {
   const included = [];
@@ -153,7 +194,7 @@ export const getSleepRecordArraysByFilter = async (filter: SleepRecordFilter): P
     const sleepRecord = await getSleepRecordFromReadRecord(details.guid);
     if ((filter === "alcohol" && details.alcohol_quantity !== "0")
       || (filter === "caffeine" && details.caffeine_quantity !== "0")) {
-        included.push(sleepRecord);
+      included.push(sleepRecord);
     } else {
       excluded.push(sleepRecord);
     }
