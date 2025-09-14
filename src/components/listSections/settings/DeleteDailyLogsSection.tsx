@@ -9,7 +9,7 @@ import {
 } from "react-native-paper";
 import { StyleSheet } from "react-native";
 import { useState } from "react";
-import { getId } from "@/src/database/auth";
+import { getId } from "@/src/lib/supabase";
 import { deleteAllRecordDetailsById } from "@/src/database/recordDetails";
 import { setErrorMsg } from "@/src/stores/error";
 import { useRouter } from "expo-router";

@@ -7,8 +7,7 @@ import { SleepRecord } from "../types/SleepRecord";
 import { dateToString } from "./dates";
 import { SleepStage } from "../types/SleepStage";
 import { SleepRecordFilter } from "../types/SleepRecordFilter";
-import { getBeforeNow } from "../lib/health-connect/sleep-data";
-import { getRecordDetails, getRecordDetailsMapValues } from "../database/recordDetails";
+import { getRecordDetailsMapValues } from "../database/recordDetails";
 
 export const constructSleepRecord = (
   record: RecordResult<"SleepSession">

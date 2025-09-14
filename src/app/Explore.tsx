@@ -4,7 +4,7 @@ import ExploreModal from "../components/modals/ExploreModal";
 import ThemedView from "../views/ThemedView";
 import { SleepRecordFilter } from "../types/SleepRecordFilter";
 import { OverviewDetails } from "../types/OverviewDetails";
-import { getAverageSleepEfficiency, getAverageTimeInBed, getAverageTimeInStage, getAverageTst, getSleepRecordArraysByFilter } from "../utils/SleepRecord";
+import { getAverageSleepEfficiency, getAverageTimeInBed, getAverageTimeInStage, getAverageTst, getSleepRecordArraysByFilter } from "../utils/sleepRecord";
 import ExploreDataSection from "../components/listSections/ExploreDataSection";
 import { StyleSheet } from "react-native";
 import { setErrorMsg } from "../stores/error";

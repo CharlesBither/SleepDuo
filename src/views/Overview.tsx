@@ -2,14 +2,14 @@ import {
   getBeforeNow,
   getLast30Days,
   getLast7Days,
-} from "@/src/lib/health-connect/sleep-data";
+} from "@/src/lib/healthConnectSleepData";
 import { useEffect, useState } from "react";
 import { ReadRecordsResult } from "react-native-health-connect";
 import OverviewSection from "../components/listSections/home/overview/OverviewSection";
 import OverviewIntervalSegmentedButton from "@/src/components/buttons/OverviewIntervalSegmentedButton";
 import { OverviewDetails } from "@/src/types/OverviewDetails";
 import { Divider } from "react-native-paper";
-import { constructSleepRecordArray, getAverageSleepEfficiency, getAverageTimeInBed, getAverageTimeInStage, getAverageTst } from "@/src/utils/SleepRecord";
+import { constructSleepRecordArray, getAverageSleepEfficiency, getAverageTimeInBed, getAverageTimeInStage, getAverageTst } from "@/src/utils/sleepRecord";
 import { setErrorMsg } from "../stores/error";
 import { useRouter } from "expo-router";
 

@@ -4,9 +4,9 @@ import {
   hasRequiredPermissions,
   initHealthConnect,
   requestSleepPermissions,
-} from "@/src/lib/health-connect/initialize";
+} from "@/src/lib/healthConnectInitialize";
 import ThemedView from "@/src/views/ThemedView";
-import { getId } from "@/src/database/auth";
+import { getId } from "@/src/lib/supabase";
 import { getGrantedPermissions } from "react-native-health-connect";
 import LoadingScreen from "../LoadingScreen";
 import ManualPermissionCard from "@/src/components/cards/ManualPermissionCard";

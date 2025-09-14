@@ -1,6 +1,6 @@
 import { ActivityIndicator, Button, Dialog, Portal, Text, useTheme } from "react-native-paper";
 import { useState } from "react";
-import { getId } from "@/src/database/auth";
+import { getId } from "@/src/lib/supabase";
 import { deleteRecordDetails, getRecordDetails } from "@/src/database/recordDetails";
 import { View } from "react-native";
 import { RecordDetails } from "@/src/types/RecordDetails";

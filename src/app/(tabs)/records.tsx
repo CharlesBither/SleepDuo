@@ -2,15 +2,15 @@ import { useCallback, useState } from "react";
 import { Text } from "react-native-paper";
 
 import { SleepRecord } from "@/src/types/SleepRecord";
-import { hasRequiredPermissions, initHealthConnect } from "@/src/lib/health-connect/initialize";
-import { getLast14Days } from "@/src/lib/health-connect/sleep-data";
+import { hasRequiredPermissions, initHealthConnect } from "@/src/lib/healthConnectInitialize";
+import { getLast14Days } from "@/src/lib/healthConnectSleepData";
 import RecordsList from "@/src/components/listSections/RecordsList";
 import ThemedView from "@/src/views/ThemedView";
 import { getGrantedPermissions, ReadRecordsResult } from "react-native-health-connect";
 import LoadingScreen from "../LoadingScreen";
 import GoHomePermissionCard from "@/src/components/cards/GoHomePermissionCard";
 import { useFocusEffect, useRouter } from "expo-router";
-import { constructSleepRecord } from "@/src/utils/SleepRecord";
+import { constructSleepRecord } from "@/src/utils/sleepRecord";
 import { setErrorMsg } from "@/src/stores/error";
 
 /**

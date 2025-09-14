@@ -5,7 +5,7 @@ import LoadingScreen from "./LoadingScreen";
 import { SleepRecord } from "../types/SleepRecord";
 import DuringSleepSection from "../components/listSections/RecordDetails/DuringSleepSection";
 import RecordDetailsCard from "../components/cards/RecordDetailsCard";
-import { getSleepRecordFromReadRecord } from "../utils/SleepRecord";
+import { getSleepRecordFromReadRecord } from "../utils/sleepRecord";
 import { setErrorMsg } from "../stores/error";
 
 export default function RecordDetailsRead() {
