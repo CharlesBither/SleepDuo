@@ -71,7 +71,6 @@ export const getFormattedTime = (date: Date): string => {
   const options: Intl.DateTimeFormatOptions = {
     timeZone: getTimeZone(), 
     timeZoneName: "short",
-    dayPeriod: "narrow",
     hour: "numeric",
     minute: "numeric"
   }
@@ -85,7 +84,6 @@ export const getFormattedDateTime = (date: Date): string => {
     weekday: "short",
     month: "short",
     day: "numeric",
-    dayPeriod: "narrow",
     hour: "numeric",
     minute: "numeric"
   }
