@@ -1,5 +1,5 @@
 import { QueryData } from "@supabase/supabase-js";
-import { supabase } from "../lib/supabase";
+import { getId, supabase } from "../lib/supabase";
 import { Tables } from "./database.types";
 import { RecordDetails } from "../types/RecordDetails";
 
@@ -236,7 +236,13 @@ const populateRecordDetailsMap = (data: FetchResponse): void => {
  * Gets all RecordDetails created by the user who has the given uuid
  * @param uuid The user id
  */
-export const initRecordDetailsMap = async (uuid: string): Promise<void> => {
-  const data = await fetchRecordDetailsByUuid(uuid);
-  populateRecordDetailsMap(data);
+export const initRecordDetailsMap = async (): Promise<void> => {
+  try {
+    const uuid = await getId();
+    const data = await fetchRecordDetailsByUuid(uuid);
+    populateRecordDetailsMap(data);
+  } catch(error) {
+    throw new Error("initRecordDetailsMap threw error: " + error);
+  }
+  
 };
