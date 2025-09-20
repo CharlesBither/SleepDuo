@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { Button, Divider, List, Text } from "react-native-paper";
 import ExploreModal from "../components/modals/ExploreModal";
 import ThemedView from "../views/ThemedView";
@@ -17,37 +17,41 @@ export default function Explore() {
   const [details, setDetails] = useState<OverviewDetails | undefined>(undefined);
   const router = useRouter();
 
-  useEffect(() => {
-    if (activity !== "") {
-      getSleepRecordArraysByFilter(activity)
-        .then(arrays => {
-          const sleepArray = filterType === "included" ? arrays[0] : arrays[1];
-          setDetails({
-            totalSleepTime: getAverageTst(sleepArray),
-            timeInBed: getAverageTimeInBed(sleepArray),
-            sleepEfficiency: getAverageSleepEfficiency(sleepArray),
-            timeLightSleep: getAverageTimeInStage(sleepArray, "light"),
-            timeDeepSleep: getAverageTimeInStage(sleepArray, "deep"),
-            timeRemSleep: getAverageTimeInStage(sleepArray, "rem"),
-          })
-        })
-        .catch((error) => {
-          setErrorMsg("getSleepRecordArraysByFilter threw error: " + error);
-          router.replace("/ErrorScreen");
-        });
+  const getFilteredDetails = async (activity: SleepRecordFilter, filterType: "included" | "excluded"): Promise<OverviewDetails | undefined> => {
+    const filteredArrays = await getSleepRecordArraysByFilter(activity);
+    const sleepArray = filterType === "included" ? filteredArrays[0] : filteredArrays[1];
+    return {
+      totalSleepTime: getAverageTst(sleepArray),
+      timeInBed: getAverageTimeInBed(sleepArray),
+      sleepEfficiency: getAverageSleepEfficiency(sleepArray),
+      timeLightSleep: getAverageTimeInStage(sleepArray, "light"),
+      timeDeepSleep: getAverageTimeInStage(sleepArray, "deep"),
+      timeRemSleep: getAverageTimeInStage(sleepArray, "rem"),
+    };
+  }
+
+  const handleActivityChange = async (activity: SleepRecordFilter): Promise<void> => {
+    try {
+      const newDetails = await getFilteredDetails(activity, filterType)
+      setDetails(newDetails);
+      setActivity(activity);
+    } catch (error) {
+      setErrorMsg("An unexpected error occurred at handleActivityChange " + error);
+      router.replace("/ErrorScreen");
     }
-  }, [filterType, activity]);
-
-  const renderActivityTitle = (): string => {
-    return `Activity: ${activity}`;
   }
 
-  const renderFilterType = (): string => {
-    return `Filter type: ${filterType}`;
-  }
-
-  const handleSwitchPress = (): void => {
-    setFilterType(filterType === "included" ? "excluded" : "included");
+  const handleFilterChange = async (): Promise<void> => {
+    if (activity === "") return;
+    try {
+      const newFilterType = filterType === "included" ? "excluded" : "included";
+      const newDetails = await getFilteredDetails(activity, newFilterType)
+      setDetails(newDetails);
+      setFilterType(newFilterType);
+    } catch (error) {
+      setErrorMsg("An unexpected error occurred at handleFilterChange " + error);
+      router.replace("/ErrorScreen");
+    }
   }
 
   const renderFilterStatement = (): JSX.Element => {
@@ -72,10 +76,10 @@ export default function Explore() {
             )}
           />
           <List.Item
-            title={renderFilterType()}
+            title={`Filter type: ${filterType}`}
             description="Click the button to switch the filter type"
             right={() => (
-              <Button onPress={handleSwitchPress}>
+              <Button onPress={handleFilterChange}>
                 Switch filter
               </Button>
             )}
@@ -85,7 +89,7 @@ export default function Explore() {
         <ExploreModal
           activity={activity}
           visible={modalVisible}
-          setActivity={setActivity}
+          onActivityChange={handleActivityChange}
           setVisible={setModalVisible}
         />
       </ThemedView>
@@ -96,7 +100,7 @@ export default function Explore() {
       <List.Section>
         <List.Subheader>Explore settings</List.Subheader>
         <List.Item
-          title={renderActivityTitle()}
+          title={`Activity: ${activity}`}
           description="Click the button to change activity"
           right={() => (
             <Button onPress={() => setModalVisible(true)}>
@@ -105,10 +109,10 @@ export default function Explore() {
           )}
         />
         <List.Item
-          title={renderFilterType()}
+          title={`Filter type: ${filterType}`}
           description="Click the button to switch the filter type"
           right={() => (
-            <Button onPress={handleSwitchPress}>
+            <Button onPress={handleFilterChange}>
               Switch filter
             </Button>
           )}
@@ -120,7 +124,7 @@ export default function Explore() {
       <ExploreModal
         activity={activity}
         visible={modalVisible}
-        setActivity={setActivity}
+        onActivityChange={handleActivityChange}
         setVisible={setModalVisible}
       />
     </ThemedView>

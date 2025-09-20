@@ -22,7 +22,7 @@ export default function SettingsScreen() {
           setErrorMsg("getGrantedPermissions threw error: " + e);
           router.replace("/ErrorScreen");
         });
-    }, [])
+    }, [router])
   );
 
   const showDialogMsg = (msg: string): void => {
