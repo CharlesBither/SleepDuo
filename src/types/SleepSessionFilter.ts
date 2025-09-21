@@ -1,3 +1,3 @@
 import { Consumable } from "./Consumable";
 
-export type SleepRecordFilter = Consumable;
+export type SleepSessionFilter = Consumable;

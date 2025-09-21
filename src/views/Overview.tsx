@@ -9,7 +9,7 @@ import OverviewSection from "../components/listSections/home/overview/OverviewSe
 import OverviewIntervalSegmentedButton from "@/src/components/buttons/OverviewIntervalSegmentedButton";
 import { OverviewDetails } from "@/src/types/OverviewDetails";
 import { Divider } from "react-native-paper";
-import { constructSleepRecordArray, getAverageSleepEfficiency, getAverageTimeInBed, getAverageTimeInStage, getAverageTst } from "@/src/utils/sleepRecord";
+import { constructSleepSessionArray, getAverageSleepEfficiency, getAverageTimeInBed, getAverageTimeInStage, getAverageTst } from "@/src/utils/sleepSession";
 import { setErrorMsg } from "../stores/error";
 import { useRouter } from "expo-router";
 
@@ -41,7 +41,7 @@ export default function OverviewContainer() {
   const handleLast7DaysResult = (
     records: ReadRecordsResult<"SleepSession">
   ): void => {
-    const sleepArray = constructSleepRecordArray(records);
+    const sleepArray = constructSleepSessionArray(records);
     setLast7Details({
       totalSleepTime: getAverageTst(sleepArray),
       timeInBed: getAverageTimeInBed(sleepArray),
@@ -55,7 +55,7 @@ export default function OverviewContainer() {
   const handleLast30DaysResult = (
     records: ReadRecordsResult<"SleepSession">
   ): void => {
-    const sleepArray = constructSleepRecordArray(records);
+    const sleepArray = constructSleepSessionArray(records);
     setLast30Details({
       totalSleepTime: getAverageTst(sleepArray),
       timeInBed: getAverageTimeInBed(sleepArray),
@@ -69,7 +69,7 @@ export default function OverviewContainer() {
   const handleBeforeNowResult = (
     records: ReadRecordsResult<"SleepSession">
   ): void => {
-    const sleepArray = constructSleepRecordArray(records);
+    const sleepArray = constructSleepSessionArray(records);
     setAllTimeDetails({
       totalSleepTime: getAverageTst(sleepArray),
       timeInBed: getAverageTimeInBed(sleepArray),

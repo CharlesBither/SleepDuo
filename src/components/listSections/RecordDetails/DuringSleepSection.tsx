@@ -1,9 +1,9 @@
-import { SleepRecord } from "@/src/types/SleepRecord";
+import { SleepSession } from "@/src/types/SleepSession";
 import { getFormattedDateTime, getHours, getMinutes } from "@/src/utils/dates";
 import { List } from "react-native-paper";
 
 type DuringSleepSectionProps = {
-  record: SleepRecord;
+  record: SleepSession;
 }
 
 export default function DuringSleepSection(props: DuringSleepSectionProps) {

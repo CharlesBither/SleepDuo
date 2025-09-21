@@ -13,7 +13,7 @@ import {
   ActivityIndicator,
   List,
 } from "react-native-paper";
-import { SleepRecord } from "../types/SleepRecord";
+import { SleepSession } from "../types/SleepSession";
 import { useLocalSearchParams, useRouter } from "expo-router";
 import ThemedView from "../views/ThemedView";
 import LoadingScreen from "./LoadingScreen";
@@ -25,7 +25,7 @@ import { getId } from "../lib/supabase";
 import { StyleSheet } from "react-native";
 import AlcoholItem from "../components/listSections/RecordDetails/AlcoholItem";
 import CaffeineItem from "../components/listSections/RecordDetails/CaffeineItem";
-import { getSleepRecordFromReadRecord } from "../utils/sleepRecord";
+import { getSleepSessionFromReadRecord } from "../utils/sleepSession";
 import { TimeOfDay } from "../types/TimeOfDay";
 import { QualityOfSleep } from "../types/QualityOfSleep";
 import AfterSleepSection from "../components/listSections/RecordDetails/AfterSleepSection";
@@ -39,7 +39,7 @@ export default function RecordDetailsEdit() {
   const theme = useTheme();
   const router = useRouter();
 
-  const [record, setRecord] = useState<SleepRecord | undefined>(undefined);
+  const [record, setRecord] = useState<SleepSession | undefined>(undefined);
   const [alcoholTime, setAlcoholTime] = useState<TimeOfDay>(details ? details.alcohol_time : "NA");
   const [caffeineTime, setCaffeineTime] = useState<TimeOfDay>(details ? details.caffeine_time : "NA");
   const [alcoholQuantity, setAlcoholQuantity] = useState<string>(details ? details.alcohol_quantity : "0");
@@ -53,7 +53,7 @@ export default function RecordDetailsEdit() {
   const [dialogMsg, setDialogMsg] = useState<string>("");
 
   useEffect(() => {
-      getSleepRecordFromReadRecord(guid)
+      getSleepSessionFromReadRecord(guid)
         .then(sleepRecord => {
           setRecord(sleepRecord);
           setLoading(false);

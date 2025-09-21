@@ -1,4 +1,4 @@
-export type SleepRecord = {
+export type SleepSession = {
   guid: string;
   startTime: Date;
   endTime: Date;

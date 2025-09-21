@@ -2,21 +2,21 @@ import { useLocalSearchParams, useRouter } from "expo-router";
 import ThemedView from "../views/ThemedView";
 import { useEffect, useState } from "react";
 import LoadingScreen from "./LoadingScreen";
-import { SleepRecord } from "../types/SleepRecord";
+import { SleepSession } from "../types/SleepSession";
 import DuringSleepSection from "../components/listSections/RecordDetails/DuringSleepSection";
 import RecordDetailsCard from "../components/cards/RecordDetailsCard";
-import { getSleepRecordFromReadRecord } from "../utils/sleepRecord";
+import { getSleepSessionFromReadRecord } from "../utils/sleepSession";
 import { setErrorMsg } from "../stores/error";
 
 export default function RecordDetailsRead() {
   const { guid } = useLocalSearchParams<{ guid: string }>();
 
   const [loading, setLoading] = useState(true);
-  const [record, setRecord] = useState<SleepRecord | undefined>(undefined);
+  const [record, setRecord] = useState<SleepSession | undefined>(undefined);
   const router = useRouter();
 
   useEffect(() => {
-    getSleepRecordFromReadRecord(guid)
+    getSleepSessionFromReadRecord(guid)
       .then(sleepRecord => {
         setRecord(sleepRecord);
         setLoading(false);

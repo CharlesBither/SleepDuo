@@ -1,7 +1,7 @@
 import { useCallback, useState } from "react";
 import { Text } from "react-native-paper";
 
-import { SleepRecord } from "@/src/types/SleepRecord";
+import { SleepSession } from "@/src/types/SleepSession";
 import { hasRequiredPermissions } from "@/src/lib/healthConnectInitialize";
 import { getBeforeNow } from "@/src/lib/healthConnectSleepData";
 import RecordsList from "@/src/components/listSections/RecordsList";
@@ -10,7 +10,7 @@ import { getGrantedPermissions, ReadRecordsResult } from "react-native-health-co
 import LoadingScreen from "../LoadingScreen";
 import GoHomePermissionCard from "@/src/components/cards/GoHomePermissionCard";
 import { useFocusEffect, useRouter } from "expo-router";
-import { constructSleepRecord } from "@/src/utils/sleepRecord";
+import { constructSleepSession } from "@/src/utils/sleepSession";
 import { setErrorMsg } from "@/src/stores/error";
 import { HealthConnectPermission } from "@/src/types/HealthConnectPermission";
 
@@ -19,9 +19,9 @@ import { HealthConnectPermission } from "@/src/types/HealthConnectPermission";
  *
  * @returns View containing a list of sleep records and their descriptions
  */
-export default function RecordsScreen() {
+export default function SessionsScreen() {
 
-  const [recordsArray, setRecordsArray] = useState<SleepRecord[]>([]);
+  const [sessionsArray, setSessionsArray] = useState<SleepSession[]>([]);
   const [hasHealthConnectPermissions, setHasHealthConnectPermissions] = useState(false);
   const [loading, setLoading] = useState(true);
   const router = useRouter();
@@ -31,16 +31,16 @@ export default function RecordsScreen() {
    * @param data - ReadRecordsResult<"SleepSession"> containing sleep data.
    */
   const initializeRecordsArray = useCallback((data: ReadRecordsResult<"SleepSession">): void => {
-    let arr: SleepRecord[] = [];
+    let arr: SleepSession[] = [];
     const records = data.records;
     for (let i = 0; i < records.length; i++) {
-      const currSleepActivity = constructSleepRecord(records[i]);
+      const currSleepActivity = constructSleepSession(records[i]);
       arr.push(currSleepActivity);
     }
-    if (arr.length !== recordsArray.length) {
-      setRecordsArray(arr);
+    if (arr.length !== sessionsArray.length) {
+      setSessionsArray(arr);
     }
-  }, [recordsArray.length]);
+  }, [sessionsArray.length]);
 
   useFocusEffect(
     useCallback(() => {
@@ -79,10 +79,10 @@ export default function RecordsScreen() {
       </ThemedView>
     )
   }
-  else if (recordsArray) {
+  else if (sessionsArray) {
     return (
       <ThemedView>
-        <RecordsList recordArray={recordsArray} />
+        <RecordsList recordArray={sessionsArray} />
       </ThemedView>
     );
   }

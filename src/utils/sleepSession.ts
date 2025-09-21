@@ -3,10 +3,10 @@ import {
   ReadRecordsResult,
   RecordResult,
 } from "react-native-health-connect";
-import { SleepRecord } from "../types/SleepRecord";
+import { SleepSession } from "../types/SleepSession";
 import { dateToString } from "./dates";
 import { SleepStage } from "../types/SleepStage";
-import { SleepRecordFilter } from "../types/SleepRecordFilter";
+import { SleepSessionFilter } from "../types/SleepSessionFilter";
 import { getRecordDetailsMapValues } from "../database/recordDetails";
 
 /**
@@ -15,9 +15,9 @@ import { getRecordDetailsMapValues } from "../database/recordDetails";
  * @param record - A Health Connect record returned by a function in `healthConnectSleepData.ts`.
  * @returns A SleepRecord object containing the fields from the provided record.
  */
-export const constructSleepRecord = (
+export const constructSleepSession = (
   record: RecordResult<"SleepSession">
-): SleepRecord => {
+): SleepSession => {
   if (!record.metadata?.id) {
     throw new Error("record guid is undefined");
   }
@@ -70,12 +70,12 @@ export const constructSleepRecord = (
  * @param records - Array of Health Connect records returned by a function in `healthConnectSleepData.ts`.
  * @returns An array of SleepRecords.
  */
-export const constructSleepRecordArray = (
+export const constructSleepSessionArray = (
   records: ReadRecordsResult<"SleepSession">
-): SleepRecord[] => {
+): SleepSession[] => {
   const res = [];
   for (const record of records.records) {
-    res.push(constructSleepRecord(record));
+    res.push(constructSleepSession(record));
   }
   return res;
 };
@@ -86,7 +86,7 @@ export const constructSleepRecordArray = (
  * @param records - An array of SleepRecords to compute the average TST from.
  * @returns The average tst across all provided records in milliseconds.
  */
-export const getAverageTst = (records: SleepRecord[]): number => {
+export const getAverageTst = (records: SleepSession[]): number => {
   if (records.length === 0) return 0;
   const dates = new Set<string>();
   let res = 0;
@@ -103,7 +103,7 @@ export const getAverageTst = (records: SleepRecord[]): number => {
  * @param records - An array of SleepRecords to compute the average time in bed from.
  * @returns The average time in bed across all provided records in milliseconds.
  */
-export const getAverageTimeInBed = (records: SleepRecord[]): number => {
+export const getAverageTimeInBed = (records: SleepSession[]): number => {
   if (records.length === 0) return 0;
   const dates = new Set<string>();
   let res = 0;
@@ -120,7 +120,7 @@ export const getAverageTimeInBed = (records: SleepRecord[]): number => {
  * @param records - An array of SleepRecords to compute the average sleep efficiency from.
  * @returns The average sleep efficiency across all provided records (i.e., tst / time in bed).
  */
-export const getAverageSleepEfficiency = (records: SleepRecord[]): string => {
+export const getAverageSleepEfficiency = (records: SleepSession[]): string => {
   if (records.length === 0) return "0";
   let tst = 0;
   let timeInBed = 0;
@@ -139,7 +139,7 @@ export const getAverageSleepEfficiency = (records: SleepRecord[]): string => {
  * @returns The average time in the provided stage across all provided records in milliseconds.
  */
 export const getAverageTimeInStage = (
-  records: SleepRecord[],
+  records: SleepSession[],
   stage: SleepStage
 ) => {
   let res = 0;
@@ -163,13 +163,13 @@ export const getAverageTimeInStage = (
  * @param guid The unique id of the health connect sleep record
  * @returns A Promise that resolves to a SleepRecord.
  */
-export const getSleepRecordFromReadRecord = async (guid: string): Promise<SleepRecord> => {
+export const getSleepSessionFromReadRecord = async (guid: string): Promise<SleepSession> => {
   try {
     const healthConnectRecord = await readRecord("SleepSession", guid);
     if (!healthConnectRecord.metadata) {
       throw new Error("getSleepRecordFromReadRecord metadata is undefined");
     }
-    return constructSleepRecord(healthConnectRecord);
+    return constructSleepSession(healthConnectRecord);
   } catch (e) {
     throw new Error("getSleepRecordFromReadRecord threw error: " + e);
   }
@@ -185,13 +185,13 @@ export const getSleepRecordFromReadRecord = async (guid: string): Promise<SleepR
  *   - Index 0: Records that include the specified filter.
  *   - Index 1: Records that exclude the specified filter.
  */
-export const getSleepRecordArraysByFilter = async (filter: SleepRecordFilter): Promise<[SleepRecord[], SleepRecord[]]> => {
+export const getSleepSessionArraysByFilter = async (filter: SleepSessionFilter): Promise<[SleepSession[], SleepSession[]]> => {
   const included = [];
   const excluded = [];
 
   const detailsArray = getRecordDetailsMapValues();
   for (const details of detailsArray) {
-    const sleepRecord = await getSleepRecordFromReadRecord(details.guid);
+    const sleepRecord = await getSleepSessionFromReadRecord(details.guid);
     if ((filter === "alcohol" && details.alcohol_quantity !== "0")
       || (filter === "caffeine" && details.caffeine_quantity !== "0")) {
       included.push(sleepRecord);

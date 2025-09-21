@@ -1,17 +1,16 @@
-// sleepRecord.test.ts
 import {
-  constructSleepRecord,
-  constructSleepRecordArray,
+  constructSleepSession,
+  constructSleepSessionArray,
   getAverageTst,
   getAverageTimeInBed,
   getAverageSleepEfficiency,
   getAverageTimeInStage,
-  getSleepRecordFromReadRecord,
-  getSleepRecordArraysByFilter,
-} from "./sleepRecord";
+  getSleepSessionFromReadRecord,
+  getSleepSessionArraysByFilter,
+} from "./sleepSession";
 import { readRecord } from "react-native-health-connect";
 import { getRecordDetailsMapValues } from "../database/recordDetails";
-import { SleepRecord } from "../types/SleepRecord";
+import { SleepSession } from "../types/SleepSession";
 
 jest.mock("react-native-health-connect", () => ({
   readRecord: jest.fn(),
@@ -23,7 +22,7 @@ jest.mock("./dates", () => ({
   dateToString: (d: Date) => d.toISOString().split("T")[0],
 }));
 
-describe("constructSleepRecord", () => {
+describe("constructSleepSession", () => {
   it("should convert raw record into SleepRecord", () => {
     const record: any = {
       metadata: { id: "guid-1" },
@@ -35,7 +34,7 @@ describe("constructSleepRecord", () => {
         { stage: 6, startTime: "2023-01-01T03:00:00Z", endTime: "2023-01-01T04:00:00Z" }, // rem
       ],
     };
-    const result = constructSleepRecord(record);
+    const result = constructSleepSession(record);
     expect(result.guid).toBe("guid-1");
     expect(result.timeInBed).toBe(8 * 60 * 60 * 1000);
     expect(result.totalSleepTime).toBe(3 * 60 * 60 * 1000);
@@ -44,11 +43,11 @@ describe("constructSleepRecord", () => {
 
   it("should throw if guid is missing", () => {
     const record: any = { metadata: {}, startTime: "2023", endTime: "2023" };
-    expect(() => constructSleepRecord(record)).toThrow("record guid is undefined");
+    expect(() => constructSleepSession(record)).toThrow("record guid is undefined");
   });
 });
 
-describe("constructSleepRecordArray", () => {
+describe("constructSleepSessionArray", () => {
   it("should convert array of raw records", () => {
     const records: any = {
       records: [
@@ -59,7 +58,7 @@ describe("constructSleepRecordArray", () => {
         },
       ],
     };
-    const result = constructSleepRecordArray(records);
+    const result = constructSleepSessionArray(records);
     expect(result.length).toBe(1);
     expect(result[0].guid).toBe("guid-2");
   });
@@ -71,7 +70,7 @@ describe("getAverageTst", () => {
   });
 
   it("should compute average TST per day", () => {
-    const records: SleepRecord[] = [
+    const records: SleepSession[] = [
       {
         guid: "1",
         startTime: new Date("2023-01-01T00:00:00Z"),
@@ -146,26 +145,26 @@ describe("getAverageTimeInStage", () => {
   });
 });
 
-describe("getSleepRecordFromReadRecord", () => {
+describe("getSleepSessionFromReadRecord", () => {
   it("should resolve a SleepRecord", async () => {
     (readRecord as jest.Mock).mockResolvedValue({
       metadata: { id: "guid-3" },
       startTime: "2023-01-01T00:00:00Z",
       endTime: "2023-01-01T01:00:00Z",
     });
-    const result = await getSleepRecordFromReadRecord("guid-3");
+    const result = await getSleepSessionFromReadRecord("guid-3");
     expect(result.guid).toBe("guid-3");
   });
 
   it("should throw if metadata missing", async () => {
     (readRecord as jest.Mock).mockResolvedValue({});
-    await expect(getSleepRecordFromReadRecord("bad-guid")).rejects.toThrow(
+    await expect(getSleepSessionFromReadRecord("bad-guid")).rejects.toThrow(
       "metadata is undefined"
     );
   });
 });
 
-describe("getSleepRecordArraysByFilter", () => {
+describe("getSleepSessionArraysByFilter", () => {
   it("should split records by filter", async () => {
     (getRecordDetailsMapValues as jest.Mock).mockReturnValue([
       { guid: "guid-4", alcohol_quantity: "1", caffeine_quantity: "0" },
@@ -178,7 +177,7 @@ describe("getSleepRecordArraysByFilter", () => {
         endTime: "2023-01-01T01:00:00Z",
       })
     );
-    const [included, excluded] = await getSleepRecordArraysByFilter("alcohol");
+    const [included, excluded] = await getSleepSessionArraysByFilter("alcohol");
     expect(included.length).toBe(1);
     expect(excluded.length).toBe(1);
   });

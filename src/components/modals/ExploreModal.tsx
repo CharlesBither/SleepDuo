@@ -1,12 +1,12 @@
-import { SleepRecordFilter } from "@/src/types/SleepRecordFilter";
+import { SleepSessionFilter } from "@/src/types/SleepSessionFilter";
 import { useState } from "react";
 import { StyleSheet, View } from "react-native";
 import { Modal, Portal, RadioButton, Button, useTheme, ActivityIndicator } from "react-native-paper";
 
 type ExploreModalProps = {
-  activity: SleepRecordFilter | "";
+  activity: SleepSessionFilter | "";
   visible: boolean;
-  onActivityChange: (activity: SleepRecordFilter) => Promise<void>;
+  onActivityChange: (activity: SleepSessionFilter) => Promise<void>;
   setVisible: React.Dispatch<React.SetStateAction<boolean>>;
 };
 

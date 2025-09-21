@@ -2,23 +2,23 @@ import { useState } from "react";
 import { Button, Divider, List, Text } from "react-native-paper";
 import ExploreModal from "../components/modals/ExploreModal";
 import ThemedView from "../views/ThemedView";
-import { SleepRecordFilter } from "../types/SleepRecordFilter";
+import { SleepSessionFilter } from "../types/SleepSessionFilter";
 import { OverviewDetails } from "../types/OverviewDetails";
-import { getAverageSleepEfficiency, getAverageTimeInBed, getAverageTimeInStage, getAverageTst, getSleepRecordArraysByFilter } from "../utils/sleepRecord";
+import { getAverageSleepEfficiency, getAverageTimeInBed, getAverageTimeInStage, getAverageTst, getSleepSessionArraysByFilter } from "../utils/sleepSession";
 import ExploreDataSection from "../components/listSections/ExploreDataSection";
 import { StyleSheet } from "react-native";
 import { setErrorMsg } from "../stores/error";
 import { useRouter } from "expo-router";
 
 export default function Explore() {
-  const [activity, setActivity] = useState<SleepRecordFilter | "">("");
+  const [activity, setActivity] = useState<SleepSessionFilter | "">("");
   const [filterType, setFilterType] = useState<"included" | "excluded">("included");
   const [modalVisible, setModalVisible] = useState(false);
   const [details, setDetails] = useState<OverviewDetails | undefined>(undefined);
   const router = useRouter();
 
-  const getFilteredDetails = async (activity: SleepRecordFilter, filterType: "included" | "excluded"): Promise<OverviewDetails | undefined> => {
-    const filteredArrays = await getSleepRecordArraysByFilter(activity);
+  const getFilteredDetails = async (activity: SleepSessionFilter, filterType: "included" | "excluded"): Promise<OverviewDetails | undefined> => {
+    const filteredArrays = await getSleepSessionArraysByFilter(activity);
     const sleepArray = filterType === "included" ? filteredArrays[0] : filteredArrays[1];
     return {
       totalSleepTime: getAverageTst(sleepArray),
@@ -30,7 +30,7 @@ export default function Explore() {
     };
   }
 
-  const handleActivityChange = async (activity: SleepRecordFilter): Promise<void> => {
+  const handleActivityChange = async (activity: SleepSessionFilter): Promise<void> => {
     try {
       const newDetails = await getFilteredDetails(activity, filterType)
       setDetails(newDetails);

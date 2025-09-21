@@ -2,7 +2,7 @@ import React from "react";
 import { View, ScrollView } from "react-native";
 import { Divider, List } from "react-native-paper";
 
-import { SleepRecord } from "@/src/types/SleepRecord";
+import { SleepSession } from "@/src/types/SleepSession";
 import { router } from "expo-router";
 import {
   getFormattedDate,
@@ -11,7 +11,7 @@ import {
 } from "../../utils/dates";
 
 type Props = {
-  recordArray: SleepRecord[];
+  recordArray: SleepSession[];
 };
 
 /*
