@@ -7,7 +7,7 @@ import { SleepSession } from "../types/SleepSession";
 import { dateToString } from "./dates";
 import { SleepStage } from "../types/SleepStage";
 import { SleepSessionFilter } from "../types/SleepSessionFilter";
-import { getRecordDetailsMapValues } from "../database/recordDetails";
+import { getSleepSessionLogsMapValues } from "../database/sleepSessionLogs";
 
 /**
  * Converts a raw Health Connect record into a normalized SleepRecord.
@@ -83,16 +83,16 @@ export const constructSleepSessionArray = (
 /**
  * Calculates the average Total Sleep Time (TST) in milliseconds from a list of sleep records.
  * 
- * @param records - An array of SleepRecords to compute the average TST from.
+ * @param sleepSessions - An array of type 'SleepSession' to compute the average TST from.
  * @returns The average tst across all provided records in milliseconds.
  */
-export const getAverageTst = (records: SleepSession[]): number => {
-  if (records.length === 0) return 0;
+export const getAverageTst = (sleepSessions: SleepSession[]): number => {
+  if (sleepSessions.length === 0) return 0;
   const dates = new Set<string>();
   let res = 0;
-  for (const record of records) {
-    res += record.totalSleepTime;
-    dates.add(dateToString(record.endTime));
+  for (const session of sleepSessions) {
+    res += session.totalSleepTime;
+    dates.add(dateToString(session.endTime));
   }
   return res / dates.size;
 };
@@ -100,16 +100,16 @@ export const getAverageTst = (records: SleepSession[]): number => {
 /**
  * Calculates the average time in bed in milliseconds from a list of sleep records.
  * 
- * @param records - An array of SleepRecords to compute the average time in bed from.
+ * @param sleepSessions - An array of type 'SleepSession' to compute the average time in bed from.
  * @returns The average time in bed across all provided records in milliseconds.
  */
-export const getAverageTimeInBed = (records: SleepSession[]): number => {
-  if (records.length === 0) return 0;
+export const getAverageTimeInBed = (sleepSessions: SleepSession[]): number => {
+  if (sleepSessions.length === 0) return 0;
   const dates = new Set<string>();
   let res = 0;
-  for (const record of records) {
-    res += record.timeInBed;
-    dates.add(dateToString(record.endTime));
+  for (const session of sleepSessions) {
+    res += session.timeInBed;
+    dates.add(dateToString(session.endTime));
   }
   return res / dates.size;
 };
@@ -117,16 +117,16 @@ export const getAverageTimeInBed = (records: SleepSession[]): number => {
 /**
  * Calculates the average sleep efficiency from a list of sleep records.
  * 
- * @param records - An array of SleepRecords to compute the average sleep efficiency from.
+ * @param sleepSessions - An array of type 'SleepSession' to compute the average sleep efficiency from.
  * @returns The average sleep efficiency across all provided records (i.e., tst / time in bed).
  */
-export const getAverageSleepEfficiency = (records: SleepSession[]): string => {
-  if (records.length === 0) return "0";
+export const getAverageSleepEfficiency = (sleepSessions: SleepSession[]): string => {
+  if (sleepSessions.length === 0) return "0";
   let tst = 0;
   let timeInBed = 0;
-  for (const record of records) {
-    tst += record.totalSleepTime;
-    timeInBed += record.timeInBed;
+  for (const session of sleepSessions) {
+    tst += session.totalSleepTime;
+    timeInBed += session.timeInBed;
   }
   return ((tst / timeInBed) * 100).toPrecision(2);
 };
@@ -134,21 +134,21 @@ export const getAverageSleepEfficiency = (records: SleepSession[]): string => {
 /**
  * Calculates the average time in a sleep stage in milliseconds from a list of sleep records.
  * 
- * @param records - An array of SleepRecords to compute the average time in stage from.
+ * @param sleepSessions - An array of type 'SleepSession' to compute the average time in stage from.
  * @param stage - The target SleepStage
  * @returns The average time in the provided stage across all provided records in milliseconds.
  */
 export const getAverageTimeInStage = (
-  records: SleepSession[],
+  sleepSessions: SleepSession[],
   stage: SleepStage
 ) => {
   let res = 0;
   let validRecords = 0;
-  for (const record of records) {
-    let target = record.timeAwake;
-    if (stage === "light") target = record.timeLightSleep;
-    else if (stage === "deep") target = record.timeDeepSleep;
-    else if (stage === "rem") target = record.timeRemSleep;
+  for (const session of sleepSessions) {
+    let target = session.timeAwake;
+    if (stage === "light") target = session.timeLightSleep;
+    else if (stage === "deep") target = session.timeDeepSleep;
+    else if (stage === "rem") target = session.timeRemSleep;
     if (target !== 0) {
       res += target;
       validRecords += 1;
@@ -189,14 +189,14 @@ export const getSleepSessionArraysByFilter = async (filter: SleepSessionFilter):
   const included = [];
   const excluded = [];
 
-  const detailsArray = getRecordDetailsMapValues();
+  const detailsArray = getSleepSessionLogsMapValues();
   for (const details of detailsArray) {
-    const sleepRecord = await getSleepSessionFromReadRecord(details.guid);
+    const sleepSession = await getSleepSessionFromReadRecord(details.guid);
     if ((filter === "alcohol" && details.alcohol_quantity !== "0")
       || (filter === "caffeine" && details.caffeine_quantity !== "0")) {
-      included.push(sleepRecord);
+      included.push(sleepSession);
     } else {
-      excluded.push(sleepRecord);
+      excluded.push(sleepSession);
     }
   }
 

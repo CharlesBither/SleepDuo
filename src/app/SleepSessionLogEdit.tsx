@@ -1,7 +1,7 @@
 import {
-  getRecordDetails,
-  insertRecordDetails,
-} from "@/src/database/recordDetails";
+  getSleepSessionLog,
+  insertSleepSessionLog,
+} from "@/src/database/sleepSessionLogs";
 import { useEffect, useState } from "react";
 import {
   Dialog,
@@ -20,26 +20,26 @@ import LoadingScreen from "./LoadingScreen";
 import { Pressable } from "react-native";
 import FontAwesome6 from "@expo/vector-icons/FontAwesome6";
 import FontAwesome from "@expo/vector-icons/FontAwesome";
-import { RecordDetails } from "../types/RecordDetails";
+import { SleepSessionLog } from "../types/SleepSessionLog";
 import { getId } from "../lib/supabase";
 import { StyleSheet } from "react-native";
-import AlcoholItem from "../components/listSections/RecordDetails/AlcoholItem";
-import CaffeineItem from "../components/listSections/RecordDetails/CaffeineItem";
+import AlcoholItem from "../components/listSections/sessions/AlcoholItem";
+import CaffeineItem from "../components/listSections/sessions/CaffeineItem";
 import { getSleepSessionFromReadRecord } from "../utils/sleepSession";
 import { TimeOfDay } from "../types/TimeOfDay";
 import { QualityOfSleep } from "../types/QualityOfSleep";
-import AfterSleepSection from "../components/listSections/RecordDetails/AfterSleepSection";
-import NapItem from "../components/listSections/RecordDetails/NapItem";
+import AfterSleepSection from "../components/listSections/sessions/AfterSleepSection";
+import NapItem from "../components/listSections/sessions/NapItem";
 import { HadNapValue } from "../types/HadNapValue";
 import { setErrorMsg } from "../stores/error";
 
-export default function RecordDetailsEdit() {
+export default function SleepSessionLogEdit() {
   const { guid } = useLocalSearchParams<{ guid: string }>();
-  const details = getRecordDetails(guid);
+  const details = getSleepSessionLog(guid);
   const theme = useTheme();
   const router = useRouter();
 
-  const [record, setRecord] = useState<SleepSession | undefined>(undefined);
+  const [sleepSession, setSleepSession] = useState<SleepSession | undefined>(undefined);
   const [alcoholTime, setAlcoholTime] = useState<TimeOfDay>(details ? details.alcohol_time : "NA");
   const [caffeineTime, setCaffeineTime] = useState<TimeOfDay>(details ? details.caffeine_time : "NA");
   const [alcoholQuantity, setAlcoholQuantity] = useState<string>(details ? details.alcohol_quantity : "0");
@@ -54,12 +54,12 @@ export default function RecordDetailsEdit() {
 
   useEffect(() => {
       getSleepSessionFromReadRecord(guid)
-        .then(sleepRecord => {
-          setRecord(sleepRecord);
+        .then(sleepSession => {
+          setSleepSession(sleepSession);
           setLoading(false);
         })
         .catch(e => {
-          setErrorMsg("RecordDetailsEdit useEffect threw error: " + e);
+          setErrorMsg("SleepSessionLogEdit useEffect threw error: " + e);
           router.replace("/ErrorScreen");
         })
     }, []);
@@ -85,8 +85,8 @@ export default function RecordDetailsEdit() {
     );
   };
 
-  /** Called when the user tries to save a journal record.
-   * Inserts the record into the journal_records database table.
+  /** Called when the user tries to save a sleep session log.
+   * Inserts the log into the sleep_session_logs database table.
    */
   const handleSavePress = async (): Promise<void> => {
     if (!requiredFieldsAreValid()) {
@@ -98,7 +98,7 @@ export default function RecordDetailsEdit() {
 
     try {
       const uuid = await getId();
-      const newDetails: RecordDetails = {
+      const newLog: SleepSessionLog = {
         created_at: new Date(),
         uuid: uuid,
         guid: guid,
@@ -110,7 +110,7 @@ export default function RecordDetailsEdit() {
         quality_of_sleep: qualityOfSleep,
       };
 
-      await insertRecordDetails(newDetails);
+      await insertSleepSessionLog(newLog);
       router.back();
     } catch(e) {
       setErrorMsg("handleSavePress threw error: " + e);
@@ -125,8 +125,8 @@ export default function RecordDetailsEdit() {
         <LoadingScreen />
       </ThemedView>
     );
-  } else if (!record) {
-    setErrorMsg("record is undefined");
+  } else if (!sleepSession) {
+    setErrorMsg("sleepSession is undefined");
     router.replace("/ErrorScreen");
     return;
   }

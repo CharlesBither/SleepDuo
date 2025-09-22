@@ -10,7 +10,7 @@ import LoadingScreen from "../LoadingScreen";
 import ManualPermissionCard from "@/src/components/cards/ManualPermissionCard";
 import RequestPermissionCard from "@/src/components/cards/RequestPermissionCard";
 import { useFocusEffect, useRouter } from "expo-router";
-import { initRecordDetailsMap } from "@/src/database/recordDetails";
+import { initSleepSessionLogsMap } from "@/src/database/sleepSessionLogs";
 import OverviewContainer from "@/src/views/Overview";
 import OverviewExploreCard from "@/src/components/cards/OverviewExploreCard";
 import { setErrorMsg } from "@/src/stores/error";
@@ -57,7 +57,7 @@ export default function Home() {
     const checkForPermissionsPromise = checkForPermissions();
 
     // initialize the journalRecordsMap for the logged in user
-    const getIdPromise = initRecordDetailsMap()
+    const getIdPromise = initSleepSessionLogsMap()
       .catch(error => renderErrorScreen(error))
 
     Promise.all([getIdPromise, checkForPermissionsPromise])

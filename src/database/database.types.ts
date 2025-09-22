@@ -66,7 +66,7 @@ export type Database = {
         }
         Relationships: []
       }
-      record_details: {
+      sleep_session_logs: {
         Row: {
           alcohol_quantity: string
           alcohol_time: string | null
@@ -101,39 +101,6 @@ export type Database = {
           had_nap?: string
           id?: number
           quality_of_sleep?: string
-          uuid?: string
-        }
-        Relationships: []
-      }
-      record_details_test: {
-        Row: {
-          alcohol_date: string | null
-          alcohol_quantity: string | null
-          caffeine_date: string | null
-          caffeine_quantity: string | null
-          created_at: string
-          guid: string | null
-          id: number
-          uuid: string
-        }
-        Insert: {
-          alcohol_date?: string | null
-          alcohol_quantity?: string | null
-          caffeine_date?: string | null
-          caffeine_quantity?: string | null
-          created_at?: string
-          guid?: string | null
-          id?: number
-          uuid: string
-        }
-        Update: {
-          alcohol_date?: string | null
-          alcohol_quantity?: string | null
-          caffeine_date?: string | null
-          caffeine_quantity?: string | null
-          created_at?: string
-          guid?: string | null
-          id?: number
           uuid?: string
         }
         Relationships: []

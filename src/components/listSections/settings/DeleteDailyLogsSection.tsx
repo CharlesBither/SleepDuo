@@ -10,7 +10,7 @@ import {
 import { StyleSheet } from "react-native";
 import { useState } from "react";
 import { getId } from "@/src/lib/supabase";
-import { deleteAllRecordDetailsById } from "@/src/database/recordDetails";
+import { deleteAllSleepSessionLogsById } from "@/src/database/sleepSessionLogs";
 import { setErrorMsg } from "@/src/stores/error";
 import { useRouter } from "expo-router";
 
@@ -26,7 +26,7 @@ export default function DeleteDailyLogsSection() {
     try{
       setDeleteLoading(true);
       const uuid = await getId();
-      await deleteAllRecordDetailsById(uuid);
+      await deleteAllSleepSessionLogsById(uuid);
       setDeleteLoading(false);
       setConfirmDialogIsVisible(false);
       setSuccessDialogIsVisible(true);

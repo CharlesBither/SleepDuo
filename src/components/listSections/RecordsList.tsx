@@ -20,7 +20,7 @@ type Props = {
 export default function RecordsList({ recordArray: recordArray }: Props) {
   const handlePress = (guid: string | undefined): void => {
     if (guid) {
-      router.push(`/RecordDetailsRead?guid=${guid}`);
+      router.push(`/SleepSessionLogRead?guid=${guid}`);
     }
   };
 

@@ -9,14 +9,14 @@ import {
   getSleepSessionArraysByFilter,
 } from "./sleepSession";
 import { readRecord } from "react-native-health-connect";
-import { getRecordDetailsMapValues } from "../database/recordDetails";
+import { getSleepSessionLogsMapValues } from "../database/sleepSessionLogs";
 import { SleepSession } from "../types/SleepSession";
 
 jest.mock("react-native-health-connect", () => ({
   readRecord: jest.fn(),
 }));
-jest.mock("../database/recordDetails", () => ({
-  getRecordDetailsMapValues: jest.fn(),
+jest.mock("../database/sleepSessionLogs", () => ({
+  getSleepSessionLogsMapValues: jest.fn(),
 }));
 jest.mock("./dates", () => ({
   dateToString: (d: Date) => d.toISOString().split("T")[0],
@@ -166,7 +166,7 @@ describe("getSleepSessionFromReadRecord", () => {
 
 describe("getSleepSessionArraysByFilter", () => {
   it("should split records by filter", async () => {
-    (getRecordDetailsMapValues as jest.Mock).mockReturnValue([
+    (getSleepSessionLogsMapValues as jest.Mock).mockReturnValue([
       { guid: "guid-4", alcohol_quantity: "1", caffeine_quantity: "0" },
       { guid: "guid-5", alcohol_quantity: "0", caffeine_quantity: "1" },
     ]);

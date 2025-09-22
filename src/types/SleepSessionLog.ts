@@ -2,7 +2,7 @@ import { HadNapValue } from "./HadNapValue";
 import { QualityOfSleep } from "./QualityOfSleep";
 import { TimeOfDay } from "./TimeOfDay";
 
-export type RecordDetails = {
+export type SleepSessionLog = {
   created_at: Date;
   uuid: string;
   guid: string;

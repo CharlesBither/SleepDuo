@@ -37,12 +37,12 @@ export default function RootLayout() {
         <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
         <Stack.Screen name="+not-found" />
         <Stack.Screen
-          name="RecordDetailsEdit"
+          name="SleepSessionLogEdit"
           options={{ headerShown: false }}
         />
         <Stack.Screen
-          name="RecordDetailsRead"
-          options={{ headerTitle: "Record Details" }}
+          name="SleepSessionLogRead"
+          options={{ headerTitle: "Session Log" }}
         />
         <Stack.Screen
           name="Auth"

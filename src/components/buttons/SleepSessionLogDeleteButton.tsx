@@ -1,16 +1,16 @@
 import { ActivityIndicator, Button, Dialog, Portal, Text, useTheme } from "react-native-paper";
 import { useState } from "react";
 import { getId } from "@/src/lib/supabase";
-import { deleteRecordDetails, getRecordDetails } from "@/src/database/recordDetails";
+import { deleteSleepSessionLog, getSleepSessionLog } from "@/src/database/sleepSessionLogs";
 import { View } from "react-native";
-import { RecordDetails } from "@/src/types/RecordDetails";
+import { SleepSessionLog } from "@/src/types/SleepSessionLog";
 
-type RecordDetailsDeleteButtonProps = {
+type SleepSessionLogDeleteButtonProps = {
   guid: string;
-  setDetails: (details?: RecordDetails) => void;
+  setLog: (log?: SleepSessionLog) => void;
 }
 
-export default function RecordDetailsDeleteButton(props: RecordDetailsDeleteButtonProps) {
+export default function SleepSessionLogDeleteButton(props: SleepSessionLogDeleteButtonProps) {
   const theme = useTheme();
 
   const [visible, setVisible] = useState(false);
@@ -22,9 +22,9 @@ export default function RecordDetailsDeleteButton(props: RecordDetailsDeleteButt
   const handleYesPress = async (): Promise<void> => {
     setDeleteLoading(true);
     const id = await getId();
-    await deleteRecordDetails(id, props.guid);
+    await deleteSleepSessionLog(id, props.guid);
     setDeleteLoading(false);
-    props.setDetails(getRecordDetails(props.guid));
+    props.setLog(getSleepSessionLog(props.guid));
     setVisible(false);
   }
 
@@ -35,7 +35,7 @@ export default function RecordDetailsDeleteButton(props: RecordDetailsDeleteButt
           <Dialog visible={visible} onDismiss={hideDialog}>
             <Dialog.Title>Confirmation</Dialog.Title>
             <Dialog.Content>
-              <Text variant="bodyMedium">Are you sure you want to delete these details?</Text>
+              <Text variant="bodyMedium">Are you sure you want to delete this log?</Text>
             </Dialog.Content>
             <Dialog.Actions>
               <Button onPress={hideDialog}>Cancel</Button>
