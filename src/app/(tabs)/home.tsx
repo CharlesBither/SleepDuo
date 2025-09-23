@@ -10,16 +10,14 @@ import ManualPermissionCard from "@/src/components/cards/ManualPermissionCard";
 import RequestPermissionCard from "@/src/components/cards/RequestPermissionCard";
 import { useFocusEffect, useRouter } from "expo-router";
 import { initSleepSessionLogsMap } from "@/src/database/sleepSessionLogs";
-import OverviewContainer from "@/src/views/Overview";
-import OverviewExploreCard from "@/src/components/cards/OverviewExploreCard";
+import Overview from "@/src/views/Overview";
 import { setErrorMsg } from "@/src/stores/error";
 import LoadingScreen from "@/src/views/LoadingScreen";
 
 /**
  * This component is shown after the user is authenticated.
- * Connects to the health-connect api and renders average sleep data.
- *
- * @returns View element containing average total sleep time and efficiency
+ * Connects to the health-connect api and renders the Overview page if 
+ * this app has been granted the required permissions.
  */
 export default function Home() {
   const [loading, setLoading] = useState(true);
@@ -88,8 +86,7 @@ export default function Home() {
   }
   return (
     <ThemedView>
-      <OverviewContainer />
-      <OverviewExploreCard />
+      <Overview />
     </ThemedView>
   );
 }

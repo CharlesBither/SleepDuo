@@ -1,4 +1,4 @@
-export type OverviewDetails = {
+export type SleepSessionAvgData = {
     totalSleepTime: number;
     timeInBed: number;
     sleepEfficiency: string;

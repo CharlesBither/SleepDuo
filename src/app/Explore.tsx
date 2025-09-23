@@ -3,9 +3,9 @@ import { Button, Divider, List, Text } from "react-native-paper";
 import ExploreModal from "../components/modals/ExploreModal";
 import ThemedView from "../views/ThemedView";
 import { SleepSessionFilter } from "../types/SleepSessionFilter";
-import { OverviewDetails } from "../types/OverviewDetails";
+import { SleepSessionAvgData } from "../types/SleepSessionAvgData";
 import { getAverageSleepEfficiency, getAverageTimeInBed, getAverageTimeInStage, getAverageTst, getSleepSessionArraysByFilter } from "../utils/sleepSession";
-import ExploreDataSection from "../components/listSections/ExploreDataSection";
+import SleepSessionAvgDataSection from "../components/listSections/SleepSessionAvgDataSection";
 import { StyleSheet } from "react-native";
 import { setErrorMsg } from "../stores/error";
 import { useRouter } from "expo-router";
@@ -14,10 +14,10 @@ export default function Explore() {
   const [activity, setActivity] = useState<SleepSessionFilter | "">("");
   const [filterType, setFilterType] = useState<"included" | "excluded">("included");
   const [modalVisible, setModalVisible] = useState(false);
-  const [details, setDetails] = useState<OverviewDetails | undefined>(undefined);
+  const [details, setDetails] = useState<SleepSessionAvgData | undefined>(undefined);
   const router = useRouter();
 
-  const getFilteredDetails = async (activity: SleepSessionFilter, filterType: "included" | "excluded"): Promise<OverviewDetails | undefined> => {
+  const getFilteredDetails = async (activity: SleepSessionFilter, filterType: "included" | "excluded"): Promise<SleepSessionAvgData | undefined> => {
     const filteredArrays = await getSleepSessionArraysByFilter(activity);
     const sleepArray = filterType === "included" ? filteredArrays[0] : filteredArrays[1];
     return {
@@ -120,7 +120,7 @@ export default function Explore() {
         <Divider />
       </List.Section>
       {renderFilterStatement()}
-      <ExploreDataSection details={details} />
+      <SleepSessionAvgDataSection data={details} />
       <ExploreModal
         activity={activity}
         visible={modalVisible}

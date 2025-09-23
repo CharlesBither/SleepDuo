@@ -8,6 +8,7 @@ import { dateToString } from "./dates";
 import { SleepStage } from "../types/SleepStage";
 import { SleepSessionFilter } from "../types/SleepSessionFilter";
 import { getSleepSessionLogsMapValues } from "../database/sleepSessionLogs";
+import { SleepSessionAvgData } from "../types/SleepSessionAvgData";
 
 /**
  * Converts a raw Health Connect record into a normalized SleepRecord.
@@ -79,6 +80,25 @@ export const constructSleepSessionArray = (
   }
   return res;
 };
+
+/**
+ * Converts an array of SleepSessions to a single record containing average sleep data.
+ * Displayed in the Overview and Explore pages.
+ * 
+ * @param sleepSessions The array of sleep session to compute the average data from.
+ * @returns A record containing the average data with type 'SleepSessionAvgData'.
+ */
+export const sleepSessionArrayToAvgData = (sleepSessions: SleepSession[]): SleepSessionAvgData | undefined => {
+  if (sleepSessions.length === 0) return undefined;
+  return {
+    totalSleepTime: getAverageTst(sleepSessions),
+    timeInBed: getAverageTimeInBed(sleepSessions),
+    sleepEfficiency: getAverageSleepEfficiency(sleepSessions),
+    timeLightSleep: getAverageTimeInStage(sleepSessions, "light"),
+    timeDeepSleep: getAverageTimeInStage(sleepSessions, "deep"),
+    timeRemSleep: getAverageTimeInStage(sleepSessions, "rem"),
+  }
+}
 
 /**
  * Calculates the average Total Sleep Time (TST) in milliseconds from a list of sleep records.
