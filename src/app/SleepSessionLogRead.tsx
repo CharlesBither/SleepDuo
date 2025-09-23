@@ -1,12 +1,12 @@
 import { useLocalSearchParams, useRouter } from "expo-router";
 import ThemedView from "../views/ThemedView";
 import { useEffect, useState } from "react";
-import LoadingScreen from "./LoadingScreen";
 import { SleepSession } from "../types/SleepSession";
 import DuringSleepSection from "../components/listSections/sessions/DuringSleepSection";
 import SleepSessionLogCard from "../components/cards/SleepSessionLogCard";
 import { getSleepSessionFromReadRecord } from "../utils/sleepSession";
 import { setErrorMsg } from "../stores/error";
+import LoadingScreen from "../views/LoadingScreen";
 
 export default function SleepSessionLogRead() {
   const { guid } = useLocalSearchParams<{ guid: string }>();

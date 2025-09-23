@@ -16,7 +16,6 @@ import {
 import { SleepSession } from "../types/SleepSession";
 import { useLocalSearchParams, useRouter } from "expo-router";
 import ThemedView from "../views/ThemedView";
-import LoadingScreen from "./LoadingScreen";
 import { Pressable } from "react-native";
 import FontAwesome6 from "@expo/vector-icons/FontAwesome6";
 import FontAwesome from "@expo/vector-icons/FontAwesome";
@@ -32,6 +31,7 @@ import AfterSleepSection from "../components/listSections/sessions/AfterSleepSec
 import NapItem from "../components/listSections/sessions/NapItem";
 import { HadNapValue } from "../types/HadNapValue";
 import { setErrorMsg } from "../stores/error";
+import LoadingScreen from "../views/LoadingScreen";
 
 export default function SleepSessionLogEdit() {
   const { guid } = useLocalSearchParams<{ guid: string }>();

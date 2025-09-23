@@ -6,7 +6,6 @@ import {
 } from "@/src/lib/healthConnectInitialize";
 import ThemedView from "@/src/views/ThemedView";
 import { getGrantedPermissions } from "react-native-health-connect";
-import LoadingScreen from "../LoadingScreen";
 import ManualPermissionCard from "@/src/components/cards/ManualPermissionCard";
 import RequestPermissionCard from "@/src/components/cards/RequestPermissionCard";
 import { useFocusEffect, useRouter } from "expo-router";
@@ -14,6 +13,7 @@ import { initSleepSessionLogsMap } from "@/src/database/sleepSessionLogs";
 import OverviewContainer from "@/src/views/Overview";
 import OverviewExploreCard from "@/src/components/cards/OverviewExploreCard";
 import { setErrorMsg } from "@/src/stores/error";
+import LoadingScreen from "@/src/views/LoadingScreen";
 
 /**
  * This component is shown after the user is authenticated.
@@ -43,11 +43,9 @@ export default function Home() {
   /** Called when the user clicks the RequestPermissionCard button */
   const handleRequestButtonPress = async (): Promise<void> => {
     try {
-      setLoading(true);
-      setPressedRequestButton(true);
       await requestSleepPermissions();
       await checkForPermissions();
-      setLoading(false);
+      setPressedRequestButton(true);
     } catch (error) {
       renderErrorScreen(error);
     }

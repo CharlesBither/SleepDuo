@@ -7,12 +7,12 @@ import { getBeforeNow } from "@/src/lib/healthConnectSleepData";
 import RecordsList from "@/src/components/listSections/RecordsList";
 import ThemedView from "@/src/views/ThemedView";
 import { getGrantedPermissions, ReadRecordsResult } from "react-native-health-connect";
-import LoadingScreen from "../LoadingScreen";
 import GoHomePermissionCard from "@/src/components/cards/GoHomePermissionCard";
 import { useFocusEffect, useRouter } from "expo-router";
 import { constructSleepSession } from "@/src/utils/sleepSession";
 import { setErrorMsg } from "@/src/stores/error";
 import { HealthConnectPermission } from "@/src/types/HealthConnectPermission";
+import LoadingScreen from "@/src/views/LoadingScreen";
 
 /**
  * Gets all sleep records and renders it's information for the user as a list.

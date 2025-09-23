@@ -6,9 +6,9 @@ import ThemedView from '../views/ThemedView';
 
 import { supabase } from '../lib/supabase'
 import { Session } from '@supabase/supabase-js'
-import LoadingScreen from './LoadingScreen';
 import { initHealthConnect } from '../lib/healthConnectInitialize';
 import { setErrorMsg } from '../stores/error';
+import LoadingScreen from '../views/LoadingScreen';
 
 export default function Index() {
   const [session, setSession] = useState<Session | null>(null)
