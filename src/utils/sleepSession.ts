@@ -6,7 +6,6 @@ import {
 import { SleepSession } from "../types/SleepSession";
 import { dateToString } from "./dates";
 import { SleepStage } from "../types/SleepStage";
-import { SleepSessionActivity } from "../types/SleepSessionActivity";
 import { getSleepSessionLogsMapValues } from "../database/sleepSessionLogs";
 import { SleepSessionAvgData } from "../types/SleepSessionAvgData";
 import { BooleanFilter } from "../types/BooleanFilter";
@@ -199,33 +198,10 @@ export const getSleepSessionFromReadRecord = async (guid: string): Promise<Sleep
 }
 
 /**
- * Retrieves all sleep records grouped by whether they match a given activity filter such that
- * - `SleepRecord[0][]` Contains all records where the filter activity was recorded.
- * - `SleepRecord[1][]` Contains all records where the filter activity was not recorded.
- * 
- * @param filter An activity associated to a SleepSession.
- * @returns A tuple of SleepRecord arrays:
- *   - Index 0: Records that include the specified filter.
- *   - Index 1: Records that exclude the specified filter.
+ * Retrieves all sleep sessions that match the given nap filter.
+ * @param filter - Whether this function should retrieve sleep sessions where the user did or did not take a nap.
+ * @returns An array of SleepSessions that match the filter.
  */
-export const getSleepSessionArraysByFilter = async (filter: SleepSessionActivity): Promise<[SleepSession[], SleepSession[]]> => {
-  const included = [];
-  const excluded = [];
-
-  const detailsArray = getSleepSessionLogsMapValues();
-  for (const details of detailsArray) {
-    const sleepSession = await getSleepSessionFromReadRecord(details.guid);
-    if ((filter === "alcohol" && details.alcohol_quantity !== "0")
-      || (filter === "caffeine" && details.caffeine_quantity !== "0")) {
-      included.push(sleepSession);
-    } else {
-      excluded.push(sleepSession);
-    }
-  }
-
-  return [included, excluded];
-}
-
 export const getNapFilteredSleepSessions = async (filter: BooleanFilter): Promise<SleepSession[]> => {
   const res = [];
   const logs = getSleepSessionLogsMapValues();
@@ -237,6 +213,12 @@ export const getNapFilteredSleepSessions = async (filter: BooleanFilter): Promis
   return res;
 }
 
+/**
+ * Retrieves all sleep sessions that match the given filter.
+ * @param activity - The activity that the given filter applies to.
+ * @param filter - A selection of times of day.
+ * @returns An array of SleepSessions that match the filter.
+ */
 export const getTimeOfDayFilteredSleepSessions = async (activity: Consumable, filter: TimeOfDay[]): Promise<SleepSession[]> => {
   const res = [];
   const logs = getSleepSessionLogsMapValues();

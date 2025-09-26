@@ -1,5 +1,5 @@
-import { useState } from "react";
-import { Button, Divider, List } from "react-native-paper";
+import { act, useState } from "react";
+import { Button, Divider, List, Text } from "react-native-paper";
 import ExploreModal from "../components/modals/ExploreModal";
 import ThemedView from "../views/ThemedView";
 import { SleepSessionActivity } from "../types/SleepSessionActivity";
@@ -14,6 +14,7 @@ import FilterItem from "../components/listSections/explore/FilterItem";
 import { TimeOfDay } from "../types/TimeOfDay";
 import ExploreTimeOfDayFilterModal from "../components/modals/ExploreTimeOfDayFilterModal";
 import { setErrorMsg } from "../stores/error";
+import { renderFilterStatement } from "../utils/textFormatter";
 
 export default function Explore() {
   const [activity, setActivity] = useState<SleepSessionActivity | "">("");
@@ -86,6 +87,7 @@ export default function Explore() {
         />
         <Divider />
       </List.Section>
+      <Text style={styles.title}>{renderFilterStatement(activity, napFilter, timeOfDayFilter)}</Text>
       <SleepSessionAvgDataSection data={data} />
 
       <ExploreModal

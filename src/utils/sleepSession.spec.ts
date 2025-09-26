@@ -6,10 +6,8 @@ import {
   getAverageSleepEfficiency,
   getAverageTimeInStage,
   getSleepSessionFromReadRecord,
-  getSleepSessionArraysByFilter,
 } from "./sleepSession";
 import { readRecord } from "react-native-health-connect";
-import { getSleepSessionLogsMapValues } from "../database/sleepSessionLogs";
 import { SleepSession } from "../types/SleepSession";
 
 jest.mock("react-native-health-connect", () => ({
@@ -164,21 +162,3 @@ describe("getSleepSessionFromReadRecord", () => {
   });
 });
 
-describe("getSleepSessionArraysByFilter", () => {
-  it("should split records by filter", async () => {
-    (getSleepSessionLogsMapValues as jest.Mock).mockReturnValue([
-      { guid: "guid-4", alcohol_quantity: "1", caffeine_quantity: "0" },
-      { guid: "guid-5", alcohol_quantity: "0", caffeine_quantity: "1" },
-    ]);
-    (readRecord as jest.Mock).mockImplementation((_, guid) =>
-      Promise.resolve({
-        metadata: { id: guid },
-        startTime: "2023-01-01T00:00:00Z",
-        endTime: "2023-01-01T01:00:00Z",
-      })
-    );
-    const [included, excluded] = await getSleepSessionArraysByFilter("alcohol");
-    expect(included.length).toBe(1);
-    expect(excluded.length).toBe(1);
-  });
-});
