@@ -1,35 +1,35 @@
-import { SleepSessionActivity } from "@/src/types/SleepSessionActivity";
+import { BooleanFilter } from "@/src/types/BooleanFilter";
 import { useState } from "react";
 import { StyleSheet, View } from "react-native";
 import { Modal, Portal, RadioButton, Button, useTheme, ActivityIndicator } from "react-native-paper";
 
-type ExploreModalProps = {
-  activity: SleepSessionActivity | "";
+type ExploreNapFilterModalProps = {
+  filter: BooleanFilter | "";
   visible: boolean;
-  onActivityChange: (activity: SleepSessionActivity) => void;
+  onFilterChange: (filter: BooleanFilter) => Promise<void>;
   setVisible: React.Dispatch<React.SetStateAction<boolean>>;
 };
 
-export default function ExploreModal(props: ExploreModalProps) {
+export default function ExploreNapFilterModal(props: ExploreNapFilterModalProps) {
   const theme = useTheme();
-  const [value, setValue] = useState(props.activity);
+  const [value, setValue] = useState(props.filter);
   const [saveLoading, setSaveLoading] = useState(false);
 
-  const handleSavePress = (): void => {
+  const handleSavePress = async (): Promise<void> => {
     if (value === "") return;
     setSaveLoading(true);
-    props.onActivityChange(value);
+    await props.onFilterChange(value);
     setSaveLoading(false);
     props.setVisible(false);
   }
 
   const handleCancelPress = (): void => {
-    setValue(props.activity);
+    setValue(props.filter);
     props.setVisible(false);
   }
 
   const handleValueChange = (newValue: string): void => {
-    if (newValue === "alcohol" || newValue === "caffeine" || newValue === "nap") {
+    if (newValue === "yes" || newValue === "no" || newValue === "") {
       setValue(newValue);
     }
   }
@@ -45,9 +45,9 @@ export default function ExploreModal(props: ExploreModalProps) {
           onValueChange={(newValue) => handleValueChange(newValue)}
           value={value}
         >
-          <RadioButton.Item label="Alcohol" value="alcohol" style={{backgroundColor: theme.colors.elevation.level2}} />
-          <RadioButton.Item label="Caffeine" value="caffeine" style={{backgroundColor: theme.colors.elevation.level2}} />
-          <RadioButton.Item label="Nap" value="nap" style={{backgroundColor: theme.colors.elevation.level2}} />
+
+          <RadioButton.Item label="Yes" value="yes" style={{backgroundColor: theme.colors.elevation.level2}} />
+          <RadioButton.Item label="No" value="no" style={{backgroundColor: theme.colors.elevation.level2}} />
         </RadioButton.Group>
         <View style={styles.buttonContainer}>
           <View style={{flex: 1}}></View>

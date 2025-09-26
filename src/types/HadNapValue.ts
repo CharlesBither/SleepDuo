@@ -1,1 +1,0 @@
-export type HadNapValue = "yes" | "no"

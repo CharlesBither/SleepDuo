@@ -6,9 +6,12 @@ import {
 import { SleepSession } from "../types/SleepSession";
 import { dateToString } from "./dates";
 import { SleepStage } from "../types/SleepStage";
-import { SleepSessionFilter } from "../types/SleepSessionFilter";
+import { SleepSessionActivity } from "../types/SleepSessionActivity";
 import { getSleepSessionLogsMapValues } from "../database/sleepSessionLogs";
 import { SleepSessionAvgData } from "../types/SleepSessionAvgData";
+import { BooleanFilter } from "../types/BooleanFilter";
+import { Consumable } from "../types/Consumable";
+import { TimeOfDay } from "../types/TimeOfDay";
 
 /**
  * Converts a raw Health Connect record into a normalized SleepRecord.
@@ -205,7 +208,7 @@ export const getSleepSessionFromReadRecord = async (guid: string): Promise<Sleep
  *   - Index 0: Records that include the specified filter.
  *   - Index 1: Records that exclude the specified filter.
  */
-export const getSleepSessionArraysByFilter = async (filter: SleepSessionFilter): Promise<[SleepSession[], SleepSession[]]> => {
+export const getSleepSessionArraysByFilter = async (filter: SleepSessionActivity): Promise<[SleepSession[], SleepSession[]]> => {
   const included = [];
   const excluded = [];
 
@@ -221,4 +224,27 @@ export const getSleepSessionArraysByFilter = async (filter: SleepSessionFilter):
   }
 
   return [included, excluded];
+}
+
+export const getNapFilteredSleepSessions = async (filter: BooleanFilter): Promise<SleepSession[]> => {
+  const res = [];
+  const logs = getSleepSessionLogsMapValues();
+  for (const log of logs) {
+    if (log.had_nap === filter) {
+      res.push(await getSleepSessionFromReadRecord(log.guid));
+    }
+  }
+  return res;
+}
+
+export const getTimeOfDayFilteredSleepSessions = async (activity: Consumable, filter: TimeOfDay[]): Promise<SleepSession[]> => {
+  const res = [];
+  const logs = getSleepSessionLogsMapValues();
+  for (const log of logs) {
+    if ((activity === "alcohol" && filter.includes(log.alcohol_time))
+    || (activity === "caffeine" && filter.includes(log.caffeine_time))) {
+      res.push(await getSleepSessionFromReadRecord(log.guid));
+    }
+  }
+  return res;
 }

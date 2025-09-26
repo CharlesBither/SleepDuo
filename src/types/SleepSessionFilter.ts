@@ -1,3 +1,4 @@
-import { Consumable } from "./Consumable";
+import { BooleanFilter } from "./BooleanFilter";
+import { TimeOfDay } from "./TimeOfDay";
 
-export type SleepSessionFilter = Consumable;
+export type SleepSessionFilter = TimeOfDay | BooleanFilter;

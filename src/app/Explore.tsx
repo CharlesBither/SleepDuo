@@ -1,100 +1,70 @@
 import { useState } from "react";
-import { Button, Divider, List, Text } from "react-native-paper";
+import { Button, Divider, List } from "react-native-paper";
 import ExploreModal from "../components/modals/ExploreModal";
 import ThemedView from "../views/ThemedView";
-import { SleepSessionFilter } from "../types/SleepSessionFilter";
+import { SleepSessionActivity } from "../types/SleepSessionActivity";
 import { SleepSessionAvgData } from "../types/SleepSessionAvgData";
-import { getAverageSleepEfficiency, getAverageTimeInBed, getAverageTimeInStage, getAverageTst, getSleepSessionArraysByFilter } from "../utils/sleepSession";
+import { getNapFilteredSleepSessions, getTimeOfDayFilteredSleepSessions, sleepSessionArrayToAvgData } from "../utils/sleepSession";
 import SleepSessionAvgDataSection from "../components/listSections/SleepSessionAvgDataSection";
 import { StyleSheet } from "react-native";
-import { setErrorMsg } from "../stores/error";
 import { useRouter } from "expo-router";
+import ExploreNapFilterModal from "../components/modals/ExploreNapFilterModal";
+import { BooleanFilter } from "../types/BooleanFilter";
+import FilterItem from "../components/listSections/explore/FilterItem";
+import { TimeOfDay } from "../types/TimeOfDay";
+import ExploreTimeOfDayFilterModal from "../components/modals/ExploreTimeOfDayFilterModal";
+import { setErrorMsg } from "../stores/error";
 
 export default function Explore() {
-  const [activity, setActivity] = useState<SleepSessionFilter | "">("");
-  const [filterType, setFilterType] = useState<"included" | "excluded">("included");
-  const [modalVisible, setModalVisible] = useState(false);
-  const [details, setDetails] = useState<SleepSessionAvgData | undefined>(undefined);
+  const [activity, setActivity] = useState<SleepSessionActivity | "">("");
+  const [napFilter, setNapFilter] = useState<BooleanFilter | "">("");
+  const [timeOfDayFilter, setTimeOfDayFilter] = useState<TimeOfDay[]>([]);
+  const [data, setData] = useState<SleepSessionAvgData | undefined>(undefined);
+
+  const [activityModalVisible, setActivityModalVisible] = useState(false);
+  const [napFilterModalVisible, setNapFilterModalVisible] = useState(false);
+  const [timeOfDayFilterModalVisible, setTimeOfDayFilterModalVisible] = useState(false);
   const router = useRouter();
 
-  const getFilteredDetails = async (activity: SleepSessionFilter, filterType: "included" | "excluded"): Promise<SleepSessionAvgData | undefined> => {
-    const filteredArrays = await getSleepSessionArraysByFilter(activity);
-    const sleepArray = filterType === "included" ? filteredArrays[0] : filteredArrays[1];
-    return {
-      totalSleepTime: getAverageTst(sleepArray),
-      timeInBed: getAverageTimeInBed(sleepArray),
-      sleepEfficiency: getAverageSleepEfficiency(sleepArray),
-      timeLightSleep: getAverageTimeInStage(sleepArray, "light"),
-      timeDeepSleep: getAverageTimeInStage(sleepArray, "deep"),
-      timeRemSleep: getAverageTimeInStage(sleepArray, "rem"),
-    };
+  const handleActivityChange = (activityParam: SleepSessionActivity): void => {
+    if (activityParam === activity) return;
+    setData(undefined);
+    setTimeOfDayFilter([]);
+    setNapFilter("");
+    setActivity(activityParam);
   }
 
-  const handleActivityChange = async (activity: SleepSessionFilter): Promise<void> => {
+  const handleNapFilterChange = async (napFilterParam: BooleanFilter): Promise<void> => {
+    if (napFilterParam === napFilter) return;
     try {
-      const newDetails = await getFilteredDetails(activity, filterType)
-      setDetails(newDetails);
-      setActivity(activity);
+      setNapFilter(napFilterParam);
+      const filteredSleepSessions = await getNapFilteredSleepSessions(napFilterParam);
+      setData(sleepSessionArrayToAvgData(filteredSleepSessions));
     } catch (error) {
-      setErrorMsg("An unexpected error occurred at handleActivityChange " + error);
+      setErrorMsg("handleNapFilterChange threw an unexpected error: " + error);
       router.replace("/ErrorScreen");
     }
   }
 
-  const handleFilterChange = async (): Promise<void> => {
+  const handleTimeOfDayFilterChange = async (filterParam: TimeOfDay[]): Promise<void> => {
+    if (activity === "alcohol" || activity === "caffeine") {
+      try {
+        setTimeOfDayFilter(filterParam);
+        const filteredSleepSessions = await getTimeOfDayFilteredSleepSessions(activity, filterParam);
+        setData(sleepSessionArrayToAvgData(filteredSleepSessions))
+      } catch (error) {
+        setErrorMsg("handleNapFilterChange threw an unexpected error: " + error);
+        router.replace("/ErrorScreen");
+      }
+    }
+  }
+
+  const handleFilterChangeButtonPress = (): void => {
     if (activity === "") return;
-    try {
-      const newFilterType = filterType === "included" ? "excluded" : "included";
-      const newDetails = await getFilteredDetails(activity, newFilterType)
-      setDetails(newDetails);
-      setFilterType(newFilterType);
-    } catch (error) {
-      setErrorMsg("An unexpected error occurred at handleFilterChange " + error);
-      router.replace("/ErrorScreen");
-    }
+    else if (activity === "nap") setNapFilterModalVisible(true);
+    else setTimeOfDayFilterModalVisible(true);
   }
 
-  const renderFilterStatement = (): JSX.Element => {
-    if (filterType === "included") {
-      return <Text variant="titleMedium" style={styles.title}>{`On days where you had ${activity}...`}</Text>;
-    }
-    return <Text variant="titleMedium" style={styles.title}>{`On days where you didn't have ${activity}...`}</Text>
-  }
-
-  if (activity === "") {
-    return (
-      <ThemedView>
-        <List.Section>
-          <List.Subheader>Selected activity</List.Subheader>
-          <List.Item
-            title="None selected"
-            description="Click the button to select an activity"
-            right={() => (
-              <Button onPress={() => setModalVisible(true)}>
-                Select activity
-              </Button>
-            )}
-          />
-          <List.Item
-            title={`Filter type: ${filterType}`}
-            description="Click the button to switch the filter type"
-            right={() => (
-              <Button onPress={handleFilterChange}>
-                Switch filter
-              </Button>
-            )}
-          />
-        </List.Section>
-        <Divider />
-        <ExploreModal
-          activity={activity}
-          visible={modalVisible}
-          onActivityChange={handleActivityChange}
-          setVisible={setModalVisible}
-        />
-      </ThemedView>
-    );
-  }
   return (
     <ThemedView>
       <List.Section>
@@ -103,29 +73,38 @@ export default function Explore() {
           title={`Activity: ${activity}`}
           description="Click the button to change activity"
           right={() => (
-            <Button onPress={() => setModalVisible(true)}>
+            <Button onPress={() => setActivityModalVisible(true)}>
               Change activity
             </Button>
           )}
         />
-        <List.Item
-          title={`Filter type: ${filterType}`}
-          description="Click the button to switch the filter type"
-          right={() => (
-            <Button onPress={handleFilterChange}>
-              Switch filter
-            </Button>
-          )}
+        <FilterItem
+          activity={activity}
+          onFilterChangeButtonPress={handleFilterChangeButtonPress}
+          napFilter={napFilter}
+          timeOfDayFilter={timeOfDayFilter}
         />
         <Divider />
       </List.Section>
-      {renderFilterStatement()}
-      <SleepSessionAvgDataSection data={details} />
+      <SleepSessionAvgDataSection data={data} />
+
       <ExploreModal
         activity={activity}
-        visible={modalVisible}
+        visible={activityModalVisible}
         onActivityChange={handleActivityChange}
-        setVisible={setModalVisible}
+        setVisible={setActivityModalVisible}
+      />
+      <ExploreNapFilterModal
+        filter={napFilter}
+        visible={napFilterModalVisible}
+        onFilterChange={handleNapFilterChange}
+        setVisible={setNapFilterModalVisible}
+      />
+      <ExploreTimeOfDayFilterModal
+        filter={timeOfDayFilter}
+        visible={timeOfDayFilterModalVisible}
+        onFilterChange={handleTimeOfDayFilterChange}
+        setVisible={setTimeOfDayFilterModalVisible}
       />
     </ThemedView>
   );

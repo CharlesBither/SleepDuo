@@ -1,10 +1,10 @@
 import { List } from "react-native-paper";
 import NapItemSegmentedButton from "../../buttons/NapItemSegmentedButton";
-import { HadNapValue } from "@/src/types/HadNapValue";
+import { BooleanFilter } from "@/src/types/BooleanFilter";
 
 type NapItemProps = {
-    value: HadNapValue;
-    setValue: React.Dispatch<React.SetStateAction<HadNapValue>>;
+    value: BooleanFilter;
+    setValue: React.Dispatch<React.SetStateAction<BooleanFilter>>;
 }
 
 export default function NapItem(props: NapItemProps) {

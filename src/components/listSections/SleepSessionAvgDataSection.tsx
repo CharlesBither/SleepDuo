@@ -1,7 +1,7 @@
 import { SleepSessionAvgData } from "@/src/types/SleepSessionAvgData";
 import { getHours, getMinutes } from "@/src/utils/dates";
 import { StyleSheet } from "react-native";
-import { ActivityIndicator, Card, List, Text } from "react-native-paper";
+import { Card, List, Text } from "react-native-paper";
 
 type SleepSessionAvgDataSectionProps = {
     data?: SleepSessionAvgData;
@@ -9,10 +9,8 @@ type SleepSessionAvgDataSectionProps = {
 
 export default function SleepSessionAvgDataSection(props: SleepSessionAvgDataSectionProps) {
     const data = props.data;
-    if (!data) {
-        return <ActivityIndicator />
-    }
-    else if (data.totalSleepTime === 0) {
+    if (!data) return <></>;
+    if (data.totalSleepTime === 0) {
         return (
             <Card style={{ ...styles.card }}>
                 <Card.Content>

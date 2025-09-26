@@ -29,7 +29,7 @@ import { TimeOfDay } from "../types/TimeOfDay";
 import { QualityOfSleep } from "../types/QualityOfSleep";
 import AfterSleepSection from "../components/listSections/sessions/AfterSleepSection";
 import NapItem from "../components/listSections/sessions/NapItem";
-import { HadNapValue } from "../types/HadNapValue";
+import { BooleanFilter } from "../types/BooleanFilter";
 import { setErrorMsg } from "../stores/error";
 import LoadingScreen from "../views/LoadingScreen";
 
@@ -44,7 +44,7 @@ export default function SleepSessionLogEdit() {
   const [caffeineTime, setCaffeineTime] = useState<TimeOfDay>(details ? details.caffeine_time : "NA");
   const [alcoholQuantity, setAlcoholQuantity] = useState<string>(details ? details.alcohol_quantity : "0");
   const [caffeineQuantity, setCaffeineQuantity] = useState<string>(details ? details.caffeine_quantity : "0");
-  const [hadNap, setHadNap] = useState<HadNapValue>(details ? details.had_nap : "no");
+  const [hadNap, setHadNap] = useState<BooleanFilter>(details ? details.had_nap : "no");
   const [qualityOfSleep, setQualityOfSleep] = useState<QualityOfSleep>(details ? details.quality_of_sleep : "5");
 
   const [loading, setLoading] = useState<boolean>(true);
