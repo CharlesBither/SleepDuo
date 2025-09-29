@@ -25,7 +25,7 @@ export default function SleepSessionLogRead() {
         setErrorMsg("readRecord threw error: " + e);
         router.replace("/ErrorScreen");
       })
-  }, []);
+  }, [guid, router]);
 
   if (loading) return <LoadingScreen />;
 

@@ -3,14 +3,14 @@ import { useState } from "react";
 import { StyleSheet, View } from "react-native";
 import { Modal, Portal, Button, useTheme, ActivityIndicator, Checkbox } from "react-native-paper";
 
-type ExploreTimeOfDayFilterModal = {
+type ExploreTimeOfDayFilterModalProps = {
     filter: TimeOfDay[];
     visible: boolean;
     onFilterChange: (filter: TimeOfDay[]) => Promise<void>;
     setVisible: React.Dispatch<React.SetStateAction<boolean>>;
 };
 
-export default function ExploreTimeOfDayFilterModal(props: ExploreTimeOfDayFilterModal) {
+export default function ExploreTimeOfDayFilterModal(props: ExploreTimeOfDayFilterModalProps) {
     const theme = useTheme();
     const [saveLoading, setSaveLoading] = useState(false);
     const [filterSelection, setFilterSelection] = useState(props.filter);

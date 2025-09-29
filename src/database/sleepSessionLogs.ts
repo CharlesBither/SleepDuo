@@ -6,6 +6,7 @@ import { SleepSessionLog } from "../types/SleepSessionLog";
 /** Maps SleepRecord guid to the corresponding SleepSessionLog */
 const sleepSessionsLogsMap: Map<string, SleepSessionLog> = new Map();
 
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 const fetchQuery = supabase.from("sleep_session_logs").select(`
         id,
         created_at,
@@ -18,7 +19,6 @@ const fetchQuery = supabase.from("sleep_session_logs").select(`
         had_nap,
         quality_of_sleep
         `);
-
 export type FetchResponse = QueryData<typeof fetchQuery>;
 
 const fetchResponseToSleepSessionLog = (

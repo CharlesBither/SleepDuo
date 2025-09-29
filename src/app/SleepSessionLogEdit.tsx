@@ -62,7 +62,7 @@ export default function SleepSessionLogEdit() {
           setErrorMsg("SleepSessionLogEdit useEffect threw error: " + e);
           router.replace("/ErrorScreen");
         })
-    }, []);
+    }, [guid, router]);
 
   const requiredFieldsAreValid = (): boolean => {
     return !(alcoholQuantity !== "0" && alcoholTime === "NA" || caffeineQuantity !== "0" && caffeineTime === "NA");

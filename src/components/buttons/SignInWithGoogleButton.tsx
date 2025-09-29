@@ -7,7 +7,7 @@ import { supabase } from '@/src/lib/supabase'
 import { setErrorMsg } from '@/src/stores/error'
 import { useRouter } from 'expo-router'
 
-export default function () {
+export default function SignInWithGoogleButton() {
   GoogleSignin.configure({
     webClientId: process.env.EXPO_PUBLIC_GOOGLE_CLIENT_ID,
   })
@@ -26,11 +26,10 @@ export default function () {
             throw new Error("userInfo.data.user.id is null");
           }
           if (userInfo.data.idToken) {
-            const { data, error } = await supabase.auth.signInWithIdToken({
+            await supabase.auth.signInWithIdToken({
               provider: 'google',
               token: userInfo.data.idToken,
-            })
-            console.log(error, data);
+            });
           } else {
             throw new Error('no ID token present!');
           }

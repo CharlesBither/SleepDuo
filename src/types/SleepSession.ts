@@ -4,7 +4,7 @@ export type SleepSession = {
   endTime: Date;
   timeInBed: number;
   totalSleepTime: number;
-  sleepEfficiency: String;
+  sleepEfficiency: string;
   timeAwake: number;
   timeAsleepUnknown: number;
   timeLightSleep: number;

@@ -23,7 +23,7 @@ export const initHealthConnect = async (): Promise<void> => {
  */
 export const hasRequiredPermissions = (permissions: (Permission | WriteExerciseRoutePermission | BackgroundAccessPermission)[]): boolean => {
     for (const permission of permissions) {
-        if (permission.recordType === "SleepSession" && permission.accessType == "read") return true;
+        if (permission.recordType === "SleepSession" && permission.accessType === "read") return true;
     }
     return false;
 }

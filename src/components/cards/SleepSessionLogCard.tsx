@@ -18,7 +18,7 @@ export default function SleepSessionLogCard(
   useFocusEffect(
     useCallback(() => {
       setSleepSessionLog(getSleepSessionLog(props.guid));
-    }, [])
+    }, [props.guid])
   );
 
   const theme = useTheme();

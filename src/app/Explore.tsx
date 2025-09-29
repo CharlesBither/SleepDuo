@@ -1,4 +1,4 @@
-import { act, useState } from "react";
+import { useState } from "react";
 import { Button, Divider, List, Text } from "react-native-paper";
 import ExploreModal from "../components/modals/ExploreModal";
 import ThemedView from "../views/ThemedView";

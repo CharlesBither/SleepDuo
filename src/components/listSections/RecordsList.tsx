@@ -26,7 +26,7 @@ export default function RecordsList({ recordArray: recordArray }: Props) {
 
   const records = recordArray.map((currRecord) => {
     const sleepTime = currRecord.totalSleepTime;
-    const sleepDescription: String =
+    const sleepDescription: string =
       getHours(sleepTime) + "h " + getMinutes(sleepTime) + "m asleep";
 
     return (

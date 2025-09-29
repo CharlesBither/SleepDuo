@@ -47,7 +47,7 @@ export default function Overview() {
         setErrorMsg("Overview threw error: " + e);
         router.replace("/ErrorScreen");
       });
-  }, []);
+  }, [router]);
 
   const handleLast7DaysResult = (
     records: ReadRecordsResult<"SleepSession">
