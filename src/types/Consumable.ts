@@ -1,1 +1,1 @@
-export type Consumable = "alcohol" | "caffeine"
+export type Consumable = 'alcohol' | 'caffeine';

@@ -9,7 +9,7 @@ export default function ThemedView({ ...Props }: ThemedViewProps) {
     <View
       style={{
         backgroundColor: theme.colors.background,
-        flex: 1
+        flex: 1,
       }}
       {...Props}
     />

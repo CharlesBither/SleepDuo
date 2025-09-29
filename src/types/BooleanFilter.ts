@@ -1,1 +1,1 @@
-export type BooleanFilter = "yes" | "no"
+export type BooleanFilter = 'yes' | 'no';

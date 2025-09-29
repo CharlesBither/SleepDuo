@@ -1,14 +1,10 @@
-import React from "react";
-import { View, ScrollView } from "react-native";
-import { Divider, List } from "react-native-paper";
+import React from 'react';
+import { View, ScrollView } from 'react-native';
+import { Divider, List } from 'react-native-paper';
 
-import { SleepSession } from "@/src/types/SleepSession";
-import { router } from "expo-router";
-import {
-  getFormattedDate,
-  getHours,
-  getMinutes,
-} from "../../utils/dates";
+import { SleepSession } from '@/src/types/SleepSession';
+import { router } from 'expo-router';
+import { getFormattedDate, getHours, getMinutes } from '../../utils/dates';
 
 type Props = {
   recordArray: SleepSession[];
@@ -27,7 +23,7 @@ export default function RecordsList({ recordArray: recordArray }: Props) {
   const records = recordArray.map((currRecord) => {
     const sleepTime = currRecord.totalSleepTime;
     const sleepDescription: string =
-      getHours(sleepTime) + "h " + getMinutes(sleepTime) + "m asleep";
+      getHours(sleepTime) + 'h ' + getMinutes(sleepTime) + 'm asleep';
 
     return (
       <View key={currRecord.endTime.toJSON()}>

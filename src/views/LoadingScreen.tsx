@@ -1,16 +1,16 @@
-import { ActivityIndicator, useTheme } from "react-native-paper";
-import ThemedView from "../views/ThemedView";
-import { StyleSheet } from "react-native";
-
+import { ActivityIndicator, useTheme } from 'react-native-paper';
+import ThemedView from '../views/ThemedView';
+import { StyleSheet } from 'react-native';
 
 export default function LoadingScreen(): JSX.Element {
-
-    const theme = useTheme();
-    return (
-        <ThemedView style={{...styles.container, backgroundColor: theme.colors.background}}>
-            <ActivityIndicator size="large" />
-        </ThemedView>
-    )
+  const theme = useTheme();
+  return (
+    <ThemedView
+      style={{ ...styles.container, backgroundColor: theme.colors.background }}
+    >
+      <ActivityIndicator size="large" />
+    </ThemedView>
+  );
 }
 
 const styles = StyleSheet.create({

@@ -1,3 +1,3 @@
-import { Consumable } from "./Consumable";
+import { Consumable } from './Consumable';
 
-export type SleepSessionActivity = Consumable | "nap";
+export type SleepSessionActivity = Consumable | 'nap';

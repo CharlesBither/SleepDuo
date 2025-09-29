@@ -19,13 +19,13 @@ Getting started takes just a minute:
 <img src="assets/images/readmeImages/login.png" alt="login page" width="300" height="680"><img src="assets/images/readmeImages/permissionsRequest.png" alt="permissions request page" width="300" height="680" hspace="10"><img src="assets/images/readmeImages/permissionsSelect.png" alt="permissions select page" width="300" height="680">
 
 ## How it works
+
 Once setup is complete, your tracked sleep sessions will appear automatically in the Records tab.
 
-* Home Overview – See your average sleep time, efficiency, and time in each sleep stage at a glance.
+- Home Overview – See your average sleep time, efficiency, and time in each sleep stage at a glance.
 
-* Detailed Records – Tap a session to view insights, then add personal logs (e.g., caffeine/alcohol consumption).
+- Detailed Records – Tap a session to view insights, then add personal logs (e.g., caffeine/alcohol consumption).
 
-* Explore Insights – Filter and analyze your data. For example, compare nights when you logged alcohol consumption with nights when you didn’t.
-
+- Explore Insights – Filter and analyze your data. For example, compare nights when you logged alcohol consumption with nights when you didn’t.
 
 <img src="assets/images/readmeImages/home.png" alt="home page" width="300" height="680"><img src="assets/images/readmeImages/records.png" alt="records page" width="300" height="680" hspace="10"><img src="assets/images/readmeImages/explore.png" alt="explore page" width="300" height="680">

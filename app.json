@@ -18,9 +18,7 @@
         "backgroundColor": "#65558F"
       },
       "package": "com.charlesbither.SleepDuo",
-      "permissions": [
-        "android.permission.health.READ_SLEEP"
-      ]
+      "permissions": ["android.permission.health.READ_SLEEP"]
     },
     "web": {
       "bundler": "metro",
@@ -38,9 +36,7 @@
           "backgroundColor": "#65558F"
         }
       ],
-      [
-        "expo-health-connect"
-      ],
+      ["expo-health-connect"],
       [
         "expo-build-properties",
         {

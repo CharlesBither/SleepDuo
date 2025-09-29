@@ -1,3 +1,10 @@
-import { BackgroundAccessPermission, Permission, WriteExerciseRoutePermission } from "react-native-health-connect";
+import {
+  BackgroundAccessPermission,
+  Permission,
+  WriteExerciseRoutePermission,
+} from 'react-native-health-connect';
 
-export type HealthConnectPermission = Permission | WriteExerciseRoutePermission | BackgroundAccessPermission;
+export type HealthConnectPermission =
+  | Permission
+  | WriteExerciseRoutePermission
+  | BackgroundAccessPermission;

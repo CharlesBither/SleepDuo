@@ -1,1 +1,1 @@
-export type TimeOfDay = "AM" | "PM" | "LN" | "NA"
+export type TimeOfDay = 'AM' | 'PM' | 'LN' | 'NA';

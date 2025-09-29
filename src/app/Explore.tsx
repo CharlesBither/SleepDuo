@@ -1,70 +1,85 @@
-import { useState } from "react";
-import { Button, Divider, List, Text } from "react-native-paper";
-import ExploreModal from "../components/modals/ExploreModal";
-import ThemedView from "../views/ThemedView";
-import { SleepSessionActivity } from "../types/SleepSessionActivity";
-import { SleepSessionAvgData } from "../types/SleepSessionAvgData";
-import { getNapFilteredSleepSessions, getTimeOfDayFilteredSleepSessions, sleepSessionArrayToAvgData } from "../utils/sleepSession";
-import SleepSessionAvgDataSection from "../components/listSections/SleepSessionAvgDataSection";
-import { StyleSheet } from "react-native";
-import { useRouter } from "expo-router";
-import ExploreNapFilterModal from "../components/modals/ExploreNapFilterModal";
-import { BooleanFilter } from "../types/BooleanFilter";
-import FilterItem from "../components/listSections/explore/FilterItem";
-import { TimeOfDay } from "../types/TimeOfDay";
-import ExploreTimeOfDayFilterModal from "../components/modals/ExploreTimeOfDayFilterModal";
-import { setErrorMsg } from "../stores/error";
-import { renderFilterStatement } from "../utils/textFormatter";
+import { useState } from 'react';
+import { Button, Divider, List, Text } from 'react-native-paper';
+import ExploreModal from '../components/modals/ExploreModal';
+import ThemedView from '../views/ThemedView';
+import { SleepSessionActivity } from '../types/SleepSessionActivity';
+import { SleepSessionAvgData } from '../types/SleepSessionAvgData';
+import {
+  getNapFilteredSleepSessions,
+  getTimeOfDayFilteredSleepSessions,
+  sleepSessionArrayToAvgData,
+} from '../utils/sleepSession';
+import SleepSessionAvgDataSection from '../components/listSections/SleepSessionAvgDataSection';
+import { StyleSheet } from 'react-native';
+import { useRouter } from 'expo-router';
+import ExploreNapFilterModal from '../components/modals/ExploreNapFilterModal';
+import { BooleanFilter } from '../types/BooleanFilter';
+import FilterItem from '../components/listSections/explore/FilterItem';
+import { TimeOfDay } from '../types/TimeOfDay';
+import ExploreTimeOfDayFilterModal from '../components/modals/ExploreTimeOfDayFilterModal';
+import { setErrorMsg } from '../stores/error';
+import { renderFilterStatement } from '../utils/textFormatter';
 
 export default function Explore() {
-  const [activity, setActivity] = useState<SleepSessionActivity | "">("");
-  const [napFilter, setNapFilter] = useState<BooleanFilter | "">("");
+  const [activity, setActivity] = useState<SleepSessionActivity | ''>('');
+  const [napFilter, setNapFilter] = useState<BooleanFilter | ''>('');
   const [timeOfDayFilter, setTimeOfDayFilter] = useState<TimeOfDay[]>([]);
   const [data, setData] = useState<SleepSessionAvgData | undefined>(undefined);
 
   const [activityModalVisible, setActivityModalVisible] = useState(false);
   const [napFilterModalVisible, setNapFilterModalVisible] = useState(false);
-  const [timeOfDayFilterModalVisible, setTimeOfDayFilterModalVisible] = useState(false);
+  const [timeOfDayFilterModalVisible, setTimeOfDayFilterModalVisible] =
+    useState(false);
   const router = useRouter();
 
   const handleActivityChange = (activityParam: SleepSessionActivity): void => {
     if (activityParam === activity) return;
     setData(undefined);
     setTimeOfDayFilter([]);
-    setNapFilter("");
+    setNapFilter('');
     setActivity(activityParam);
-  }
+  };
 
-  const handleNapFilterChange = async (napFilterParam: BooleanFilter): Promise<void> => {
+  const handleNapFilterChange = async (
+    napFilterParam: BooleanFilter
+  ): Promise<void> => {
     if (napFilterParam === napFilter) return;
     try {
       setNapFilter(napFilterParam);
-      const filteredSleepSessions = await getNapFilteredSleepSessions(napFilterParam);
+      const filteredSleepSessions =
+        await getNapFilteredSleepSessions(napFilterParam);
       setData(sleepSessionArrayToAvgData(filteredSleepSessions));
     } catch (error) {
-      setErrorMsg("handleNapFilterChange threw an unexpected error: " + error);
-      router.replace("/ErrorScreen");
+      setErrorMsg('handleNapFilterChange threw an unexpected error: ' + error);
+      router.replace('/ErrorScreen');
     }
-  }
+  };
 
-  const handleTimeOfDayFilterChange = async (filterParam: TimeOfDay[]): Promise<void> => {
-    if (activity === "alcohol" || activity === "caffeine") {
+  const handleTimeOfDayFilterChange = async (
+    filterParam: TimeOfDay[]
+  ): Promise<void> => {
+    if (activity === 'alcohol' || activity === 'caffeine') {
       try {
         setTimeOfDayFilter(filterParam);
-        const filteredSleepSessions = await getTimeOfDayFilteredSleepSessions(activity, filterParam);
-        setData(sleepSessionArrayToAvgData(filteredSleepSessions))
+        const filteredSleepSessions = await getTimeOfDayFilteredSleepSessions(
+          activity,
+          filterParam
+        );
+        setData(sleepSessionArrayToAvgData(filteredSleepSessions));
       } catch (error) {
-        setErrorMsg("handleNapFilterChange threw an unexpected error: " + error);
-        router.replace("/ErrorScreen");
+        setErrorMsg(
+          'handleNapFilterChange threw an unexpected error: ' + error
+        );
+        router.replace('/ErrorScreen');
       }
     }
-  }
+  };
 
   const handleFilterChangeButtonPress = (): void => {
-    if (activity === "") return;
-    else if (activity === "nap") setNapFilterModalVisible(true);
+    if (activity === '') return;
+    else if (activity === 'nap') setNapFilterModalVisible(true);
     else setTimeOfDayFilterModalVisible(true);
-  }
+  };
 
   return (
     <ThemedView>
@@ -87,7 +102,9 @@ export default function Explore() {
         />
         <Divider />
       </List.Section>
-      <Text style={styles.title}>{renderFilterStatement(activity, napFilter, timeOfDayFilter)}</Text>
+      <Text style={styles.title}>
+        {renderFilterStatement(activity, napFilter, timeOfDayFilter)}
+      </Text>
       <SleepSessionAvgDataSection data={data} />
 
       <ExploreModal
@@ -116,5 +133,5 @@ const styles = StyleSheet.create({
   title: {
     marginLeft: 15,
     marginTop: 10,
-  }
-})
+  },
+});

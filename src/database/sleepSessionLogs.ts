@@ -1,13 +1,13 @@
-import { QueryData } from "@supabase/supabase-js";
-import { getId, supabase } from "../lib/supabase";
-import { Tables } from "./database.types";
-import { SleepSessionLog } from "../types/SleepSessionLog";
+import { QueryData } from '@supabase/supabase-js';
+import { getId, supabase } from '../lib/supabase';
+import { Tables } from './database.types';
+import { SleepSessionLog } from '../types/SleepSessionLog';
 
 /** Maps SleepRecord guid to the corresponding SleepSessionLog */
 const sleepSessionsLogsMap: Map<string, SleepSessionLog> = new Map();
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-const fetchQuery = supabase.from("sleep_session_logs").select(`
+const fetchQuery = supabase.from('sleep_session_logs').select(`
         id,
         created_at,
         uuid,
@@ -38,9 +38,7 @@ const fetchResponseToSleepSessionLog = (
     !row.had_nap ||
     !row.quality_of_sleep
   ) {
-    throw new Error(
-      "FetchResponse contains invalid data: " + row
-    );
+    throw new Error('FetchResponse contains invalid data: ' + row);
   }
 
   return {
@@ -52,7 +50,7 @@ const fetchResponseToSleepSessionLog = (
     caffeine_quantity: row.caffeine_quantity,
     caffeine_time: row.caffeine_time,
     had_nap: row.had_nap,
-    quality_of_sleep: row.quality_of_sleep
+    quality_of_sleep: row.quality_of_sleep,
   };
 };
 
@@ -67,17 +65,17 @@ export const fetchSleepSessionLog = async (
   guid: string
 ): Promise<SleepSessionLog | undefined> => {
   const query = supabase
-    .from("sleep_session_logs")
+    .from('sleep_session_logs')
     .select()
-    .eq("uuid", uuid)
-    .eq("guid", guid);
+    .eq('uuid', uuid)
+    .eq('guid', guid);
 
   type Response = QueryData<typeof query>;
 
   const { data, error } = await query;
   if (error?.message)
-    console.error("fetchSleepSessionLog threw error " + error.message);
-  if (!data) throw new Error("fetchSleepSessionLog returned null data");
+    console.error('fetchSleepSessionLog threw error ' + error.message);
+  if (!data) throw new Error('fetchSleepSessionLog returned null data');
   const response: Response = data;
 
   return fetchResponseToSleepSessionLog(response);
@@ -91,10 +89,10 @@ export const fetchSleepSessionLog = async (
  */
 export const deleteSleepSessionLog = async (uuid: string, guid: string) => {
   const res = await supabase
-    .from("sleep_session_logs")
+    .from('sleep_session_logs')
     .delete()
-    .eq("uuid", uuid)
-    .eq("guid", guid);
+    .eq('uuid', uuid)
+    .eq('guid', guid);
 
   sleepSessionsLogsMap.delete(guid);
   return res;
@@ -106,9 +104,14 @@ export const deleteSleepSessionLog = async (uuid: string, guid: string) => {
  * @returns Response data specifying the status of the query
  */
 export const deleteAllSleepSessionLogsById = async (uuid: string) => {
-  const res = await supabase.from("sleep_session_logs").delete().eq("uuid", uuid);
+  const res = await supabase
+    .from('sleep_session_logs')
+    .delete()
+    .eq('uuid', uuid);
   if (res.error?.message) {
-    throw new Error("deleteAllSleepSessionLogsById threw error: " + res.error.message);
+    throw new Error(
+      'deleteAllSleepSessionLogsById threw error: ' + res.error.message
+    );
   }
   sleepSessionsLogsMap.clear();
   return res;
@@ -121,24 +124,21 @@ export const deleteAllSleepSessionLogsById = async (uuid: string) => {
  */
 export const insertSleepSessionLog = async (
   log: SleepSessionLog
-): Promise<Tables<"sleep_session_logs">[]> => {
-  const fetchLogResponse = await fetchSleepSessionLog(
-    log.uuid,
-    log.guid
-  );
+): Promise<Tables<'sleep_session_logs'>[]> => {
+  const fetchLogResponse = await fetchSleepSessionLog(log.uuid, log.guid);
   if (fetchLogResponse) {
     await deleteSleepSessionLog(log.uuid, log.guid);
   }
 
-  const query = supabase.from("sleep_session_logs").insert(log).select();
+  const query = supabase.from('sleep_session_logs').insert(log).select();
 
   type Response = QueryData<typeof query>;
 
   const { data, error } = await query;
   if (error?.message) {
-    throw new Error("insertSleepSessionLog threw error: " + error.message);
+    throw new Error('insertSleepSessionLog threw error: ' + error.message);
   }
-  if (!data) throw new Error("insertSleepSessionLog returned null data");
+  if (!data) throw new Error('insertSleepSessionLog returned null data');
   const response: Response = data;
   sleepSessionsLogsMap.set(log.guid, log);
 
@@ -149,7 +149,7 @@ const fetchSleepSessionLogsByUuid = async (
   uuid: string
 ): Promise<FetchResponse> => {
   const query = supabase
-    .from("sleep_session_logs")
+    .from('sleep_session_logs')
     .select(
       `
         id,
@@ -164,14 +164,14 @@ const fetchSleepSessionLogsByUuid = async (
         quality_of_sleep
         `
     )
-    .eq("uuid", uuid);
+    .eq('uuid', uuid);
 
   type Response = QueryData<typeof query>;
 
   const { data, error } = await query;
   if (error?.message)
-    console.error("fetchSleepSessionLogsByUuid threw error " + error.message);
-  if (!data) throw new Error("fetchSleepSessionLogsByUuid returned null data");
+    console.error('fetchSleepSessionLogsByUuid threw error ' + error.message);
+  if (!data) throw new Error('fetchSleepSessionLogsByUuid returned null data');
   const response: Response = data;
 
   return response;
@@ -181,13 +181,15 @@ const fetchSleepSessionLogsByUuid = async (
  * @param guid the guid of the sleep record
  * @returns SleepSessionLog corresponding to guid
  */
-export const getSleepSessionLog = (guid: string): SleepSessionLog | undefined => {
+export const getSleepSessionLog = (
+  guid: string
+): SleepSessionLog | undefined => {
   return sleepSessionsLogsMap.get(guid);
-}
+};
 
 export const getSleepSessionLogsMapValues = (): SleepSessionLog[] => {
   return [...sleepSessionsLogsMap.values()];
-}
+};
 
 const populateSleepSessionLogsMap = (data: FetchResponse): void => {
   sleepSessionsLogsMap.clear();
@@ -203,7 +205,8 @@ const populateSleepSessionLogsMap = (data: FetchResponse): void => {
       !row.quality_of_sleep
     ) {
       throw new Error(
-        "populateSleepSessionLogsMap FetchResponse contains invalid data: " + row
+        'populateSleepSessionLogsMap FetchResponse contains invalid data: ' +
+          row
       );
     }
 
@@ -216,7 +219,7 @@ const populateSleepSessionLogsMap = (data: FetchResponse): void => {
       caffeine_quantity: row.caffeine_quantity,
       caffeine_time: row.caffeine_time,
       had_nap: row.had_nap,
-      quality_of_sleep: row.quality_of_sleep
+      quality_of_sleep: row.quality_of_sleep,
     });
   }
 };
@@ -226,8 +229,7 @@ export const initSleepSessionLogsMap = async (): Promise<void> => {
     const uuid = await getId();
     const data = await fetchSleepSessionLogsByUuid(uuid);
     populateSleepSessionLogsMap(data);
-  } catch(error) {
-    throw new Error("initSleepSessionLogsMap threw error: " + error);
+  } catch (error) {
+    throw new Error('initSleepSessionLogsMap threw error: ' + error);
   }
-  
 };

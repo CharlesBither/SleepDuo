@@ -1,6 +1,6 @@
-import { BooleanFilter } from "./BooleanFilter";
-import { QualityOfSleep } from "./QualityOfSleep";
-import { TimeOfDay } from "./TimeOfDay";
+import { BooleanFilter } from './BooleanFilter';
+import { QualityOfSleep } from './QualityOfSleep';
+import { TimeOfDay } from './TimeOfDay';
 
 export type SleepSessionLog = {
   created_at: Date;
@@ -12,4 +12,4 @@ export type SleepSessionLog = {
   caffeine_time: TimeOfDay;
   had_nap: BooleanFilter;
   quality_of_sleep: QualityOfSleep;
-}
+};

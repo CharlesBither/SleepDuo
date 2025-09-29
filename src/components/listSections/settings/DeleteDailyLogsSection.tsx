@@ -6,13 +6,13 @@ import {
   Portal,
   Text,
   useTheme,
-} from "react-native-paper";
-import { StyleSheet } from "react-native";
-import { useState } from "react";
-import { getId } from "@/src/lib/supabase";
-import { deleteAllSleepSessionLogsById } from "@/src/database/sleepSessionLogs";
-import { setErrorMsg } from "@/src/stores/error";
-import { useRouter } from "expo-router";
+} from 'react-native-paper';
+import { StyleSheet } from 'react-native';
+import { useState } from 'react';
+import { getId } from '@/src/lib/supabase';
+import { deleteAllSleepSessionLogsById } from '@/src/database/sleepSessionLogs';
+import { setErrorMsg } from '@/src/stores/error';
+import { useRouter } from 'expo-router';
 
 export default function DeleteDailyLogsSection() {
   const [deleteLoading, setDeleteLoading] = useState(false);
@@ -23,7 +23,7 @@ export default function DeleteDailyLogsSection() {
 
   /** Deletes all journal entries that the user created */
   const handleDeleteDailyLogsPress = async (): Promise<void> => {
-    try{
+    try {
       setDeleteLoading(true);
       const uuid = await getId();
       await deleteAllSleepSessionLogsById(uuid);
@@ -31,8 +31,8 @@ export default function DeleteDailyLogsSection() {
       setConfirmDialogIsVisible(false);
       setSuccessDialogIsVisible(true);
     } catch (e) {
-      setErrorMsg("handleDeleteDailyLogsPress threw error: " + e);
-      router.replace("/ErrorScreen");
+      setErrorMsg('handleDeleteDailyLogsPress threw error: ' + e);
+      router.replace('/ErrorScreen');
     }
   };
 
@@ -80,7 +80,6 @@ export default function DeleteDailyLogsSection() {
                   paddingHorizontal: 5,
                   backgroundColor: theme.colors.errorContainer,
                 }}
-                
               >
                 <ActivityIndicator />
               </Button>
@@ -90,7 +89,7 @@ export default function DeleteDailyLogsSection() {
                 style={{
                   ...styles.margin,
                   paddingHorizontal: 5,
-                  backgroundColor: theme.colors.errorContainer
+                  backgroundColor: theme.colors.errorContainer,
                 }}
                 textColor={theme.colors.onErrorContainer}
                 onPress={handleDeleteDailyLogsPress}

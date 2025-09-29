@@ -1,8 +1,8 @@
 import {
   getSleepSessionLog,
   insertSleepSessionLog,
-} from "@/src/database/sleepSessionLogs";
-import { useEffect, useState } from "react";
+} from '@/src/database/sleepSessionLogs';
+import { useEffect, useState } from 'react';
 import {
   Dialog,
   Portal,
@@ -12,26 +12,26 @@ import {
   Divider,
   ActivityIndicator,
   List,
-} from "react-native-paper";
-import { SleepSession } from "../types/SleepSession";
-import { useLocalSearchParams, useRouter } from "expo-router";
-import ThemedView from "../views/ThemedView";
-import { Pressable } from "react-native";
-import FontAwesome6 from "@expo/vector-icons/FontAwesome6";
-import FontAwesome from "@expo/vector-icons/FontAwesome";
-import { SleepSessionLog } from "../types/SleepSessionLog";
-import { getId } from "../lib/supabase";
-import { StyleSheet } from "react-native";
-import AlcoholItem from "../components/listSections/sessions/AlcoholItem";
-import CaffeineItem from "../components/listSections/sessions/CaffeineItem";
-import { getSleepSessionFromReadRecord } from "../utils/sleepSession";
-import { TimeOfDay } from "../types/TimeOfDay";
-import { QualityOfSleep } from "../types/QualityOfSleep";
-import AfterSleepSection from "../components/listSections/sessions/AfterSleepSection";
-import NapItem from "../components/listSections/sessions/NapItem";
-import { BooleanFilter } from "../types/BooleanFilter";
-import { setErrorMsg } from "../stores/error";
-import LoadingScreen from "../views/LoadingScreen";
+} from 'react-native-paper';
+import { SleepSession } from '../types/SleepSession';
+import { useLocalSearchParams, useRouter } from 'expo-router';
+import ThemedView from '../views/ThemedView';
+import { Pressable } from 'react-native';
+import FontAwesome6 from '@expo/vector-icons/FontAwesome6';
+import FontAwesome from '@expo/vector-icons/FontAwesome';
+import { SleepSessionLog } from '../types/SleepSessionLog';
+import { getId } from '../lib/supabase';
+import { StyleSheet } from 'react-native';
+import AlcoholItem from '../components/listSections/sessions/AlcoholItem';
+import CaffeineItem from '../components/listSections/sessions/CaffeineItem';
+import { getSleepSessionFromReadRecord } from '../utils/sleepSession';
+import { TimeOfDay } from '../types/TimeOfDay';
+import { QualityOfSleep } from '../types/QualityOfSleep';
+import AfterSleepSection from '../components/listSections/sessions/AfterSleepSection';
+import NapItem from '../components/listSections/sessions/NapItem';
+import { BooleanFilter } from '../types/BooleanFilter';
+import { setErrorMsg } from '../stores/error';
+import LoadingScreen from '../views/LoadingScreen';
 
 export default function SleepSessionLogEdit() {
   const { guid } = useLocalSearchParams<{ guid: string }>();
@@ -39,34 +39,51 @@ export default function SleepSessionLogEdit() {
   const theme = useTheme();
   const router = useRouter();
 
-  const [sleepSession, setSleepSession] = useState<SleepSession | undefined>(undefined);
-  const [alcoholTime, setAlcoholTime] = useState<TimeOfDay>(details ? details.alcohol_time : "NA");
-  const [caffeineTime, setCaffeineTime] = useState<TimeOfDay>(details ? details.caffeine_time : "NA");
-  const [alcoholQuantity, setAlcoholQuantity] = useState<string>(details ? details.alcohol_quantity : "0");
-  const [caffeineQuantity, setCaffeineQuantity] = useState<string>(details ? details.caffeine_quantity : "0");
-  const [hadNap, setHadNap] = useState<BooleanFilter>(details ? details.had_nap : "no");
-  const [qualityOfSleep, setQualityOfSleep] = useState<QualityOfSleep>(details ? details.quality_of_sleep : "5");
+  const [sleepSession, setSleepSession] = useState<SleepSession | undefined>(
+    undefined
+  );
+  const [alcoholTime, setAlcoholTime] = useState<TimeOfDay>(
+    details ? details.alcohol_time : 'NA'
+  );
+  const [caffeineTime, setCaffeineTime] = useState<TimeOfDay>(
+    details ? details.caffeine_time : 'NA'
+  );
+  const [alcoholQuantity, setAlcoholQuantity] = useState<string>(
+    details ? details.alcohol_quantity : '0'
+  );
+  const [caffeineQuantity, setCaffeineQuantity] = useState<string>(
+    details ? details.caffeine_quantity : '0'
+  );
+  const [hadNap, setHadNap] = useState<BooleanFilter>(
+    details ? details.had_nap : 'no'
+  );
+  const [qualityOfSleep, setQualityOfSleep] = useState<QualityOfSleep>(
+    details ? details.quality_of_sleep : '5'
+  );
 
   const [loading, setLoading] = useState<boolean>(true);
   const [saveLoading, setSaveLoading] = useState<boolean>(false);
   const [dialogIsVisible, setDialogIsVisible] = useState<boolean>(false);
-  const [dialogMsg, setDialogMsg] = useState<string>("");
+  const [dialogMsg, setDialogMsg] = useState<string>('');
 
   useEffect(() => {
-      getSleepSessionFromReadRecord(guid)
-        .then(sleepSession => {
-          setSleepSession(sleepSession);
-          setLoading(false);
-        })
-        .catch(e => {
-          setErrorMsg("SleepSessionLogEdit useEffect threw error: " + e);
-          router.replace("/ErrorScreen");
-        })
-    }, [guid, router]);
+    getSleepSessionFromReadRecord(guid)
+      .then((sleepSession) => {
+        setSleepSession(sleepSession);
+        setLoading(false);
+      })
+      .catch((e) => {
+        setErrorMsg('SleepSessionLogEdit useEffect threw error: ' + e);
+        router.replace('/ErrorScreen');
+      });
+  }, [guid, router]);
 
   const requiredFieldsAreValid = (): boolean => {
-    return !(alcoholQuantity !== "0" && alcoholTime === "NA" || caffeineQuantity !== "0" && caffeineTime === "NA");
-  }
+    return !(
+      (alcoholQuantity !== '0' && alcoholTime === 'NA') ||
+      (caffeineQuantity !== '0' && caffeineTime === 'NA')
+    );
+  };
 
   const renderCancelButton = (): JSX.Element => {
     return (
@@ -77,7 +94,7 @@ export default function SleepSessionLogEdit() {
   };
 
   const renderSaveButton = (): JSX.Element => {
-    if (saveLoading) return <ActivityIndicator />
+    if (saveLoading) return <ActivityIndicator />;
     return (
       <Pressable onPress={async () => await handleSavePress()}>
         <FontAwesome name="save" size={24} color={theme.colors.onBackground} />
@@ -90,9 +107,11 @@ export default function SleepSessionLogEdit() {
    */
   const handleSavePress = async (): Promise<void> => {
     if (!requiredFieldsAreValid()) {
-        setDialogMsg("You must input a time for your drinks if the quantity is non-zero.");
-        setDialogIsVisible(true);
-        return;
+      setDialogMsg(
+        'You must input a time for your drinks if the quantity is non-zero.'
+      );
+      setDialogIsVisible(true);
+      return;
     }
     setSaveLoading(true);
 
@@ -112,11 +131,10 @@ export default function SleepSessionLogEdit() {
 
       await insertSleepSessionLog(newLog);
       router.back();
-    } catch(e) {
-      setErrorMsg("handleSavePress threw error: " + e);
-      router.replace("/ErrorScreen");
+    } catch (e) {
+      setErrorMsg('handleSavePress threw error: ' + e);
+      router.replace('/ErrorScreen');
     }
-    
   };
 
   if (loading) {
@@ -126,8 +144,8 @@ export default function SleepSessionLogEdit() {
       </ThemedView>
     );
   } else if (!sleepSession) {
-    setErrorMsg("sleepSession is undefined");
-    router.replace("/ErrorScreen");
+    setErrorMsg('sleepSession is undefined');
+    router.replace('/ErrorScreen');
     return;
   }
 
@@ -160,11 +178,13 @@ export default function SleepSessionLogEdit() {
 
         <NapItem value={hadNap} setValue={setHadNap} />
       </List.Section>
-      
-      <Divider />
-      <AfterSleepSection quality={qualityOfSleep} setQuality={setQualityOfSleep} />
-      <Divider />
 
+      <Divider />
+      <AfterSleepSection
+        quality={qualityOfSleep}
+        setQuality={setQualityOfSleep}
+      />
+      <Divider />
 
       <Portal>
         <Dialog
@@ -190,8 +210,8 @@ const styles = StyleSheet.create({
     marginBottom: 10,
   },
   row: {
-    flexDirection: "row",
-    justifyContent: "space-between",
+    flexDirection: 'row',
+    justifyContent: 'space-between',
     marginHorizontal: 15,
     marginBottom: 10,
     marginTop: 60,

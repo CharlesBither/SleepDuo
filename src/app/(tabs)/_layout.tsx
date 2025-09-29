@@ -19,15 +19,18 @@ export default function TabLayout() {
         },
       }}
     >
-
       <Tabs.Screen
         name="home"
         options={{
           title: 'Home',
           tabBarIcon: ({ color, focused }) => (
-            <Ionicons name={focused ? 'home-sharp' : 'home-outline'} color={color} size={24} />
+            <Ionicons
+              name={focused ? 'home-sharp' : 'home-outline'}
+              color={color}
+              size={24}
+            />
           ),
-          headerTitle: "Overview"
+          headerTitle: 'Overview',
         }}
       />
       <Tabs.Screen
@@ -35,8 +38,12 @@ export default function TabLayout() {
         options={{
           title: 'Sessions',
           tabBarIcon: ({ color, focused }) => (
-            <Ionicons name={focused ? 'newspaper' : 'newspaper-outline'} color={color} size={24} />
-          )
+            <Ionicons
+              name={focused ? 'newspaper' : 'newspaper-outline'}
+              color={color}
+              size={24}
+            />
+          ),
         }}
       />
       <Tabs.Screen
@@ -44,8 +51,12 @@ export default function TabLayout() {
         options={{
           title: 'Settings',
           tabBarIcon: ({ color, focused }) => (
-            <Ionicons name={focused ? 'settings' : 'settings-outline'} size={24} color={color} />
-          )
+            <Ionicons
+              name={focused ? 'settings' : 'settings-outline'}
+              size={24}
+              color={color}
+            />
+          ),
         }}
       />
     </Tabs>
