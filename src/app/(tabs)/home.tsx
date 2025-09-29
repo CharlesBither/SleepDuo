@@ -1,82 +1,85 @@
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from 'react';
 
 import {
   hasRequiredPermissions,
-  initHealthConnect,
   requestSleepPermissions,
-} from "@/src/lib/health-connect/initialize";
-import ThemedView from "@/src/components/ThemedView";
-import { getId } from "@/src/database/auth";
-import { getGrantedPermissions } from "react-native-health-connect";
-import LoadingScreen from "../LoadingScreen";
-import ManualPermissionCard from "@/src/components/cards/ManualPermissionCard";
-import RequestPermissionCard from "@/src/components/cards/RequestPermissionCard";
-import { useFocusEffect } from "expo-router";
-import { initRecordDetailsMap } from "@/src/database/recordDetails";
-import OverviewContainer from "@/src/components/containers/OverviewContainer";
-import OverviewExploreCard from "@/src/components/cards/OverviewExploreCard";
+} from '@/src/lib/healthConnectInitialize';
+import ThemedView from '@/src/views/ThemedView';
+import { getGrantedPermissions } from 'react-native-health-connect';
+import ManualPermissionCard from '@/src/components/cards/ManualPermissionCard';
+import RequestPermissionCard from '@/src/components/cards/RequestPermissionCard';
+import { useFocusEffect, useRouter } from 'expo-router';
+import { initSleepSessionLogsMap } from '@/src/database/sleepSessionLogs';
+import Overview from '@/src/views/Overview';
+import { setErrorMsg } from '@/src/stores/error';
+import LoadingScreen from '@/src/views/LoadingScreen';
 
 /**
  * This component is shown after the user is authenticated.
- * Connects to the health-connect api and gets sleep data from the
- * last 14 days.
- *
- * @returns View element containing average total sleep time and efficiency
+ * Connects to the health-connect api and renders the Overview page if
+ * this app has been granted the required permissions.
  */
 export default function Home() {
   const [loading, setLoading] = useState(true);
   const [hasHealthConnectPermissions, setHasHealthConnectPermissions] =
     useState(false);
-  const [requestedPermissions, setRequestedPermissions] = useState(false);
+  const [pressedRequestButton, setPressedRequestButton] = useState(false); // track whether the user already attempted to request permissions.
+  const router = useRouter();
 
-  useEffect(() => {
-    /** Gets required permissions from health-connect */
-    initHealthConnect()
-      .then(async () => await handleInitHealthConnectSuccess())
-      .catch(() => {
-        throw new Error("could not intialize health connect");
-      });
-    
-      // initialize the journalRecordsMap for the logged in user
-    getId().then((id) => initRecordDetailsMap(id));
-  }, [])
+  /** Redirects user to an error screen that displays the given error */
+  const renderErrorScreen = useCallback(
+    (error: any): void => {
+      setErrorMsg(error);
+      router.replace('/ErrorScreen');
+    },
+    [router]
+  );
 
-  const handleInitHealthConnectSuccess = async () => {
-    await checkForPermissions();
-    setLoading(false);
-  };
-
-  /** updates setHasHealthConnectPermissions if SleepDuo has the necessary Health Connect permissions */
-  const checkForPermissions = async () => {
-    const grantedPermissions = await getGrantedPermissions();
-    if (hasRequiredPermissions(grantedPermissions)) {
-      setHasHealthConnectPermissions(true);
-    }
-  };
+  /** updates hasHealthConnectPermissions state */
+  const checkForPermissions = useCallback(async (): Promise<void> => {
+    getGrantedPermissions()
+      .then((grantedPermissions) =>
+        setHasHealthConnectPermissions(
+          hasRequiredPermissions(grantedPermissions)
+        )
+      )
+      .catch((error) => renderErrorScreen(error));
+  }, [renderErrorScreen]);
 
   /** Called when the user clicks the RequestPermissionCard button */
   const handleRequestButtonPress = async (): Promise<void> => {
-    setLoading(true);
-    setRequestedPermissions(true);
-    await requestSleepPermissions();
-    await checkForPermissions();
-    setLoading(false);
+    try {
+      await requestSleepPermissions();
+      await checkForPermissions();
+      setPressedRequestButton(true);
+    } catch (error) {
+      renderErrorScreen(error);
+    }
   };
+
+  useEffect(() => {
+    const checkForPermissionsPromise = checkForPermissions();
+
+    // initialize the journalRecordsMap for the logged in user
+    const getIdPromise = initSleepSessionLogsMap().catch((error) =>
+      renderErrorScreen(error)
+    );
+
+    Promise.all([getIdPromise, checkForPermissionsPromise]).then(() =>
+      setLoading(false)
+    );
+  }, [checkForPermissions, renderErrorScreen]);
 
   /** Checks if the user has the necessary Health Connect permissions whenever the screen is focused */
   useFocusEffect(
     useCallback(() => {
-      if (!hasHealthConnectPermissions) {
-        setLoading(true);
-        checkForPermissions();
-        setLoading(false);
-      }
-    }, [])
+      if (!hasHealthConnectPermissions) checkForPermissions();
+    }, [checkForPermissions, hasHealthConnectPermissions])
   );
 
   if (loading) {
     return <LoadingScreen />;
-  } else if (!hasHealthConnectPermissions && requestedPermissions) {
+  } else if (!hasHealthConnectPermissions && pressedRequestButton) {
     return (
       <ThemedView>
         <ManualPermissionCard />
@@ -93,8 +96,7 @@ export default function Home() {
   }
   return (
     <ThemedView>
-      <OverviewContainer />
-      <OverviewExploreCard />
+      <Overview />
     </ThemedView>
   );
 }

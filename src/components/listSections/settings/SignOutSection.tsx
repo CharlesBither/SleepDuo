@@ -1,8 +1,8 @@
-import { List, Text, useTheme, Button } from "react-native-paper";
-import { StyleSheet } from "react-native";
-import { supabase } from "@/src/lib/supabase";
-import { router } from "expo-router";
-import { GoogleSignin } from "@react-native-google-signin/google-signin";
+import { List, Text, useTheme, Button } from 'react-native-paper';
+import { StyleSheet } from 'react-native';
+import { supabase } from '@/src/lib/supabase';
+import { router } from 'expo-router';
+import { GoogleSignin } from '@react-native-google-signin/google-signin';
 
 export default function SignOutSection() {
   const theme = useTheme();
@@ -15,9 +15,9 @@ export default function SignOutSection() {
       await GoogleSignin.signOut();
       await supabase.auth.signOut();
     } catch (e) {
-      console.log("Sign out threw error: " + e);
+      console.log('Sign out threw error: ' + e);
     }
-    router.replace("/");
+    router.replace('/');
   };
 
   return (

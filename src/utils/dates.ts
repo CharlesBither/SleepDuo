@@ -1,9 +1,9 @@
-import { getCalendars } from "expo-localization";
+import { getCalendars } from 'expo-localization';
 
 export const stringToDate = (date: string): Date => {
-  const parts = date.split("-");
+  const parts = date.split('-');
   if (parts.length < 3)
-    throw new Error("stringToDate received invalid date param: " + date);
+    throw new Error('stringToDate received invalid date param: ' + date);
   return new Date(Number(parts[0]), Number(parts[1]) - 1, Number(parts[2]));
 };
 
@@ -55,39 +55,37 @@ export const getBeginningOfLast30Days = () => {
 
 export const getTimeZone = (): string => {
   const timeZone = getCalendars()[0].timeZone;
-  return timeZone ? timeZone : "UTC";
+  return timeZone ? timeZone : 'UTC';
 };
 
 export const getFormattedDate = (date: Date): string => {
   const options: Intl.DateTimeFormatOptions = {
-    weekday: "short",
-    month: "short",
-    day: "numeric",
-  }
-  return date.toLocaleString("en-US", options);
+    weekday: 'short',
+    month: 'short',
+    day: 'numeric',
+  };
+  return date.toLocaleString('en-US', options);
 };
 
 export const getFormattedTime = (date: Date): string => {
   const options: Intl.DateTimeFormatOptions = {
-    timeZone: getTimeZone(), 
-    timeZoneName: "short",
-    dayPeriod: "narrow",
-    hour: "numeric",
-    minute: "numeric"
-  }
-  return date.toLocaleString("en-US", options);
+    timeZone: getTimeZone(),
+    timeZoneName: 'short',
+    hour: 'numeric',
+    minute: 'numeric',
+  };
+  return date.toLocaleString('en-US', options);
 };
 
 export const getFormattedDateTime = (date: Date): string => {
   const options: Intl.DateTimeFormatOptions = {
-    timeZone: getTimeZone(), 
-    timeZoneName: "short",
-    weekday: "short",
-    month: "short",
-    day: "numeric",
-    dayPeriod: "narrow",
-    hour: "numeric",
-    minute: "numeric"
-  }
-  return date.toLocaleString("en-US", options);
+    timeZone: getTimeZone(),
+    timeZoneName: 'short',
+    weekday: 'short',
+    month: 'short',
+    day: 'numeric',
+    hour: 'numeric',
+    minute: 'numeric',
+  };
+  return date.toLocaleString('en-US', options);
 };

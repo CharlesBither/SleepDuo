@@ -2,18 +2,17 @@
 
 SleepDuo is an open source Android app developed by Charles Bither. The source code is available on GitHub under the GNU General Public License v3.0.
 
-
 ## Data collected by SleepDuo
 
 Your uuid and full name as it appears on your Google account will be collected if you login to SleepDuo via OAuth.
 
-Any Record Details that you create in the app will be collected and stored on our cloud-based Supabase database. This may include any of the following for each log: 
-* The number of alcoholic or caffinated drinks you had
-* Whether you took a nap
-* Your self-reported quality of sleep
+Any Record Details that you create in the app will be collected and stored on our cloud-based Supabase database. This may include any of the following for each log:
+
+- The number of alcoholic or caffinated drinks you had
+- Whether you took a nap
+- Your self-reported quality of sleep
 
 The personal information you provide will not be shared, sold, or rented to any other third party except as required by law or with your explicit consent.
-
 
 ## Explanation of permissions requested by the SleepDuo
 

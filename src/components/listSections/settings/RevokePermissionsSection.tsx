@@ -1,6 +1,6 @@
-import { List, Text, useTheme } from "react-native-paper";
-import RevokePermissionsButton from "../../buttons/RevokePermissionsButton";
-import { StyleSheet } from "react-native";
+import { List, Text, useTheme } from 'react-native-paper';
+import RevokePermissionsButton from '../../buttons/RevokePermissionsButton';
+import { StyleSheet } from 'react-native';
 
 type RevokePermissionsSectionProps = {
   hasHealthConnectPermissions: boolean;
@@ -22,7 +22,7 @@ export default function RevokePermissionsSection(
         </Text>
       ) : (
         <Text style={{ ...styles.margin, color: theme.colors.outline }}>
-          SleepDuo doesn't have  permissions to Health Connect data.
+          SleepDuo doesn't have permissions to Health Connect data.
         </Text>
       )}
 
