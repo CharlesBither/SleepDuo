@@ -2,13 +2,25 @@ import { BooleanFilter } from '../types/BooleanFilter';
 import { SleepSessionActivity } from '../types/SleepSessionActivity';
 import { TimeOfDay } from '../types/TimeOfDay';
 
+/**
+ *
+ * @param activity - The activity being filtered
+ * @param napFilter - Filter by days when the user (did/did not) take a nap
+ * @param timeOfDayFilter - Filter by times of day that user did activity
+ * @returns A user-friendly string representing the filter selection
+ */
 export const renderFilterStatement = (
   activity: SleepSessionActivity | '',
   napFilter: BooleanFilter | '',
   timeOfDayFilter: TimeOfDay[]
 ): string => {
   // base cases:
-  if (activity === '' || (activity === 'nap' && napFilter === '')) return '';
+  if (
+    activity === '' ||
+    (activity === 'nap' && napFilter === '') ||
+    (activity !== 'nap' && timeOfDayFilter.length === 0)
+  )
+    return '';
 
   if (activity === 'nap') {
     return napFilter === 'yes'
@@ -22,7 +34,7 @@ export const renderFilterStatement = (
     return `On days when I didn't have ${activity}...`;
   }
   if (timeOfDayFilter.length === 3 && !timeOfDayFilter.includes('NA')) {
-    return `On days when I didn't have ${activity}...`;
+    return `On days when I had ${activity}...`;
   }
 
   // recursive case:
