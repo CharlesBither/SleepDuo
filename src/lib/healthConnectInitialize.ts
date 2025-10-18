@@ -48,9 +48,13 @@ export const requestSleepPermissions = async (): Promise<void> => {
         accessType: 'read',
         recordType: 'SleepSession',
       },
+      {
+        accessType: 'read',
+        recordType: 'ReadHealthDataHistory',
+      },
     ]);
     console.log('Granted permissions on request ', { permissions });
-  } catch {
-    throw new Error('threw exception');
+  } catch (e) {
+    throw new Error('requestSleepPermissions threw exception: ' + e);
   }
 };

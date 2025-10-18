@@ -37,9 +37,11 @@ export default function Overview() {
   >(undefined);
   const router = useRouter();
 
+  // the sleep data set that is shown to the user
   const targetData =
     interval === '7' ? last7Data : interval === '30' ? last30Data : allTimeData;
 
+  // fetch all sleep records
   useEffect(() => {
     const getLast7DaysPromise = getLast7Days().then((records) =>
       handleLast7DaysResult(records)
@@ -89,17 +91,23 @@ export default function Overview() {
   if (loading) return <LoadingScreen />;
   else if (!targetData) {
     return (
-      <Card style={{ ...styles.card }}>
-        <Card.Content>
-          <Text variant="titleMedium" style={{ ...styles.cardTitle }}>
-            Not enough recorded sessions
-          </Text>
-          <Text variant="bodyMedium" style={{ ...styles.cardContent }}>
-            Wear a Health-Connect-supported device to track your sleep to see
-            this data.
-          </Text>
-        </Card.Content>
-      </Card>
+      <>
+        <OverviewIntervalSegmentedButton
+          interval={interval}
+          setInterval={setInterval}
+        />
+        <Card style={{ ...styles.card }}>
+          <Card.Content>
+            <Text variant="titleMedium" style={{ ...styles.cardTitle }}>
+              Not enough recorded sessions
+            </Text>
+            <Text variant="bodyMedium" style={{ ...styles.cardContent }}>
+              Wear a Health-Connect-supported device to track your sleep to see
+              this data.
+            </Text>
+          </Card.Content>
+        </Card>
+      </>
     );
   }
   return (

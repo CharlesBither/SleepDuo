@@ -11,13 +11,11 @@ import {
 } from '../utils/sleepSession';
 import SleepSessionAvgDataSection from '../components/listSections/SleepSessionAvgDataSection';
 import { StyleSheet } from 'react-native';
-import { useRouter } from 'expo-router';
 import ExploreNapFilterModal from '../components/modals/ExploreNapFilterModal';
 import { BooleanFilter } from '../types/BooleanFilter';
 import FilterItem from '../components/listSections/explore/FilterItem';
 import { TimeOfDay } from '../types/TimeOfDay';
 import ExploreTimeOfDayFilterModal from '../components/modals/ExploreTimeOfDayFilterModal';
-import { setErrorMsg } from '../stores/error';
 import { renderFilterStatement } from '../utils/textFormatter';
 
 export default function Explore() {
@@ -30,7 +28,6 @@ export default function Explore() {
   const [napFilterModalVisible, setNapFilterModalVisible] = useState(false);
   const [timeOfDayFilterModalVisible, setTimeOfDayFilterModalVisible] =
     useState(false);
-  const router = useRouter();
 
   const handleActivityChange = (activityParam: SleepSessionActivity): void => {
     if (activityParam === activity) return;
@@ -50,8 +47,9 @@ export default function Explore() {
         await getNapFilteredSleepSessions(napFilterParam);
       setData(sleepSessionArrayToAvgData(filteredSleepSessions));
     } catch (error) {
-      setErrorMsg('handleNapFilterChange threw an unexpected error: ' + error);
-      router.replace('/ErrorScreen');
+      console.error(
+        'handleNapFilterChange threw an unexpected error: ' + error
+      );
     }
   };
 
@@ -67,10 +65,9 @@ export default function Explore() {
         );
         setData(sleepSessionArrayToAvgData(filteredSleepSessions));
       } catch (error) {
-        setErrorMsg(
+        console.error(
           'handleNapFilterChange threw an unexpected error: ' + error
         );
-        router.replace('/ErrorScreen');
       }
     }
   };
