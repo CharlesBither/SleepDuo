@@ -18,7 +18,10 @@
         "backgroundColor": "#65558F"
       },
       "package": "com.charlesbither.SleepDuo",
-      "permissions": ["android.permission.health.READ_SLEEP"]
+      "permissions": [
+        "android.permission.health.READ_SLEEP",
+        "android.permission.health.READ_HEALTH_DATA_HISTORY"
+      ]
     },
     "web": {
       "bundler": "metro",
